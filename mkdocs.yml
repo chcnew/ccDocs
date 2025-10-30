@@ -2,6 +2,7 @@ site_name: CC学习文档库
 site_description: 个人知识笔记与技术文档
 site_author: HC
 site_url: https://chcnew.github.io/ccDocs/
+use_directory_urls: true
 
 theme:
   name: material
