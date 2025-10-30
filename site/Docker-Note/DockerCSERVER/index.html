@@ -1,0 +1,897 @@
+
+<!doctype html>
+<html lang="zh" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="个人知识笔记与技术文档">
+      
+      
+        <meta name="author" content="HC">
+      
+      
+        <link rel="canonical" href="https://chcnew.github.io/mydocs/Docker-Note/DockerCSERVER/">
+      
+      
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.22">
+    
+    
+      
+        <title>CSERVER容器化部署 - CC学习文档库</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.84d31ad4.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    <body dir="ltr">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#cserver" class="md-skip">
+          跳转至
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="页眉">
+    <a href="../.." title="CC学习文档库" class="md-header__button md-logo" aria-label="CC学习文档库" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            CC学习文档库
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              CSERVER容器化部署
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="搜索" placeholder="搜索" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="查找">
+        
+        <button type="reset" class="md-search__icon md-icon" title="清空当前内容" aria-label="清空当前内容" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            正在初始化搜索引擎
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="标签" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../.." class="md-tabs__link">
+        
+  
+  
+    
+  
+  首页
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../Python-Note/Python-%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/" class="md-tabs__link">
+          
+  
+  
+  Python 学习笔记
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../Python-Note/FastAPI-Note/" class="md-tabs__link">
+          
+  
+  
+  FastAPI 系列
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="导航栏" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="CC学习文档库" class="md-nav__button md-logo" aria-label="CC学习文档库" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    CC学习文档库
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    首页
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Python 学习笔记
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            Python 学习笔记
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Python-Note/Python-%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    高级
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Python-Note/DRF-Note/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    高级
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    FastAPI 系列
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            FastAPI 系列
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Python-Note/FastAPI-Note/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    入门->高级
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="目录">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      目录
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#docker" class="md-nav__link">
+    <span class="md-ellipsis">
+      一、安装docker
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#docker_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      二、docker使用
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      三、磁盘挂载
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#docker_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      四、docker用户组
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#docker_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      五、复制本地文件至docker容器
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      六、免密登录配置
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#work" class="md-nav__link">
+    <span class="md-ellipsis">
+      WORK、实际步骤
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#endfaq" class="md-nav__link">
+    <span class="md-ellipsis">
+      END、FAQ
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="END、FAQ">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#susedocker" class="md-nav__link">
+    <span class="md-ellipsis">
+      SUSE启动docker守护进程报错
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#systemctl" class="md-nav__link">
+    <span class="md-ellipsis">
+      systemctl报错
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#vmubuntu2204" class="md-nav__link">
+    <span class="md-ellipsis">
+      虚拟机VM配置ubuntu22.04
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="cserver">CSERVER容器化部署</h1>
+<p>本文以&lt;<strong>SUSE Linux Enterprise Server 12 SP5</strong>&gt;系统下配置为例，容器化部署安装CSERVER</p>
+<h2 id="docker">一、安装docker</h2>
+<pre><code class="language-shell">echo y | sudo zypper install docker
+docker --version
+sudo service docker start
+</code></pre>
+<p>json配置：/etc/docker/daemon.json</p>
+<pre><code class="language-json">{
+  &quot;bip&quot;: &quot;172.18.90.1/24&quot;,
+  &quot;log-level&quot;: &quot;warn&quot;,
+  &quot;log-driver&quot;: &quot;json-file&quot;,
+  &quot;log-opts&quot;: {
+    &quot;max-size&quot;: &quot;10m&quot;,
+    &quot;max-file&quot;: &quot;5&quot;
+  },
+  &quot;experimental&quot;: true,
+  &quot;insecure-registries&quot;: [
+    &quot;www.xxx1.com&quot;,
+    &quot;www.xxx2.com:8095&quot;,
+    &quot;www.xxx3.com:8080&quot;
+  ],
+  &quot;registry-mirrors&quot;: [
+    &quot;https://ftvwjbmx.mirror.aliyuncs.com&quot;
+  ]
+}
+</code></pre>
+<pre><code class="language-shell">sudo service docker restart
+</code></pre>
+<h2 id="docker_1">二、docker使用</h2>
+<pre><code class="language-shell"># 镜像列表
+docker images
+# 拉取镜像
+docker pull www.xxx.com:880/ttt-xprs/cserver-env/ubuntu:latest
+# 删除镜像
+docker rmi &lt;IMAGE-ID&gt;
+
+# 创建新的容器
+docker run -itd www.xxx.com:880/ttt-xprs/cserver-env/ubuntu:latest /bin/bash
+
+# 查看全部容器列表 
+docker ps -a
+
+# 启动容器
+docker start &lt;CONTAINER-ID&gt;
+
+# 停止容器
+docker stop &lt;CONTAINER-ID&gt;
+
+# 容器日志
+docker logs &lt;CONTAINER-ID&gt;
+
+# 删除容器
+docker rm &lt;CONTAINER-ID or IMAGE&gt;
+
+# 进入容器
+docker exec -it &lt;CONTAINER-ID&gt; /bin/bash
+
+# 保留容器为镜像
+docker commit &lt;container_id&gt; cserver-env:latest
+</code></pre>
+<p>Dockerfile：</p>
+<pre><code class="language-dockerfile"># 基础镜像
+FROM www.xxx.com:880/ttt-xprs/cserver-env/ubuntu:base1.1
+
+# 维护者信息
+MAINTAINER xxx ttt@ccc.com
+
+# 暴露端口
+EXPOSE 80 8810-8819
+
+# 准备工作
+RUN mkdir -p /data/Local &amp;&amp; chmod 755 -R /data/ &amp;&amp; \
+    mkdir -p /root/DAY/ &amp;&amp; \
+    mkdir -p /root/DAW/ &amp;&amp; \
+    mkdir -p /hostip/ &amp;&amp; \
+    python3 -m pip install --upgrade pip  &amp;&amp; \
+    python3 -m pip uninstall -y xxx &amp;&amp; \
+    pip3 install --user xxx
+
+# 复制文件
+COPY realip /hostip/
+COPY run_env.sh /root/
+
+# 权限设置
+RUN chmod +x /root/run_env.sh
+
+# 工作目录
+WORKDIR /root/
+
+# 启动进程
+ENTRYPOINT [&quot;/root/run_env.sh&quot;]
+
+</code></pre>
+<pre><code class="language-shell"># 当前目录中查找 Dockerfile 文件，并根据 Dockerfile 中的指令构建出一个镜像
+docker build -t cserver-env:latest .
+</code></pre>
+<p>这句命令是在 Docker 环境中启动一个新的容器，并进入该容器的交互式终端。具体解释如下： - <code>docker run</code> 是启动容器的命令。 - <code>-it</code> 参数表示在交互模式下运行容器，并分配一个伪终端。这使得用户可以在容器中执行命令，并与容器进行交互。 - <code>--rm</code> 参数表示容器退出后自动删除容器。这可以防止容器在退出后占用过多的磁盘空间。 - <code>cserver-env:latest</code> 是要启动的 Docker 镜像的名称和版本号。这里的 <code>cserver-env</code> 是镜像的名称，<code>:latest</code> 表示使用最新版本的镜像。 - <code>/bin/bash</code> 是要在容器中运行的命令。这里的 <code>/bin/bash</code> 表示在容器中启动 Bash Shell</p>
+<pre><code class="language-shell">docker run -it --rm cserver-env:latest /bin/bash
+</code></pre>
+<h2 id="_1">三、磁盘挂载</h2>
+<pre><code class="language-shell"># 要在docker中挂载硬盘，可以使用以下命令(其中，`/host/path`是宿主机上的路径，`/container/path`是容器内的路径，`&lt;image_name&gt;`是要运行的镜像名称。)：
+docker run -itd -v /host/path:/container/path &lt;image_name&gt; /bin/bash
+# 实际示例
+docker run -itd -v /data/Local:/data/Local www.xxx.com:880/ttt-xprs/cserver-env/ubuntu /bin/bash
+
+# 再次查看容器列表 
+docker ps -a
+</code></pre>
+<h2 id="docker_2">四、docker用户组</h2>
+<pre><code class="language-shell"># 宿主机创建用户
+sudo useradd -m chcnew
+sudo passwd chcnew
+# 查看用户所属用户组
+groups chcnew
+# 添加至docker用户组
+sudo usermod -aG docker chcnew
+</code></pre>
+<h2 id="docker_3">五、复制本地文件至docker容器</h2>
+<pre><code class="language-shell">docker cp 本地文件路径 容器ID/容器NAME:容器内路径
+</code></pre>
+<h2 id="_2">六、免密登录配置</h2>
+<pre><code class="language-shell"># 免交互生成密钥
+# -q ： 安静模式，一般用在生成密钥上
+# -N： 生成一个新密钥
+# -f : 生成密钥的文件路径 &amp;&amp; # 服务器端加入认证列表
+ssh-keygen -q -N &quot; &quot; -f ~/.ssh/id_rsa &amp;&amp; cat ~/.ssh/id_rsa.pub &gt; ~/.ssh/authorized_keys
+
+# 启动容器时共享~/.ssh目录
+-v ${HOME}/.ssh:/root/.ssh
+
+# 容器ssh至宿主机
+chmod 700 /root/.ssh/
+chmod 600 /root/.ssh/*
+ssh -i /root/.ssh/cida_docker_key -o StrictHostKeyChecking=no root@192.168.127.150 -p 22 &quot;python3 -V&quot;
+</code></pre>
+<h2 id="work">WORK、实际步骤</h2>
+<p>基础镜像配置：</p>
+<p>​   linux依赖项</p>
+<pre><code class="language-shell">apt-get install jq -y
+apt-get install gcc g++ -y
+apt-get install make automake -y
+apt-get install python3-dev -y
+apt-get install libssl-dev -y
+apt-get install libpcre3 libpcre3-dev -y
+apt-get install zlib1g-dev -y
+apt-get install openssl libssl-dev -y
+apt-get install openssh-server -y
+apt-get install libffi-dev -y
+apt-get install libsqlite3-dev -y
+apt-get install sqlite3 -y
+apt-get install -y systemctl ntp ntpdate ntpstat
+</code></pre>
+<p>​   依赖软件项：</p>
+<pre><code class="language-reStructuredText">python3.9.11
+jdk1.8.0_171
+nginx-1.18.0
+git
+</code></pre>
+<p>​   配置时钟同步：</p>
+<pre><code class="language-shell"># 修改配置
+vim /etc/ntp.conf
+# 写入内容
+server ntp01-in.xxx.com prefer
+server ntp02-in.xxx.com
+server ntp03-in.xxx.com
+#启动ntp服务 &amp; 设置ntp服务开机自启动 &amp; #查看同步状态
+systemctl start ntp &amp;&amp; systemctl enable ntp &amp;&amp; ntpstat
+</code></pre>
+<p>​   镜像制作及启动容器</p>
+<pre><code class="language-shell"># 镜像列表
+docker images
+# 拉取镜像
+docker pull www.xxx.com:880/ttt-xprs/cserver-env/ubuntu:latest
+
+# 编写Dockerfile并构建镜像
+mkdir /usr/local/dockerTTT
+cd /usr/local/dockerTTT
+vim Dockerfile
+# 写入构建步骤指令
+# 最后构建命令运行
+docker build -t cserver-env-ubuntu22.04:latest .
+
+# 创建容器且共享目录：~/DAY、~/DAW、/data/Local
+# docker run --rm -itd -v /root/DAY:/root/DAY -v /root/DAW:/root/DAW -v /data/Local:/data/Local cserver-env-ubuntu22.04:latest /bin/bash
+docker run -itd -v /root/DAY:/root/DAY -v /root/DAW:/root/DAW -v /data/Local:/data/Local cserver-env-ubuntu22.04:latest
+
+# 进入容器
+docker exec -it &lt;CONTAINER-ID&gt; /bin/bash
+
+# 容器保存为镜像
+docker commit &lt;CONTAINER-ID&gt; www.xxx.com:880/ttt-xprs/cserver-env/ubuntu
+</code></pre>
+<p>​   自定义容器网段IP</p>
+<pre><code class="language-shell"># 创建网络
+docker network create --subnet 172.18.90.0/24 dockernet
+# 验证配置
+docker network inspect dockernet
+# 删除网络
+docker network rm dockernet
+</code></pre>
+<h2 id="endfaq">END、FAQ</h2>
+<h3 id="susedocker">SUSE启动docker守护进程报错</h3>
+<p><strong>runc: symbol lookup error: runc: undefined symbol: seccomp_api_get</strong></p>
+<pre><code class="language-shell">sudo zypper update runc libseccomp2
+sudo zypper install runc-1.0.3-lp152.2.12.1.x86_64
+sudo zypper install libseccomp2-2.4.1-lp152.1.3.x86_64
+</code></pre>
+<h3 id="systemctl">systemctl报错</h3>
+<p>System has not been booted with systemd as init system (PID 1). Can't operate.
+Failed to connect to bus: Host is down</p>
+<p>如何处理？</p>
+<pre><code class="language-shell">一、特权参数执行
+docker run -itd --privileged=true --name my_centos my-centos /usr/sbin/init
+docker exec -it my_centos /bin/bash
+
+二、替换systemctl
+wget https://github.com/gdraheim/docker-systemctl-replacement/tree/master/files/docker/systemctl3.py -O /bin/systemctl
+chmod a+x /bin/systemctl
+</code></pre>
+<h3 id="vmubuntu2204">虚拟机VM配置ubuntu22.04</h3>
+<pre><code class="language-shell"># 不存在ens33网卡
+ifconfig ens33 up
+# 配置网络
+cd /etc/netplan/
+ll
+# 配置内容 -------------
+# This is the network config written by 'subiquity'
+network:
+  version: 2
+  renderer: NetworkManager  # 渲染器
+  ethernets:
+    ens33:  # 网卡名称
+      dhcp4: no  # 关闭dhcp4
+      dhcp6: no  # 关闭dhcp6
+      addresses: [192.168.127.150/24]  # 静态ip
+      gateway4: 192.168.127.2  # NTA设置网关
+      nameservers:
+        addresses: [192.168.127.1,114.114.114.114] # DNS设置必须通过共享网络设置的ip
+# ---------------------
+# 网络配置0、1、2
+虚拟机网络配置子网IP：192.168.127.0 掩码：255.255.255.0
+共享网络给net8，设置ip：192.168.127.1
+NTA设置网关：192.168.127.2
+#VM相关任务管理器3个服务需要打开
+# netplan服务加载配置
+netplan apply
+</code></pre>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.instant", "navigation.tabs", "search.highlight", "content.code.annotate"], "search": "../../assets/javascripts/workers/search.973d3a69.min.js", "tags": null, "translations": {"clipboard.copied": "\u5df2\u590d\u5236", "clipboard.copy": "\u590d\u5236", "search.result.more.one": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.more.other": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 # \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.none": "\u6ca1\u6709\u627e\u5230\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.one": "\u627e\u5230 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.other": "# \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.placeholder": "\u952e\u5165\u4ee5\u5f00\u59cb\u641c\u7d22", "search.result.term.missing": "\u7f3a\u5c11", "select.version": "\u9009\u62e9\u5f53\u524d\u7248\u672c"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.f55a23d4.min.js"></script>
+      
+    
+  </body>
+</html>

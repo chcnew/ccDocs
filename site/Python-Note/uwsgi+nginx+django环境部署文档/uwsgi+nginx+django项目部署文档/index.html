@@ -1,0 +1,1693 @@
+
+<!doctype html>
+<html lang="zh" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="个人知识笔记与技术文档">
+      
+      
+        <meta name="author" content="HC">
+      
+      
+        <link rel="canonical" href="https://chcnew.github.io/mydocs/Python-Note/uwsgi%2Bnginx%2Bdjango%E7%8E%AF%E5%A2%83%E9%83%A8%E7%BD%B2%E6%96%87%E6%A1%A3/uwsgi%2Bnginx%2Bdjango%E9%A1%B9%E7%9B%AE%E9%83%A8%E7%BD%B2%E6%96%87%E6%A1%A3/">
+      
+      
+      
+      
+      <link rel="icon" href="../../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.22">
+    
+    
+      
+        <title>nginx+uwsgi+django项目部署文档 - CC学习文档库</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.84d31ad4.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    <body dir="ltr">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#nginxuwsgidjango" class="md-skip">
+          跳转至
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="页眉">
+    <a href="../../.." title="CC学习文档库" class="md-header__button md-logo" aria-label="CC学习文档库" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            CC学习文档库
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              nginx+uwsgi+django项目部署文档
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="搜索" placeholder="搜索" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="查找">
+        
+        <button type="reset" class="md-search__icon md-icon" title="清空当前内容" aria-label="清空当前内容" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            正在初始化搜索引擎
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="标签" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../.." class="md-tabs__link">
+        
+  
+  
+    
+  
+  首页
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../Python-%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/" class="md-tabs__link">
+          
+  
+  
+  Python 学习笔记
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../FastAPI-Note/" class="md-tabs__link">
+          
+  
+  
+  FastAPI 系列
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="导航栏" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../.." title="CC学习文档库" class="md-nav__button md-logo" aria-label="CC学习文档库" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    CC学习文档库
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    首页
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Python 学习笔记
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            Python 学习笔记
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Python-%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    高级
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../DRF-Note/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    高级
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    FastAPI 系列
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            FastAPI 系列
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../FastAPI-Note/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    入门->高级
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="目录">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      目录
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1" class="md-nav__link">
+    <span class="md-ellipsis">
+      1.配置过程问题
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2ifconfigvimwget" class="md-nav__link">
+    <span class="md-ellipsis">
+      2.安装ifconfig/vim/wget工具
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3python3" class="md-nav__link">
+    <span class="md-ellipsis">
+      3.安装python3及依赖包
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4gitsftp-rootip-put-get" class="md-nav__link">
+    <span class="md-ellipsis">
+      4.安装git（本地上传可以用sftp root@ip + 密码=&gt; put / get）
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5" class="md-nav__link">
+    <span class="md-ellipsis">
+      5.安装项目依赖包
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6" class="md-nav__link">
+    <span class="md-ellipsis">
+      6.配置前运行测试
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7uwsgi" class="md-nav__link">
+    <span class="md-ellipsis">
+      7.安装及配置uWSGI
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="7.安装及配置uWSGI">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#uwsgi" class="md-nav__link">
+    <span class="md-ellipsis">
+      ● 安装uWSGI
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#uwsgi_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      ● uWSGI启动服务测试（项目目录执行）
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#uwsgiini" class="md-nav__link">
+    <span class="md-ellipsis">
+      ● 编写uwsgi.ini配置文件
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="● 编写uwsgi.ini配置文件">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-djangouwsgiini" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. django配置uwsgi.ini
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-flaskuwsgiini" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. flask配置uwsgi.ini
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#uwsgiuwsgiinit" class="md-nav__link">
+    <span class="md-ellipsis">
+      ● 启动uWSGI测试（uwsgi.init目录执行）
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#8nginx" class="md-nav__link">
+    <span class="md-ellipsis">
+      8.安装及配置Nginx
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="8.安装及配置Nginx">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#yumvim-etcyumreposdnginxrepo" class="md-nav__link">
+    <span class="md-ellipsis">
+      ● 编辑yum源文件：vim /etc/yum.repos.d/nginx.repo
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#django" class="md-nav__link">
+    <span class="md-ellipsis">
+      ● 设置django项目静态文件
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#nginxconf" class="md-nav__link">
+    <span class="md-ellipsis">
+      ● 配置文件设置：nginx.conf
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#httpsnginxconf" class="md-nav__link">
+    <span class="md-ellipsis">
+      ● https配置文件设置：nginx.conf
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#9" class="md-nav__link">
+    <span class="md-ellipsis">
+      9.总结代理关系流程
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#10uwsginginx" class="md-nav__link">
+    <span class="md-ellipsis">
+      10.关于uwsgi和Nginx知识
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="10.关于uwsgi和Nginx知识">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#nginx" class="md-nav__link">
+    <span class="md-ellipsis">
+      ● Nginx配置文件解释
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#uwsgi_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      ● uWSGI配置文件解释
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="nginxuwsgidjango">nginx+uwsgi+django项目部署文档</h1>
+<p>● 虚拟机部署：<a href="https://docs.qq.com/doc/DWHhFTGpyQ09xZkdo">https://docs.qq.com/doc/DWHhFTGpyQ09xZkdo</a></p>
+<p>● 部署参考文章： </p>
+<pre><code class="language-shell">1. https://cloud.tencent.com/developer/article/1877954
+2. https://blog.csdn.net/qq_32656561/article/details/107781823
+3. https://blog.csdn.net/weixin_44685869/article/details/103949664
+</code></pre>
+<h2 id="1">1.配置过程问题</h2>
+<pre><code class="language-shell">1\ vim编写wsgi.py路径不正确、项目路径不正确；=&gt;查看日志会提示;
+
+2\ django静态文件聚集（系统重启可能会丢失，需要重新聚集再运行uwsgi+nginx）;
+
+3\ 生成验证码的pillow包，字体文件不支持相对路径，要改为绝对路径寻找字体文件才能正常显示;
+</code></pre>
+<h2 id="2ifconfigvimwget">2.安装ifconfig/vim/wget工具</h2>
+<pre><code class="language-shell">yum -y install net-tools.x86_64 vim wget
+</code></pre>
+<h2 id="3python3">3.安装python3及依赖包</h2>
+<pre><code class="language-shell"># opt目录下载(linux我们采用源码安装),解压到/usr/local/src/
+
+wget https://www.python.org/ftp/python/3.9.12/Python-3.9.12.tgz
+cd /opt
+tar -xzvf /opt/Python-3.9.12.tgz -C /usr/local/src/
+
+# 安装Python依赖包
+yum -y install zlib-devel bzip2-devel openssl-devel ncurses-devel sqlite-devel readline-devel tk-devel gcc make
+
+# 系统更新
+yum -y update
+</code></pre>
+<p>● 源码方式安装python-检查当前环境是都满足条件使用./configure </p>
+<pre><code class="language-shell">cd /usr/local/
+tar -xzvf python-3.9.12.tar.gz
+cd ~/Python-3.9.12
+./configure --prefix=/usr/local/python3
+make &amp;&amp; make install
+</code></pre>
+<p>● 环境变量配置</p>
+<pre><code class="language-shell"># 添加用户级环境变量 profile.d--好维护，不再需要配置的环境变量直接删除.sh文件即可。
+vim /etc/profile.d/python3.sh
+
+# 写入内容保存
+export PATH=$PATH:/usr/local/python3/bin
+
+# 重载环境变量文件
+source /etc/profile
+
+# 查看当前环境变量是否存在
+echo $PATH
+</code></pre>
+<p>​   默认.bashrc文件环境变量</p>
+<pre><code class="language-shell"># .bashrc
+
+# User specific aliases and functions
+
+alias rm='rm -i'
+alias cp='cp -i'
+alias mv='mv -i'
+
+# Source global definitions
+if [ -f /etc/bashrc ]; then
+        . /etc/bashrc
+fi
+export NSS_STRICT_NOFORK=DISABLED
+</code></pre>
+<p>● 更改pypi源为清华镜像源</p>
+<pre><code class="language-shell">python3 -m pip install --upgrade pip 
+pip3 config set global.index-url https://pypi.tuna.tsinghua.edu.cn/simple
+</code></pre>
+<p>● 关于linux环境变量的设置文章：https://blog.csdn.net/f110300641/article/details/82663132</p>
+<h2 id="4gitsftp-rootip-put-get">4.安装git（本地上传可以用sftp root@ip + 密码=&gt; put / get）</h2>
+<pre><code class="language-shell">yum -y install git
+</code></pre>
+<h2 id="5">5.安装项目依赖包</h2>
+<pre><code class="language-shell">导出依赖包列表：
+方式一：导出环境全部包
+pip3 freeze &gt; requirement.txt
+
+方式二：导出环境项目依赖包
+pip3 install pipreqs
+pipreqs ./ --encoding=utf-8
+
+# 安装全部包
+pip3 install -r requirements.txt
+</code></pre>
+<p>● 报错问题：</p>
+<p>django.core.exceptions.ImproperlyConfigured: Error loading MySQLdb module. Did you install mysqlclient?</p>
+<p>● 解决方法：</p>
+<pre><code class="language-python">pip3 install pymysql
+
+项目（settings.py同级)目录中__init__.py中添加
+import pymysql 
+pymysql.install_as_MySQLdb()
+</code></pre>
+<h2 id="6">6.配置前运行测试</h2>
+<p>cd ... (进入项目目录)</p>
+<p>python3 manage.py runserver 192.168.127.145:80</p>
+<p><img alt="img" src="o3axyqpvs54V__wUd-BbCQ.png" /></p>
+<p><img alt="img" src="5-6fvLTJN6jKKGg5Ajbj4w.png" /></p>
+<p>启动成功！没有问题，继续下面；</p>
+<h2 id="7uwsgi">7.安装及配置uWSGI</h2>
+<h3 id="uwsgi">● 安装uWSGI</h3>
+<pre><code class="language-shell">python3 -m pip install --upgrade pip setuptools uwsgi
+</code></pre>
+<h3 id="uwsgi_1">● uWSGI启动服务测试（项目目录执行）</h3>
+<pre><code class="language-shell">uwsgi --http :80 --wsgi-file Django_Stdy02_EMS/wsgi.py
+# 或者 uwsgi --http :80 --module Django_Stdy02_EMS.wsgi:application
+</code></pre>
+<h3 id="uwsgiini">● 编写uwsgi.ini配置文件</h3>
+<h4 id="1-djangouwsgiini">1. django配置uwsgi.ini</h4>
+<pre><code class="language-shell"> vim /opt/Django_Stdy02_EMS/uwsgi.ini
+</code></pre>
+<pre><code class="language-ini">[uwsgi]
+chdir=/opt/Django_Stdy02_EMS/
+module=Django_Stdy02_EMS.wsgi:application
+socket=127.0.0.1:8000
+pidfile=uwsgi.pid
+daemonize=uwsgi.log
+chmod-socket=660
+master=true
+vacuum=true
+thunder-lock=true
+enable-threads=true
+harakiri=30
+post-buffering=4096
+processes=2
+threads=2
+</code></pre>
+<h4 id="2-flaskuwsgiini">2. flask配置uwsgi.ini</h4>
+<pre><code class="language-ini">[uwsgi]
+;运行入口，py文件名:app名称
+module=app:app
+master=true
+;进程数
+processes=2
+;运行目录
+chdir=/data/qdwskj_project/micservice/
+socket=uwsgi.sock
+socket=127.0.0.1:8000
+;进程pid文件
+pidfile=uwsgi.pid
+;日志文件
+daemonize=uwsgi.log
+chmod-socket=660
+vacuum=true
+</code></pre>
+<h3 id="uwsgiuwsgiinit">● 启动uWSGI测试（uwsgi.init目录执行）</h3>
+<pre><code class="language-shell"># 关闭uwsgi所有进程
+pkill -f uwsgi -9
+# 启动
+uwsgi --ini uwsgi.ini
+# 查看进程
+ps -ef|grep -i uwsgi
+# 重启
+uwsgi --reload uwsgi.pid
+# 关闭
+uwsgi --stop uwsgi.pid
+
+#目录会生成文件
+uwsgi.ini
+uwsgi.log
+uwsgi.pid
+</code></pre>
+<h2 id="8nginx">8.安装及配置Nginx</h2>
+<pre><code class="language-shell">yum源安装nginx（推荐）
+
+# 查看是否存在nginx
+rpm -qa | grep nginx
+
+# 删除nginx包（强制模式）
+rpm -e --nodeps 软件包名
+</code></pre>
+<h3 id="yumvim-etcyumreposdnginxrepo">● 编辑yum源文件：vim /etc/yum.repos.d/nginx.repo</h3>
+<pre><code class="language-ini">[nginx-stable]
+name=nginx stable repo
+baseurl=http://nginx.org/packages/centos/$releasever/$basearch/
+gpgcheck=1
+enabled=1
+gpgkey=https://nginx.org/keys/nginx_signing.key
+module_hotfixes=true
+
+[nginx-mainline]
+name=nginx mainline repo
+baseurl=http://nginx.org/packages/mainline/centos/$releasever/$basearch/
+gpgcheck=1
+enabled=0
+gpgkey=https://nginx.org/keys/nginx_signing.key
+module_hotfixes=true
+</code></pre>
+<pre><code class="language-shell"># 安装依赖包
+sudo yum  -y install yum-utils
+
+# 默认情况下，使用稳定的nginx软件包的存储库。如果要使用主线nginx软件包，请运行以下命令
+sudo yum-config-manager --enable nginx-mainline
+
+# 查看版本列表
+yum list | grep nginx
+
+# 安装
+sudo yum install nginx -y
+</code></pre>
+<h3 id="django">● 设置django项目静态文件</h3>
+<p># 在setting.py文件内STATIC_URL = '/static/' 后面添加：</p>
+<pre><code class="language-python">STATIC_ROOT = os.path.join(BASE_DIR, &quot;static/&quot;)
+</code></pre>
+<p># 运行命令复制静态文件：</p>
+<pre><code class="language-shell">python3 manage.py collectstatic
+</code></pre>
+<pre><code class="language-shell"># Nginx编辑配置
+vim /etc/nginx/conf.d/Django_Study02_EMS.conf
+
+# nginx测试配置文件合法性
+nginx  -t 
+
+# 查看进程
+ps -ef|grep nginx
+
+#关掉ngxin进程
+pkill -f nginx -9
+
+#启动nginx
+systemctl start nginx
+nginx配置设置 vim /etc/nginx/conf.d/Django_Study02_EMS.conf
+</code></pre>
+<h3 id="nginxconf">● 配置文件设置：nginx.conf</h3>
+<pre><code class="language-nginx">#user  nobody;
+worker_processes  1;
+
+#error_log  logs/error.log;
+#error_log  logs/error.log  notice;
+#error_log  logs/error.log  info;
+
+#pid        logs/nginx.pid;
+
+
+events {
+    use epoll;
+    worker_connections  1024;
+}
+
+
+http {
+    include       mime.types;
+    default_type  application/octet-stream;
+
+    #log_format  main  '$remote_addr - $remote_user [$time_local] &quot;$request&quot; '
+    #                  '$status $body_bytes_sent &quot;$http_referer&quot; '
+    #                  '&quot;$http_user_agent&quot; &quot;$http_x_forwarded_for&quot;';
+
+    #access_log  logs/access.log  main;
+
+    sendfile        on;
+    #tcp_nopush     on;
+
+    #keepalive_timeout  0;
+    keepalive_timeout  65;
+
+    #gzip  on;
+
+    server {
+        listen       80;
+        server_name  127.0.0.1;
+
+        charset utf-8;
+
+        #access_log  logs/host.access.log  main;
+
+        location / {
+            include uwsgi_params;
+            uwsgi_connect_timeout 30;
+            uwsgi_pass 127.0.0.1:8000;
+        }
+
+        location /static/ {
+            alias  /data/qdwskj_project/micservice/templates/static/;
+            index  index.html index.htm;
+        }
+
+        gzip on;
+        gzip_types text/plain application/x-javascript text/css text/javascript application/x-httpd-php application/json text/json image/jpeg image/gif image/png application/octet-stream;
+
+        error_page  404              /404.html;
+        error_page   500 502 503 504  /50x.html;
+
+
+        # proxy the PHP scripts to Apache listening on 127.0.0.1:80
+        #
+        #location ~ \.php$ {
+        #    proxy_pass   http://127.0.0.1;
+        #}
+
+        # pass the PHP scripts to FastCGI server listening on 127.0.0.1:9000
+        #
+        #location ~ \.php$ {
+        #    root           html;
+        #    fastcgi_pass   127.0.0.1:9000;
+        #    fastcgi_index  index.php;
+        #    fastcgi_param  SCRIPT_FILENAME  /scripts$fastcgi_script_name;
+        #    include        fastcgi_params;
+        #}
+
+        # deny access to .htaccess files, if Apache's document root
+        # concurs with nginx's one
+        #
+        #location ~ /\.ht {
+        #    deny  all;
+        #}
+    }
+
+
+    # another virtual host using mix of IP-, name-, and port-based configuration
+    #
+    #server {
+    #    listen       8000;
+    #    listen       somename:8080;
+    #    server_name  somename  alias  another.alias;
+
+    #    location / {
+    #        root   html;
+    #        index  index.html index.htm;
+    #    }
+    #}
+
+
+    # HTTPS server
+    #
+    #server {
+    #    listen       443 ssl;
+    #    server_name  localhost;
+
+    #    ssl_certificate      cert.pem;
+    #    ssl_certificate_key  cert.key;
+
+    #    ssl_session_cache    shared:SSL:1m;
+    #    ssl_session_timeout  5m;
+
+    #    ssl_ciphers  HIGH:!aNULL:!MD5;
+    #    ssl_prefer_server_ciphers  on;
+
+    #    location / {
+    #        root   html;
+    #        index  index.html index.htm;
+    #    }
+    #}
+
+}
+</code></pre>
+<p>采用源码安装Nginx；配置文件比这个麻烦一些；</p>
+<p><img alt="img" src="KU8ZbP2zsTBSL1Mb0yBrYw.png" /></p>
+<p>进入网站查看：功能正常~~</p>
+<h3 id="httpsnginxconf">● https配置文件设置：nginx.conf</h3>
+<pre><code>#user  nobody;
+worker_processes  1;
+
+#error_log  logs/error.log;
+#error_log  logs/error.log  notice;
+#error_log  logs/error.log  info;
+
+#pid        logs/nginx.pid;
+
+
+events {
+    worker_connections  1024;
+}
+
+
+http {
+    include       mime.types;
+    default_type  application/octet-stream;
+
+    #log_format  main  '$remote_addr - $remote_user [$time_local] &quot;$request&quot; '
+    #                  '$status $body_bytes_sent &quot;$http_referer&quot; '
+    #                  '&quot;$http_user_agent&quot; &quot;$http_x_forwarded_for&quot;';
+
+    #access_log  logs/access.log  main;
+
+    sendfile        on;
+    #tcp_nopush     on;
+
+    #keepalive_timeout  0;
+    keepalive_timeout  65;
+
+    #gzip  on;
+
+    #server {
+    #    listen       80;
+    #    server_name  www.qdwskj.com;
+    #    
+    #    charset utf-8;
+    #
+    #    #access_log  logs/host.access.log  main;
+    #
+    #    location / {
+    #        include uwsgi_params;
+    #        uwsgi_connect_timeout 30;
+    #        uwsgi_pass 127.0.0.1:8000;
+    #    }
+    #
+    #    location /static/ {
+    #        alias  /data/qdwskj_project/micservice/templates/static/;
+    #        index  index.html index.htm;
+    #    }
+    #
+    #    gzip on;
+    #    gzip_types text/plain application/x-javascript text/css text/javascript application/x-httpd-php application/json text/json image/jpeg image/gif image/png application/octet-stream;
+    #
+    #    error_page  404              /404.html;
+    #    error_page   500 502 503 504  /50x.html;
+    #
+    #
+    #    # proxy the PHP scripts to Apache listening on 127.0.0.1:80
+    #    #
+    #    #location ~ \.php$ {
+    #    #    proxy_pass   http://127.0.0.1;
+    #    #}
+    #
+    #    # pass the PHP scripts to FastCGI server listening on 127.0.0.1:9000
+    #    #
+    #    #location ~ \.php$ {
+    #    #    root           html;
+    #    #    fastcgi_pass   127.0.0.1:9000;
+    #    #    fastcgi_index  index.php;
+    #    #    fastcgi_param  SCRIPT_FILENAME  /scripts$fastcgi_script_name;
+    #    #    include        fastcgi_params;
+    #    #}
+    #
+    #    # deny access to .htaccess files, if Apache's document root
+    #    # concurs with nginx's one
+    #    #
+    #    #location ~ /\.ht {
+    #    #    deny  all;
+    #    #}
+    #}
+
+
+    # another virtual host using mix of IP-, name-, and port-based configuration
+    #
+    #server {
+    #    listen       8000;
+    #    listen       somename:8080;
+    #    server_name  somename  alias  another.alias;
+
+    #    location / {
+    #        root   html;
+    #        index  index.html index.htm;
+    #    }
+    #}
+
+
+    # HTTPS server
+
+    server {
+        listen 80;
+        server_name www.qdwskj.com;    #填写您的证书绑定的域名，例如：cloud.tencent.com
+        return 301 https://$host$request_uri;    #将http的域名请求转成https
+    }
+
+    server {
+        listen       443 ssl;
+        server_name  www.qdwskj.com;
+
+        charset utf-8;
+
+        ssl_certificate qdwskj.com_bundle.crt;
+        ssl_certificate_key qdwskj.com.key;
+
+        ssl_session_cache    shared:SSL:1m;
+        ssl_session_timeout  5m;
+
+        ssl_ciphers  HIGH:!aNULL:!MD5;
+        ssl_prefer_server_ciphers  on;
+
+        location / {
+            include uwsgi_params;
+            uwsgi_connect_timeout 30;
+            uwsgi_pass 127.0.0.1:8000;
+        }
+
+        location /static/ {
+            alias  /data/qdwskj_project/micservice/templates/static/;
+            index  index.html index.htm;
+        }
+
+        gzip on;
+        gzip_types text/plain application/x-javascript text/css text/javascript application/x-httpd-php application/json text/json image/jpeg image/gif image/png application/octet-stream;
+
+        error_page  404              /404.html;
+        error_page   500 502 503 504  /50x.html;
+
+    }
+
+}
+</code></pre>
+<h2 id="9">9.总结代理关系流程</h2>
+<p><img alt="image-20230326191047379" src="image-20230326191047379.png" /> </p>
+<h2 id="10uwsginginx">10.关于uwsgi和Nginx知识</h2>
+<p>● uWSGI是一个Web服务器，它实现了WSGl协议、uwsgi、 http等协议。Nginx中HttpUwsgiModule的作用是与uWSGI服务器进行交换。</p>
+<p>要注意wSGI / uwsgi / uwSGI这三个概念的区分。</p>
+<p>● WSGI是一种通信协议,Flask,webpy，Django、CherryPy等等都自带WSGI，不过性能都不好。Web服务器网关接口(Python  Web Server Gateway Interface，缩写为WSGI)</p>
+<p>WSGl是一套接口标准协议</p>
+<p>● uWSGl同WSGl一样是一种通信协议。而uWSGI是实现了uwsgi和WSGI两种协议的Web服务器。</p>
+<p>为什么有了uWSGI为什么还需要nginx?因为nginx具备优秀的静态内容处理能力，然后将动态内容转发给uWSGI服务器，这样可以达到很好的客户端响应。</p>
+<p>统一标准: 说到这，我们基本理清了uWSGI在web服务器与web框架之间作用, uWSGl就像一条纽带，将web服务器与web框架连接起来。Nginx属于一种高并发能力web服务器，Flask属于一种web框架，因此，uWSGl与Nginx、Flask的作用就不明而喻了。</p>
+<p><img alt="img" src="38n6S2iRVhnViUSNgqEBew.png" /></p>
+<p><img alt="img" src="ObFirAjrFXdQAOt6rcGjAA.png" /></p>
+<h3 id="nginx">● Nginx配置文件解释</h3>
+<pre><code class="language-nginx">#定义nginx运行的用户和用户组
+#user  nobody; 
+
+
+#nginx进程数，建议设置为等于CPU总核心数。
+worker_processes  1; 
+
+
+#全局错误日志定义类型，[ debug | info | notice | warn | error | crit ]
+#error_log  logs/error.log;
+#error_log  logs/error.log  notice;
+#error_log  logs/error.log  info;
+
+
+#进程文件
+#pid   logs/nginx.pid;
+
+
+#工作模式与连接数上限
+events {
+        # 异步非阻塞方式运行，轻松处理百万级的并发连接
+        use epoll;
+        #单个进程最大连接数（最大连接数=连接数*进程数）
+        worker_connections  1024;
+}
+
+
+#设定http服务器
+http {
+        #文件扩展名与文件类型映射表
+        include  mime.types;
+        #默认文件类型
+        default_type  application/octet-stream;
+
+        #log_format  main  '$remote_addr - $remote_user [$time_local] &quot;$request&quot; '
+
+        #'$status $body_bytes_sent &quot;$http_referer&quot; '
+
+        #'&quot;$http_user_agent&quot; &quot;$http_x_forwarded_for&quot;';
+
+        #access_log  logs/access.log  main;
+
+        #开启高效文件传输模式，sendfile指令指定nginx是否调用sendfile函数来输出文件，对于普通应用设为 on，如果用来进行下载等应用磁盘IO重负载应用，可设置为off，以平衡磁盘与网络I/O处理速度，降低系统的负载。注意：如果图片显示不正常把这个改 成off。
+        sendfile   on;
+
+
+        #防止网络阻塞
+        #tcp_nopushon;
+
+
+        #长连接超时时间，单位是秒
+        keepalive_timeout  60;
+
+        #开启gzip压缩输出
+        #gzip  on;
+
+        #虚拟主机的配置
+        server {
+            #监听端口
+            listen  80;
+
+            #域名可以有多个，用空格隔开
+            server_name  localhost;
+
+            #默认编码
+            charset utf-8;
+
+            #定义本虚拟主机的访问日志
+            #access_log  logs/host.access.log  main;
+
+            location / {
+                root   html;
+                index  index.html index.htm;
+            }
+
+            location /web/ {
+                include uwsgi_params;
+                uwsgi_connect_timeout 30;
+                uwsgi_pass 127.0.0.1:8684;
+            }
+
+            location /static/ {
+                alias  /data/qdwskj_project/micservice/templates/static/;
+                index  index.html index.htm;
+            }
+
+
+            #error_page  404    /404.html;
+
+            # redirect server error pages to the static page /50x.html
+
+            error_page   500 502 503 504  /50x.html;
+
+            location = /50x.html {
+                root   html;
+            }
+
+
+            # proxy the PHP scripts to Apache listening on 127.0.0.1:80
+
+
+            #location ~ \.php$ {
+
+            #    proxy_pass   http://127.0.0.1;
+
+            #}
+
+
+
+            # pass the PHP scripts to FastCGI server listening on 127.0.0.1:9000
+
+            #
+
+            #location ~ \.php$ {
+
+            #    root html;
+
+            #    fastcgi_pass   127.0.0.1:9000;
+
+            #    fastcgi_index  index.php;
+
+            #    fastcgi_param  SCRIPT_FILENAME  /scripts$fastcgi_script_name;
+
+            #    include   fastcgi_params;
+
+            #}
+
+
+
+            # deny access to .htaccess files, if Apache's document root
+
+            # concurs with nginx's one
+
+            #
+
+            #location ~ /\.ht {
+
+            #    deny  all;
+
+            #}
+
+        }
+
+
+        # another virtual host using mix of IP-, name-, and port-based configuration
+
+        #
+
+        #server {
+
+        #    listen  8000;
+
+        #    listen  somename:8080;
+
+        #    server_name  somename  alias  another.alias;
+
+
+
+        #    location / {
+
+        #   root   html;
+
+        #   index  index.html index.htm;
+
+        #    }
+
+        #}
+
+
+
+
+
+        # HTTPS server
+
+        #
+
+        #server {
+
+        #    listen  443 ssl;
+
+        #    server_name  localhost;
+
+
+
+        #    ssl_certificate cert.pem;
+
+        #    ssl_certificate_key  cert.key;
+
+
+
+        #    ssl_session_cache    shared:SSL:1m;
+
+        #    ssl_session_timeout  5m;
+
+
+
+        #    ssl_ciphers  HIGH:!aNULL:!MD5;
+
+        #    ssl_prefer_server_ciphers  on;
+
+
+
+        #    location / {
+
+        #   root   html;
+
+        #   index  index.html index.htm;
+
+        #    }
+
+        #}
+
+
+
+}
+</code></pre>
+<h3 id="uwsgi_2">● uWSGI配置文件解释</h3>
+<pre><code class="language-ini">uwsgi 常用参数
+
+项目目录
+
+chdir=/var/www/orange_web/
+
+
+
+指定项目application
+
+module=orange_web.wsgi:application
+
+
+
+指定sock的文件路径（nginx使用）
+
+socket=/var/www/script/uwsgi.sock
+
+
+
+进程个数（processess一样效果）
+
+workers=2
+
+
+
+指定启动时的pid文件路径
+
+pidfile=/var/www/script/uwsgi.pid
+
+
+
+指定ip及端口（配置nginx就不需要单独启动uwsgi需要填写）
+
+http=172.16.0.4:8001
+
+指定静态文件（配置nginx不需要，单独启动uwsgi加载静态文件）
+
+static-map=/static=/var/www/orange_web/static
+
+启动uwsgi的用户名和用户组
+
+uid=root
+
+gid=root
+
+
+
+启用主进程
+
+master=true
+
+
+
+启用线程
+
+enable-threads=true
+
+
+
+自动移除unix Socket和pid文件当服务停止的时候
+
+vacuum=true
+
+
+
+设置日志目录
+
+daemonize=/var/www/script/uwsgi.log
+
+
+
+不记录信息日志，只记录错误以及uwsgi内部消息
+
+disable-logging=true
+
+
+
+序列化接受的内容，如果可能的话
+
+thunder-lock=true
+
+
+
+启动主进程，来管理其他进程，其它的uwsgi进程都是这个master进程的子进程，如果kill这个master进程，相当于重启所有的uwsgi进程。
+
+master = true
+
+
+
+在app加载前切换到当前目录， 指定运行目录
+
+chdir = /web/www/mysite
+
+
+
+加载一个WSGI模块,这里加载mysite/wsgi.py这个模块
+
+module = mysite.wsgi
+
+
+
+监控python模块mtime来触发重载 (只在开发时使用)
+
+py-autoreload=1
+
+
+
+在每个worker而不是master中加载应用
+
+lazy-apps=true
+
+
+
+指定socket文件，也可以指定为127.0.0.1:9000，这样就会监听到网络套接字
+
+socket = /test/myapp.sock
+
+
+
+启动2个工作进程，生成指定数目的worker/进程
+
+processes = 2
+
+
+
+设置用于uwsgi包解析的内部缓存区大小为64k。默认是4k。
+
+buffer-size = 32768
+
+
+
+使进程在后台运行，并将日志打到指定的日志文件或者udp服务器
+
+daemonize = /var/log/myapp_uwsgi.log
+
+
+
+设置最大日志文件大小
+
+log-maxsize = 5000000
+
+
+
+禁用请求日志记录
+
+disable-logging = true
+
+
+
+当服务器退出的时候自动删除unix socket文件和pid文件。
+
+vacuum = true
+
+
+
+设置socket的监听队列大小（默认：100）
+
+listen = 120
+
+
+
+指定pid文件
+
+pidfile = /var/run/uwsgi.pid
+
+
+
+允许用内嵌的语言启动线程。这将允许你在app程序中产生一个子线程
+
+enable-threads = true
+
+
+
+设置在平滑的重启（直到接收到的请求处理完才重启）一个工作子进程中，等待这个工作结束的最长秒数。这个配置会使在平滑地重启工作子进程中，如果工作进程结束时间超过了8秒就会被强行结束（忽略之前已经接收到的请求而直接结束）
+
+reload-mercy = 8
+
+
+
+为每个工作进程设置请求数的上限。当一个工作进程处理的请求数达到这个值，那么该工作进程就会被回收重用（重启）。你可以使用这个选项来默默地对抗内存泄漏
+
+max-requests = 5000
+
+
+
+通过使用POSIX/UNIX的setrlimit()函数来限制每个uWSGI进程的虚拟内存使用数。这个配置会限制uWSGI的进程占用虚拟内存不超过256M。如果虚拟内存已经达到256M，并继续申请虚拟内存则会使程序报内存错误，本次的http请求将返回500错误。
+
+limit-as = 256
+
+
+
+一个请求花费的时间超过了这个harakiri超时时间，那么这个请求都会被丢弃，并且当前处理这个请求的工作进程会被回收再利用（即重启）
+
+harakiri = 60
+
+
+
+虚拟环境设置
+
+virtualenv=/home/saas_env
+</code></pre>
+<p>完美显示！</p>
+<p><img alt="img" src="0gkgcL2snd8T8WQFsKIKDg.png" /> </p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      <script id="__config" type="application/json">{"base": "../../..", "features": ["navigation.instant", "navigation.tabs", "search.highlight", "content.code.annotate"], "search": "../../../assets/javascripts/workers/search.973d3a69.min.js", "tags": null, "translations": {"clipboard.copied": "\u5df2\u590d\u5236", "clipboard.copy": "\u590d\u5236", "search.result.more.one": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.more.other": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 # \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.none": "\u6ca1\u6709\u627e\u5230\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.one": "\u627e\u5230 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.other": "# \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.placeholder": "\u952e\u5165\u4ee5\u5f00\u59cb\u641c\u7d22", "search.result.term.missing": "\u7f3a\u5c11", "select.version": "\u9009\u62e9\u5f53\u524d\u7248\u672c"}, "version": null}</script>
+    
+    
+      <script src="../../../assets/javascripts/bundle.f55a23d4.min.js"></script>
+      
+    
+  </body>
+</html>

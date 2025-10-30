@@ -1,0 +1,2951 @@
+
+<!doctype html>
+<html lang="zh" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="个人知识笔记与技术文档">
+      
+      
+        <meta name="author" content="HC">
+      
+      
+        <link rel="canonical" href="https://chcnew.github.io/mydocs/%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE-Note/http%E5%8D%8F%E8%AE%AE/">
+      
+      
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.22">
+    
+    
+      
+        <title>HTTP协议剖析 - CC学习文档库</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.84d31ad4.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    <body dir="ltr">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#http" class="md-skip">
+          跳转至
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="页眉">
+    <a href="../.." title="CC学习文档库" class="md-header__button md-logo" aria-label="CC学习文档库" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            CC学习文档库
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              HTTP协议剖析
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="搜索" placeholder="搜索" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="查找">
+        
+        <button type="reset" class="md-search__icon md-icon" title="清空当前内容" aria-label="清空当前内容" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            正在初始化搜索引擎
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="标签" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../.." class="md-tabs__link">
+        
+  
+  
+    
+  
+  首页
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../Python-Note/Python-%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/" class="md-tabs__link">
+          
+  
+  
+  Python 学习笔记
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../Python-Note/FastAPI-Note/" class="md-tabs__link">
+          
+  
+  
+  FastAPI 系列
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="导航栏" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="CC学习文档库" class="md-nav__button md-logo" aria-label="CC学习文档库" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    CC学习文档库
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    首页
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Python 学习笔记
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            Python 学习笔记
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Python-Note/Python-%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    高级
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Python-Note/DRF-Note/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    高级
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    FastAPI 系列
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            FastAPI 系列
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Python-Note/FastAPI-Note/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    入门->高级
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="目录">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      目录
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      一、前世今生
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="一、前世今生">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#http11" class="md-nav__link">
+    <span class="md-ellipsis">
+      HTTP/1.1
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#http2" class="md-nav__link">
+    <span class="md-ellipsis">
+      HTTP/2
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#http3" class="md-nav__link">
+    <span class="md-ellipsis">
+      HTTP/3
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cdn" class="md-nav__link">
+    <span class="md-ellipsis">
+      CDN
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      小结
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      课下作业
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#http_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      二、HTTP协议
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="二、HTTP协议">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#http_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      HTTP是一个协议。
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      小结
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#http_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      三、与HTTP相关的各种协议
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="三、与HTTP相关的各种协议">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#tcpip" class="md-nav__link">
+    <span class="md-ellipsis">
+      TCP/IP协议
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#dns" class="md-nav__link">
+    <span class="md-ellipsis">
+      DNS
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#uriurl" class="md-nav__link">
+    <span class="md-ellipsis">
+      URI/URL
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#https" class="md-nav__link">
+    <span class="md-ellipsis">
+      HTTPS
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      代理
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_6" class="md-nav__link">
+    <span class="md-ellipsis">
+      小结
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_7" class="md-nav__link">
+    <span class="md-ellipsis">
+      四、四层与七层模型
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="四、四层与七层模型">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#tcpip_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      TCP/IP网络分层模型
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#osi" class="md-nav__link">
+    <span class="md-ellipsis">
+      OSI网络分层模型
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_8" class="md-nav__link">
+    <span class="md-ellipsis">
+      两个分层模型的映射关系
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tcpip_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      TCP/IP协议栈的工作方式
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_9" class="md-nav__link">
+    <span class="md-ellipsis">
+      小结
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_10" class="md-nav__link">
+    <span class="md-ellipsis">
+      课下作业
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_11" class="md-nav__link">
+    <span class="md-ellipsis">
+      五、域名系统
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="五、域名系统">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_12" class="md-nav__link">
+    <span class="md-ellipsis">
+      域名的形式
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_13" class="md-nav__link">
+    <span class="md-ellipsis">
+      域名的“新玩法”
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_14" class="md-nav__link">
+    <span class="md-ellipsis">
+      小结
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#http_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      六、http连接过程
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="六、http连接过程">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_15" class="md-nav__link">
+    <span class="md-ellipsis">
+      小结
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#http_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      七、http的核心部分
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="七、http的核心部分">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_16" class="md-nav__link">
+    <span class="md-ellipsis">
+      报文结构
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="报文结构">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#tcp" class="md-nav__link">
+    <span class="md-ellipsis">
+      TCP报文
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#http_6" class="md-nav__link">
+    <span class="md-ellipsis">
+      HTTP报文
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_17" class="md-nav__link">
+    <span class="md-ellipsis">
+      请求行
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_18" class="md-nav__link">
+    <span class="md-ellipsis">
+      状态行
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_19" class="md-nav__link">
+    <span class="md-ellipsis">
+      常用头字段
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_20" class="md-nav__link">
+    <span class="md-ellipsis">
+      小结
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#http_7" class="md-nav__link">
+    <span class="md-ellipsis">
+      八、http协议标准请求方法
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="八、http协议标准请求方法">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_21" class="md-nav__link">
+    <span class="md-ellipsis">
+      标准请求方法
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#gethead" class="md-nav__link">
+    <span class="md-ellipsis">
+      GET/HEAD
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#postput" class="md-nav__link">
+    <span class="md-ellipsis">
+      POST/PUT
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_22" class="md-nav__link">
+    <span class="md-ellipsis">
+      其他方法
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_23" class="md-nav__link">
+    <span class="md-ellipsis">
+      安全与幂等
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_24" class="md-nav__link">
+    <span class="md-ellipsis">
+      小结
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#uri" class="md-nav__link">
+    <span class="md-ellipsis">
+      九、URI深度理解
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="九、URI深度理解">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#uri_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      URI的基本组成
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#uri_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      URI的查询参数
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#uri_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      URI的完整格式
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#uri_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      URI的编码
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_25" class="md-nav__link">
+    <span class="md-ellipsis">
+      小结
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_26" class="md-nav__link">
+    <span class="md-ellipsis">
+      十、状态码
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="十、状态码">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_27" class="md-nav__link">
+    <span class="md-ellipsis">
+      状态行
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#1" class="md-nav__link">
+    <span class="md-ellipsis">
+      1××
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2" class="md-nav__link">
+    <span class="md-ellipsis">
+      2××
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3" class="md-nav__link">
+    <span class="md-ellipsis">
+      3××
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4" class="md-nav__link">
+    <span class="md-ellipsis">
+      4××
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#5" class="md-nav__link">
+    <span class="md-ellipsis">
+      5××
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_28" class="md-nav__link">
+    <span class="md-ellipsis">
+      小结
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#http_8" class="md-nav__link">
+    <span class="md-ellipsis">
+      十一、http特点
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="十一、http特点">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_29" class="md-nav__link">
+    <span class="md-ellipsis">
+      灵活可扩展
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_30" class="md-nav__link">
+    <span class="md-ellipsis">
+      可靠传输
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_31" class="md-nav__link">
+    <span class="md-ellipsis">
+      应用层协议
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#-" class="md-nav__link">
+    <span class="md-ellipsis">
+      请求-应答
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_32" class="md-nav__link">
+    <span class="md-ellipsis">
+      无状态
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_33" class="md-nav__link">
+    <span class="md-ellipsis">
+      其他特点
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_34" class="md-nav__link">
+    <span class="md-ellipsis">
+      小结
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#http_9" class="md-nav__link">
+    <span class="md-ellipsis">
+      十二、http优缺点
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="十二、http优缺点">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_35" class="md-nav__link">
+    <span class="md-ellipsis">
+      简单、灵活、易于扩展
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_36" class="md-nav__link">
+    <span class="md-ellipsis">
+      应用广泛、环境成熟
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_37" class="md-nav__link">
+    <span class="md-ellipsis">
+      无状态
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_38" class="md-nav__link">
+    <span class="md-ellipsis">
+      明文
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_39" class="md-nav__link">
+    <span class="md-ellipsis">
+      不安全
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_40" class="md-nav__link">
+    <span class="md-ellipsis">
+      性能
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_41" class="md-nav__link">
+    <span class="md-ellipsis">
+      小结
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#https_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      十三、https协议原理
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="十三、https协议原理">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#ssltls" class="md-nav__link">
+    <span class="md-ellipsis">
+      SSL/TLS
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#openssl" class="md-nav__link">
+    <span class="md-ellipsis">
+      OpenSSL
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_42" class="md-nav__link">
+    <span class="md-ellipsis">
+      小结
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_43" class="md-nav__link">
+    <span class="md-ellipsis">
+      十四、对称与非对称加密
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="十四、对称与非对称加密">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_44" class="md-nav__link">
+    <span class="md-ellipsis">
+      对称加密
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_45" class="md-nav__link">
+    <span class="md-ellipsis">
+      非对称加密
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_46" class="md-nav__link">
+    <span class="md-ellipsis">
+      混合加密
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_47" class="md-nav__link">
+    <span class="md-ellipsis">
+      小结
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#http_10" class="md-nav__link">
+    <span class="md-ellipsis">
+      十五、HTTP实体数据
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="十五、HTTP实体数据">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_48" class="md-nav__link">
+    <span class="md-ellipsis">
+      数据类型与编码
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_49" class="md-nav__link">
+    <span class="md-ellipsis">
+      数据类型使用的头字段
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_50" class="md-nav__link">
+    <span class="md-ellipsis">
+      内容协商的质量值
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_51" class="md-nav__link">
+    <span class="md-ellipsis">
+      内容协商的结果
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_52" class="md-nav__link">
+    <span class="md-ellipsis">
+      小结
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_53" class="md-nav__link">
+    <span class="md-ellipsis">
+      课下作业
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_54" class="md-nav__link">
+    <span class="md-ellipsis">
+      十六、数据传输
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="十六、数据传输">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_55" class="md-nav__link">
+    <span class="md-ellipsis">
+      数据压缩
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_56" class="md-nav__link">
+    <span class="md-ellipsis">
+      分块传输
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_57" class="md-nav__link">
+    <span class="md-ellipsis">
+      范围请求
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_58" class="md-nav__link">
+    <span class="md-ellipsis">
+      多段数据
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_59" class="md-nav__link">
+    <span class="md-ellipsis">
+      小结
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#http_11" class="md-nav__link">
+    <span class="md-ellipsis">
+      十七、http连接管理
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_60" class="md-nav__link">
+    <span class="md-ellipsis">
+      短连接
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_61" class="md-nav__link">
+    <span class="md-ellipsis">
+      长连接
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_62" class="md-nav__link">
+    <span class="md-ellipsis">
+      连接相关的头字段
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_63" class="md-nav__link">
+    <span class="md-ellipsis">
+      队头阻塞
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_64" class="md-nav__link">
+    <span class="md-ellipsis">
+      性能优化
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_65" class="md-nav__link">
+    <span class="md-ellipsis">
+      小结
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_66" class="md-nav__link">
+    <span class="md-ellipsis">
+      十八、重定向与跳转
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_67" class="md-nav__link">
+    <span class="md-ellipsis">
+      重定向的过程
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_68" class="md-nav__link">
+    <span class="md-ellipsis">
+      小结
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cookie" class="md-nav__link">
+    <span class="md-ellipsis">
+      十九、Cookie
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="十九、Cookie">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#cookie_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Cookie的工作过程
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cookie_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      Cookie的属性
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cookie_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      Cookie的应用
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_69" class="md-nav__link">
+    <span class="md-ellipsis">
+      小结
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cache" class="md-nav__link">
+    <span class="md-ellipsis">
+      二十、缓存（Cache）
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="二十、缓存（Cache）">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_70" class="md-nav__link">
+    <span class="md-ellipsis">
+      服务器的缓存控制
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_71" class="md-nav__link">
+    <span class="md-ellipsis">
+      客户端的缓存控制
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_72" class="md-nav__link">
+    <span class="md-ellipsis">
+      条件请求
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_73" class="md-nav__link">
+    <span class="md-ellipsis">
+      小结
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#http_12" class="md-nav__link">
+    <span class="md-ellipsis">
+      二十一、http代理服务
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="二十一、http代理服务">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_74" class="md-nav__link">
+    <span class="md-ellipsis">
+      代理服务
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_75" class="md-nav__link">
+    <span class="md-ellipsis">
+      代理的作用
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_76" class="md-nav__link">
+    <span class="md-ellipsis">
+      代理相关头字段
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_77" class="md-nav__link">
+    <span class="md-ellipsis">
+      代理协议
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_78" class="md-nav__link">
+    <span class="md-ellipsis">
+      小结
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_79" class="md-nav__link">
+    <span class="md-ellipsis">
+      缓存代理
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="缓存代理">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_80" class="md-nav__link">
+    <span class="md-ellipsis">
+      缓存代理服务
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="http">HTTP协议剖析</h1>
+<h2 id="_1">一、前世今生</h2>
+<h3 id="http11">HTTP/1.1</h3>
+<p>1989年，任职于欧洲核子研究中心（CERN）的蒂姆·伯纳斯-李（Tim Berners-Lee）发表了一篇论文，提出了在互联网上构建超链接文档系统的构想。</p>
+<p>这篇论文中他确立了三项关键技术。</p>
+<p>URI：即统一资源标识符，作为互联网上资源的唯一身份；
+HTML：即超文本标记语言，描述超文本文档；
+HTTP：即超文本传输协议，用来传输超文本。</p>
+<p>这三项技术在如今的我们看来已经是稀松平常，但在当时却是了不得的大发明。基于它们，就可以把超文本系统完美地运行在互联网上，让各地的人们能够自由地共享信息，蒂姆把这个系统称为“万维网”（World Wide Web），也就是我们现在所熟知的Web。</p>
+<p>所以在这一年，我们的英雄“HTTP”诞生了，从此开始了它伟大的征途。</p>
+<p>HTTP/1.0版本在1996年正式发布。它在多方面增强了0.9版，形式上已经和我们现在的HTTP差别不大了，例如：</p>
+<p>增加了HEAD、POST等新方法；
+增加了响应状态码，标记可能的错误原因；
+引入了协议版本号概念；
+引入了HTTP Header（头部）的概念，让HTTP处理请求和响应更加灵活；
+传输的数据不再仅限于文本。</p>
+<p>但HTTP/1.0并不是一个“标准”，只是记录已有实践和模式的一份参考文档，不具有实际的约束力，相当于一个“备忘录”。</p>
+<p>所以HTTP/1.0的发布对于当时正在蓬勃发展的互联网来说并没有太大的实际意义，各方势力仍然按照自己的意图继续在市场上奋力拼杀。</p>
+<p>在“浏览器大战”结束之后的1999年，HTTP/1.1发布了RFC文档，编号为2616，正式确立了延续十余年的传奇。</p>
+<p>从版本号我们就可以看到，HTTP/1.1是对HTTP/1.0的小幅度修正。但一个重要的区别是：它是一个“正式的标准”，而不是一份可有可无的“参考文档”。这意味着今后互联网上所有的浏览器、服务器、网关、代理等等，只要用到HTTP协议，就必须严格遵守这个标准，相当于是互联网世界的一个“立法”。</p>
+<p>不过，说HTTP/1.1是“小幅度修正”也不太确切，它还是有很多实质性进步的。毕竟经过了多年的实战检验，比起0.9/1.0少了“学术气”，更加“接地气”，同时表述也更加严谨。HTTP/1.1主要的变更点有：</p>
+<p>增加了PUT、DELETE等新的方法；
+增加了缓存管理和控制；
+明确了连接管理，允许持久连接；
+允许响应数据分块（chunked），利于传输大文件；
+强制要求Host头，让互联网主机托管成为可能。</p>
+<h3 id="http2">HTTP/2</h3>
+<p>有一天，搜索巨头Google忍不住了，决定“揭竿而起”，就像马云说的“如果银行不改变，我们就改变银行”。那么，它是怎么“造反”的呢？</p>
+<p>Google首先开发了自己的浏览器Chrome，然后推出了新的SPDY协议，并在Chrome里应用于自家的服务器，如同十多年前的网景与微软一样，从实际的用户方来“倒逼”HTTP协议的变革，这也开启了第二次的“浏览器大战”。</p>
+<p>历史再次重演，不过这次的胜利者是Google，Chrome目前的全球的占有率超过了60%。“挟用户以号令天下”，Google借此顺势把SPDY推上了标准的宝座，互联网标准化组织以SPDY为基础开始制定新版本的HTTP协议，最终在2015年发布了HTTP/2，RFC编号7540。</p>
+<p>HTTP/2的制定充分考虑了现今互联网的现状：宽带、移动、不安全，在高度兼容HTTP/1.1的同时在性能改善方面做了很大努力，主要的特点有：</p>
+<p>二进制协议，不再是纯文本；
+可发起多个请求，废弃了1.1里的管道；
+使用专用算法压缩头部，减少数据传输量；
+允许服务器主动向客户端推送数据；
+增强了安全性，“事实上”要求加密通信。</p>
+<p>虽然HTTP/2到今天已经四岁，也衍生出了gRPC等新协议，但由于HTTP/1.1实在是太过经典和强势，目前它的普及率还比较低，大多数网站使用的仍然还是20年前的HTTP/1.1。</p>
+<h3 id="http3">HTTP/3</h3>
+<p>在HTTP/2还处于草案之时，Google又发明了一个新的协议，叫做QUIC，而且还是相同的“套路”，继续在Chrome和自家服务器里试验着“玩”，依托它的庞大用户量和数据量，持续地推动QUIC协议成为互联网上的“既成事实”。</p>
+<p>“功夫不负有心人”，当然也是因为QUIC确实自身素质过硬。</p>
+<p>在去年，也就是2018年，互联网标准化组织IETF提议将“HTTP over QUIC”更名为“HTTP/3”并获得批准，HTTP/3正式进入了标准化制订阶段，也许两三年后就会正式发布，到时候我们很可能会跳过HTTP/2直接进入HTTP/3。</p>
+<h3 id="cdn">CDN</h3>
+<p>浏览器和服务器是HTTP协议的两个端点，那么，在这两者之间还有别的什么东西吗？</p>
+<p>当然有了。浏览器通常不会直接连到服务器，中间会经过“重重关卡”，其中的一个重要角色就叫做CDN。</p>
+<p><strong>CDN</strong>，全称是“Content Delivery Network”，翻译过来就是“内容分发网络”。它应用了HTTP协议里的缓存和代理技术，代替源站响应客户端的请求。</p>
+<p>CDN有什么好处呢？</p>
+<p>简单来说，它可以缓存源站的数据，让浏览器的请求不用“千里迢迢”地到达源站服务器，直接在“半路”就可以获取响应。如果CDN的调度算法很优秀，更可以找到离用户最近的节点，大幅度缩短响应时间。</p>
+<p>打个比方，就好像唐僧西天取经，刚出长安城，就看到阿难与迦叶把佛祖的真经递过来了，是不是很省事？</p>
+<p>CDN也是现在互联网中的一项重要基础设施，除了基本的网络加速外，还提供负载均衡、安全防护、边缘计算、跨运营商网络等功能，能够成倍地“放大”源站服务器的服务能力，很多云服务商都把CDN作为产品的一部分，我也会在后面用一讲的篇幅来专门讲解CDN。</p>
+<h3 id="_2">小结</h3>
+<p>回顾HTTP协议的整个发展过程：</p>
+<p>HTTP协议始于三十年前蒂姆·伯纳斯-李的一篇论文；
+HTTP/0.9是个简单的文本协议，只能获取文本资源；
+HTTP/1.0确立了大部分现在使用的技术，但它不是正式标准；
+HTTP/1.1是目前互联网上使用最广泛的协议，功能也非常完善；
+HTTP/2基于Google的SPDY协议，注重性能改善，但还未普及；
+HTTP/3基于Google的QUIC协议，是将来的发展方向。</p>
+<h2 id="_3">课下作业</h2>
+<ol>
+<li>你觉得CDN在对待浏览器和爬虫时会有差异吗？为什么？</li>
+</ol>
+<p><code>reStructuredText
+   没有，应为爬虫本身就是模拟用户浏览器访问</code></p>
+<ol>
+<li>你怎么理解WebService与Web Server这两个非常相似的词？</li>
+</ol>
+<p>```reStructuredText
+   web service是一种接口服务，更象是一种函数，只要支持web service，都可以调用（可以跨网站），如某个个人网站，调用某个服务商网站上提供的天气预报的web service，将结果显示在自己的网页上。一般使用XML进行数据交换，能通过GET或POST方式，向某个URL提交数据，并返回请求的结果。</p>
+<p>web server是WEB应用的平台，如IIS，apach
+   ```</p>
+<h2 id="http_1">二、HTTP协议</h2>
+<h3 id="http_2">HTTP是一个协议。</h3>
+<p>HTTP是一个“传输协议”，所谓的“传输”（Transfer）其实很好理解，就是把一堆东西从A点搬到B点，或者从B点搬到A点，即“A&lt;===&gt;B”。
+HTTP协议是一个“双向协议”
+数据虽然是在A和B之间传输，但并没有限制只有A和B这两个角色，允许中间有“中转”或者“接力”。
+HTTP是一个在计算机世界里专门用来在两点之间传输数据的约定和规范。</p>
+<p>所谓“超文本”，就是“超越了普通文本的文本”，它是文字、图片、音频和视频等的混合体，最关键的是含有“超链接”，能够从一个“超文本”跳跃到另一个“超文本”，形成复杂的非线性、网状的结构关系。</p>
+<p>HTTP是什么？
+<strong>HTTP是一个在计算机世界里专门在两点之间传输文字、图片、音频、视频等超文本数据的约定和规范。</strong></p>
+<p>在互联网世界里，HTTP通常跑在TCP/IP协议栈之上，依靠IP协议实现寻址和路由、TCP协议实现可靠数据传输、DNS协议实现域名查找、SSL/TLS协议实现安全通信。此外，还有一些协议依赖于HTTP，例如WebSocket、HTTPDNS等。这些协议相互交织，构成了一个协议网，而HTTP则处于中心地位。</p>
+<h3 id="_4">小结</h3>
+<p>HTTP是一个用在计算机世界里的协议，它确立了一种计算机之间交流通信的规范，以及相关的各种控制和错误处理方式。
+HTTP专门用来在两点之间传输数据，不能用于广播、寻址或路由。
+HTTP传输的是文字、图片、音频、视频等超文本数据。
+HTTP是构建互联网的重要基础技术，它没有实体，依赖许多其他的技术来实现，但同时许多技术也都依赖于它。</p>
+<p>把这些综合起来，使用递归缩写方式（模仿PHP），我们可以把<strong>HTTP定义为“与HTTP协议相关的所有应用层技术的总和”。</strong></p>
+<p><img alt="http" src="D:\MyStudy\http协议\http协议.assets\http.png" /> </p>
+<h2 id="http_3">三、与HTTP相关的各种协议</h2>
+<h3 id="tcpip">TCP/IP协议</h3>
+<p>TCP/IP协议是目前网络世界“事实上”的标准通信协议，即使你没有用过也一定听说过，因为它太著名了。</p>
+<p>TCP/IP协议实际上是一系列网络通信协议的统称，其中最核心的两个协议是TCP和IP，其他的还有UDP、ICMP、ARP等等，共同构成了一个复杂但有层次的协议栈。</p>
+<p>这个协议栈有四层，最上层是“应用层”，最下层是“链接层”，TCP和IP则在中间：<strong>TCP属于“传输层”，IP属于“网际层”</strong>。</p>
+<p><strong>IP协议</strong>是“<strong>I</strong>nternet <strong>P</strong>rotocol”的缩写，主要目的是解决寻址和路由问题，以及如何在两点间传送数据包。IP协议使用“<strong>IP地址</strong>”的概念来定位互联网上的每一台计算机。</p>
+<p><strong>TCP协议</strong>是“<strong>T</strong>ransmission <strong>C</strong>ontrol <strong>P</strong>rotocol”的缩写，意思是“传输控制协议”，它位于IP协议之上，基于IP协议提供可靠的、字节流形式的通信，是HTTP协议得以实现的基础。</p>
+<p>结合tcp/ip协议，HTTP也就可以更准确地称为“<strong>HTTP over TCP/IP</strong>”</p>
+<h3 id="dns">DNS</h3>
+<p>在TCP/IP协议中使用IP地址来标识计算机，数字形式的地址对于计算机来说是方便了，但对于人类来说却既难以记忆又难以输入。</p>
+<p>于是“<strong>域名系统</strong>”（<strong>D</strong>omain <strong>N</strong>ame <strong>S</strong>ystem）出现了，用有意义的名字来作为IP地址的等价替代。设想一下，你是愿意记“95.211.80.227”这样枯燥的数字，还是“nginx.org”这样的词组呢？</p>
+<p>在DNS中，“域名”（Domain Name）又称为“主机名”（Host），为了更好地标记不同国家或组织的主机，让名字更好记，所以被设计成了一个有层次的结构。</p>
+<h3 id="uriurl">URI/URL</h3>
+<p><strong>URI</strong>（<strong>U</strong>niform <strong>R</strong>esource <strong>I</strong>dentifier），中文名称是 <strong>统一资源标识符</strong>，使用它就能够唯一地标记互联网上资源。</p>
+<p><strong>URI</strong>另一个更常用的表现形式是<strong>URL</strong>（<strong>U</strong>niform <strong>R</strong>esource <strong>L</strong>ocator）， <strong>统一资源定位符</strong>，也就是我们俗称的“网址”，它实际上是URI的一个子集，不过因为这两者几乎是相同的，差异不大，所以通常不会做严格的区分。</p>
+<p><strong>URI</strong>主要有三个基本的部分构成：</p>
+<ol>
+<li>协议名：即访问该资源应当使用的协议，在这里是“http”；</li>
+<li>主机名：即互联网上主机的标记，可以是域名或IP地址，在这里是“nginx.org”；</li>
+<li>路径：即资源在主机上的位置，使用“/”分隔多级目录，在这里是“/en/download.html”。</li>
+</ol>
+<h3 id="https">HTTPS</h3>
+<p>HTTPS全称是“<strong>HTTP over SSL/TLS</strong>”，运行在SSL/TLS协议上的HTTP。</p>
+<p>SSL/TLS，是一个负责加密通信的安全协议，建立在TCP/IP之上，所以也是个可靠的传输协议，可以被用作HTTP的下层。</p>
+<p>HTTPS相当于“<strong>HTTP+SSL/TLS+TCP/IP</strong>”。</p>
+<p>SSL的全称是“<strong>S</strong>ecure <strong>S</strong>ocket <strong>L</strong>ayer”，由网景公司发明，当发展到3.0时被标准化，改名为TLS，即“<strong>T</strong>ransport <strong>L</strong>ayer <strong>S</strong>ecurity”，但由于历史的原因还是有很多人称之为SSL/TLS，或者直接简称为SSL。</p>
+<h3 id="_5">代理</h3>
+<p>代理（Proxy）是HTTP协议中请求方和应答方中间的一个环节，作为“中转站”，既可以转发客户端的请求，也可以转发服务器的应答。</p>
+<p>代理有很多的种类，常见的有：</p>
+<ol>
+<li>匿名代理：完全“隐匿”了被代理的机器，外界看到的只是代理服务器；</li>
+<li>透明代理：顾名思义，它在传输过程中是“透明开放”的，外界既知道代理，也知道客户端；</li>
+<li>正向代理：靠近客户端，代表客户端向服务器发送请求；</li>
+<li>反向代理：靠近服务器端，代表服务器响应客户端的请求；</li>
+</ol>
+<p>CDN，实际上就是一种代理，它代替源站服务器响应客户端的请求，通常扮演着透明代理和反向代理的角色。</p>
+<p>由于代理在传输过程中插入了一个“中间层”，所以可以在这个环节做很多有意思的事情，比如：</p>
+<ol>
+<li>负载均衡：把访问请求均匀分散到多台机器，实现访问集群化；</li>
+<li>内容缓存：暂存上下行的数据，减轻后端的压力；</li>
+<li>安全防护：隐匿IP,使用WAF等工具抵御网络攻击，保护被代理的机器；</li>
+<li>数据处理：提供压缩、加密等额外的功能。</li>
+</ol>
+<p>关于HTTP的代理还有一个特殊的“代理协议”（proxy protocol），它由知名的代理软件HAProxy制订，但并不是RFC标准</p>
+<h3 id="_6">小结</h3>
+<p>这次我介绍了与HTTP相关的各种协议，在这里简单小结一下今天的内容。</p>
+<ol>
+<li>TCP/IP是网络世界最常用的协议，HTTP通常运行在TCP/IP提供的可靠传输基础上；</li>
+<li>DNS域名是IP地址的等价替代，需要用域名解析实现到IP地址的映射；</li>
+<li>URI是用来标记互联网上资源的一个名字，由“协议名+主机名+路径”构成，俗称URL；</li>
+<li>HTTPS相当于“HTTP+SSL/TLS+TCP/IP”，为HTTP套了一个安全的外壳；</li>
+<li>代理是HTTP传输过程中的“中转站”，可以实现缓存加速、负载均衡等功能。</li>
+</ol>
+<h2 id="_7">四、四层与七层模型</h2>
+<h3 id="tcpip_1">TCP/IP网络分层模型</h3>
+<p>从TCP/IP协议开始讲起，一是因为它非常经典，二是因为它是目前事实上的网络通信标准，研究它的实用价值最大。</p>
+<p>TCP/IP当初的设计者真的是非常聪明，创造性地提出了“<strong>分层</strong>”的概念，把复杂的网络通信划分出多个层次，再给每一个层次分配不同的职责，层次内只专心做自己的事情就好，用“分而治之”的思想把一个“大麻烦”拆分成了数个“小麻烦”，从而解决了网络通信的难题。</p>
+<p><strong>TCP/IP的协议栈图示：</strong></p>
+<p><img alt="image-20220919105029409" src="D:\MyStudy\http协议\http协议.assets\image-20220919105029409.png" /> </p>
+<p>TCP/IP协议总共有四层，就像搭积木一样，每一层需要下层的支撑，同时又支撑着上层，任何一层被抽掉都可能会导致整个协议栈坍塌。</p>
+<p>它的层次顺序是“<strong>从下往上</strong>”数的，所以第一层就是最下面的一层。</p>
+<p>第一层叫“<strong>链接层</strong>”（link layer），负责在以太网、WiFi这样的底层网络上发送原始数据包，工作在网卡这个层次，使用MAC地址来标记网络上的设备，所以有时候也叫MAC层。</p>
+<p>第二层叫“<strong>网际层</strong>”或者“<strong>网络互连层</strong>”（internet layer），IP协议就处在这一层。因为IP协议定义了“IP地址”的概念，所以就可以在“链接层”的基础上，用IP地址取代MAC地址，把许许多多的局域网、广域网连接成一个虚拟的巨大网络，在这个网络里找设备时只要把IP地址再“翻译”成MAC地址就可以了。</p>
+<p>第三层叫“<strong>传输层</strong>”（transport layer），这个层次协议的职责是保证数据在IP地址标记的两点之间“可靠”地传输，是TCP协议工作的层次，另外还有它的一个“小伙伴”UDP。</p>
+<p>TCP是一个有状态的协议，需要先与对方建立连接然后才能发送数据，而且保证数据不丢失不重复。而UDP则比较简单，它无状态，不用事先建立连接就可以任意发送数据，但不保证数据一定会发到对方。两个协议的另一个重要区别在于数据的形式。TCP的数据是连续的“字节流”，有先后顺序，而UDP则是分散的小数据包，是顺序发，乱序收。</p>
+<p>协议栈的第四层叫“<strong>应用层</strong>”（application layer），由于下面的三层把基础打得非常好，所以在这一层就“百花齐放”了，有各种面向具体应用的协议。例如Telnet、SSH、FTP、SMTP等等，当然还有我们的HTTP。</p>
+<p>MAC层的传输单位是帧（frame），IP层的传输单位是包（packet），TCP层的传输单位是段（segment），HTTP的传输单位则是消息或报文（message）。但这些名词并没有什么本质的区分，可以统称为数据包。</p>
+<h3 id="osi">OSI网络分层模型</h3>
+<p>网络分层模型：<strong>OSI</strong>，全称是“<strong>开放式系统互联通信参考模型</strong>”（Open System Interconnection Reference Model）。</p>
+<p>OSI模型分成了七层，部分层次与TCP/IP很像，从下到上分别是：</p>
+<p><img alt="image-20220919144132451" src="D:\MyStudy\http协议\http协议.assets\image-20220919144132451.png" /> </p>
+<ol>
+<li>第一层：物理层，网络的物理形式，例如电缆、光纤、网卡、集线器等等；</li>
+<li>第二层：数据链路层，它基本相当于TCP/IP的链接层；</li>
+<li>第三层：网络层，相当于TCP/IP里的网际层；</li>
+<li>第四层：传输层，相当于TCP/IP里的传输层；</li>
+<li>第五层：会话层，维护网络中的连接状态，即保持会话和同步；</li>
+<li>第六层：表示层，把数据转换为合适、可理解的语法和语义；</li>
+<li>第七层：应用层，面向具体的应用传输数据。</li>
+</ol>
+<h3 id="_8">两个分层模型的映射关系</h3>
+<p>OSI在设计之初就参考了TCP/IP等多个协议，可以比较容易但不是很精确地实现对应关系。</p>
+<p><img alt="image-20220919145208239" src="D:\MyStudy\http协议\http协议.assets\image-20220919145208239.png" /> </p>
+<p><img alt="20190825164315649" src="D:\MyStudy\http协议\http协议.assets\20190825164315649.png" /> </p>
+<h3 id="tcpip_2">TCP/IP协议栈的工作方式</h3>
+<p>HTTP协议的传输过程就是这样通过协议栈逐层向下，每一层都添加本层的专有数据，层层打包，然后通过下层发送出去。</p>
+<p>接收数据则是相反的操作，从下往上穿过协议栈，逐层拆包，每层去掉本层的专有头，上层就会拿到自己的数据。</p>
+<p>但下层的传输过程对于上层是完全“透明”的，上层也不需要关心下层的具体实现细节，所以就HTTP层次来看，它不管下层是不是TCP/IP协议，看到的只是一个可靠的传输链路，只要把数据加上自己的头，对方就能原样收到。</p>
+<p><img alt="image-20220919150157400" src="D:\MyStudy\http协议\http协议.assets\image-20220919150157400.png" /> </p>
+<h3 id="_9">小结</h3>
+<ol>
+<li>TCP/IP分为四层，核心是二层的IP和三层的TCP，HTTP在第四层；</li>
+<li>OSI分为七层，基本对应TCP/IP，TCP在第四层，HTTP在第七层；</li>
+<li>OSI可以映射到TCP/IP，但这期间一、五、六层消失了；</li>
+<li>日常交流的时候我们通常使用OSI模型，用四层、七层等术语；</li>
+<li>HTTP利用TCP/IP协议栈逐层打包再拆包，实现了数据传输，但下面的细节并不可见。</li>
+</ol>
+<p>有一个辨别四层和七层比较好的（但不是绝对的）小窍门，“<strong>两个凡是</strong>”：凡是由操作系统负责处理的就是四层或四层以下，否则，凡是需要由应用程序（也就是你自己写代码）负责处理的就是七层。</p>
+<h3 id="_10">课下作业</h3>
+<ol>
+<li>你能用自己的话解释一下“二层转发”“三层路由”吗？</li>
+</ol>
+<p><code>reStructuredText
+   二层转发：二层交换技术是发展比较成熟，二层交换机属数据链路层设备，可以识别数据包中的MAC地址信息，根据MAC地址进行转发，并将这些MAC地址与对应的端口记录在自己内部的一个地址表中。
+   三层路由：在对第一个数据流进行路由后，它将会产生一个MAC地址与IP地址的映射表，当同样的数据流再次通过时，将根据此表直接从二层通过而不是再次路由，从而消除了路由器进行路由选择而造成网络的延迟，提高了数据包转发的效率。</code></p>
+<ol>
+<li>你认为上一讲中的DNS协议位于哪一层呢？</li>
+</ol>
+<p><code>reStructuredText
+   应用层</code></p>
+<ol>
+<li>你认为CDN工作在哪一层呢？</li>
+</ol>
+<p><code>reStructuredText
+   应用层</code></p>
+<h2 id="_11">五、域名系统</h2>
+<h3 id="_12">域名的形式</h3>
+<p>域名是一个有层次的结构，是一串用“.”分隔的多个单词，最右边的被称为“顶级域名”，然后是“二级域名”，层级关系向左依次降低。</p>
+<p>在Apache、Nginx这样的Web服务器里，域名可以用来标识虚拟主机，决定由哪个虚拟主机来对外提供服务，比如在Nginx里就会使用“server_name”指令：</p>
+<pre><code class="language-nginx">server {
+    listen 80;                       #监听80端口
+    server_name  time.geekbang.org;  #主机名是time.geekbang.org
+    ...
+}
+</code></pre>
+<p>域名本质上还是个名字空间系统，使用多级域名就可以划分出不同的国家、地区、组织、公司、部门，每个域名都是独一无二的，可以作为一种身份的标识。</p>
+<p>DNS的核心系统是一个三层的树状、分布式服务，基本对应域名的结构：</p>
+<ol>
+<li>根域名服务器（Root DNS Server）：管理顶级域名服务器，返回“com”“net”“cn”等顶级域名服务器的IP地址；</li>
+<li>顶级域名服务器（Top-level DNS Server）：管理各自域名下的权威域名服务器，比如com顶级域名服务器可以返回apple.com域名服务器的IP地址；</li>
+<li>权威域名服务器（Authoritative DNS Server）：管理自己域名下主机的IP地址，比如apple.com权威域名服务器可以返回www.apple.com的IP地址。</li>
+</ol>
+<p>在Nginx里有这么一条配置指令“resolver”，它就是用来配置DNS服务器的，如果没有它，那么Nginx就无法查询域名对应的IP，也就无法反向代理到外部的网站。</p>
+<pre><code class="language-apache">resolver 8.8.8.8 valid=30s;  #指定Google的DNS，缓存30秒
+</code></pre>
+<h3 id="_13">域名的“新玩法”</h3>
+<p>第一种，也是最简单的，“重定向”。因为域名代替了IP地址，所以可以让对外服务的域名不变，而主机的IP地址任意变动。当主机有情况需要下线、迁移时，可以更改DNS记录，让域名指向其他的机器。</p>
+<p>第二种，因为域名是一个名字空间，所以可以使用bind9等开源软件搭建一个在内部使用的DNS，作为名字服务器。这样我们开发的各种内部服务就都用域名来标记，比如数据库服务都用域名“mysql.inner.app”，商品服务都用“goods.inner.app”，发起网络通信时也就不必再使用写死的IP地址了，可以直接用域名，而且这种方式也兼具了第一种“玩法”的优势。</p>
+<p>第三种“玩法”包含了前两种，也就是基于域名实现的负载均衡。</p>
+<h3 id="_14">小结</h3>
+<ol>
+<li>
+<p>域名使用字符串来代替IP地址，方便用户记忆，本质上一个名字空间系统；</p>
+</li>
+<li>
+<p>DNS就像是我们现实世界里的电话本、查号台，统管着互联网世界里的所有网站，是一个“超级大管家”；</p>
+</li>
+<li>
+<p>DNS是一个树状的分布式查询系统，但为了提高查询效率，外围有多级的缓存；</p>
+</li>
+<li>
+<p>使用DNS可以实现基于域名的负载均衡，既可以在内网，也可以在外网。</p>
+</li>
+</ol>
+<h2 id="http_4">六、http连接过程</h2>
+<p>简要叙述一下这次最简单的浏览器HTTP请求过程：</p>
+<ol>
+<li>浏览器从地址栏的输入中获得服务器的IP地址和端口号；</li>
+<li>浏览器用TCP的三次握手与服务器建立连接；</li>
+<li>浏览器向服务器发送拼好的报文；</li>
+<li>服务器收到报文后处理请求，同样拼好报文再发给浏览器；</li>
+<li>浏览器解析报文，渲染输出页面。</li>
+</ol>
+<p>假设你要访问的是Apple网站，显然你是不知道它的真实IP地址的，在浏览器里只能使用域名“www.apple.com”访问，那么接下来要做的必然是域名解析。</p>
+<p>这就要用DNS协议开始从操作系统、本地DNS、根DNS、顶级DNS、权威DNS的层层解析，当然这中间有缓存，可能不会费太多时间就能拿到结果。</p>
+<h3 id="_15">小结</h3>
+<ol>
+<li>
+<p>HTTP协议基于底层的TCP/IP协议，所以必须要用IP地址建立连接；</p>
+</li>
+<li>
+<p>如果不知道IP地址，就要用DNS协议去解析得到IP地址，否则就会连接失败；</p>
+</li>
+<li>
+<p>建立TCP连接后会顺序收发数据，请求方和应答方都必须依据HTTP规范构建和解析报文；</p>
+</li>
+<li>
+<p>为了减少响应时间，整个过程中的每一个环节都会有缓存，能够实现“短路”操作；</p>
+</li>
+<li>
+<p>虽然现实中的HTTP传输过程非常复杂，但理论上仍然可以简化成实验里的“两点”模型。</p>
+</li>
+</ol>
+<h2 id="http_5">七、http的核心部分</h2>
+<p>HTTP协议的核心部分是什么呢？</p>
+<p>答案就是它传输的<strong>报文内容</strong>。</p>
+<h3 id="_16">报文结构</h3>
+<h4 id="tcp">TCP报文</h4>
+<p>你也许对TCP/UDP的报文格式有所了解，拿TCP报文来举例，它在实际要传输的数据之前附加了一个20字节的头部数据，存储TCP协议必须的额外信息，例如发送方的端口号、接收方的端口号、包序号、标志位等等。</p>
+<p>有了这个附加的TCP头，数据包才能够正确传输，到了目的地后把头部去掉，就可以拿到真正的数据。</p>
+<p><img alt="image-20220920092536403" src="D:\MyStudy\http协议\http协议.assets\image-20220920092536403.png" /> </p>
+<h4 id="http_6">HTTP报文</h4>
+<p>HTTP协议也是与TCP/UDP类似，同样也需要在实际传输的数据前附加一些头数据，不过与TCP/UDP不同的是，它是一个“<strong>纯文本</strong>”的协议，所以头数据都是ASCII码的文本，可以很容易地用肉眼阅读，不用借助程序解析也能够看懂。</p>
+<p>HTTP协议的请求报文和响应报文的结构基本相同，由三大部分组成：</p>
+<ol>
+<li>起始行（start line）：描述请求或响应的基本信息；</li>
+<li>头部字段集合（header）：使用key-value形式更详细地说明报文；</li>
+<li>消息正文（entity）：实际传输的数据，它不一定是纯文本，可以是图片、视频等二进制数据。</li>
+</ol>
+<p>这其中前两部分起始行和头部字段经常又合称为“<strong>请求头</strong>”或“<strong>响应头</strong>”，消息正文又称为“<strong>实体</strong>”，但与“<strong>header</strong>”对应，很多时候就直接称为“<strong>body</strong>”。</p>
+<p>HTTP协议规定报文必须有header，但可以没有body，而且在header之后必须要有一个“空行”，也就是“CRLF”，十六进制的“0D0A”。</p>
+<p>所以，一个完整的HTTP报文就像是下图的这个样子，注意在header和body之间有一个“空行”。</p>
+<p><img alt="image-20220920093540093" src="D:\MyStudy\http协议\http协议.assets\image-20220920093540093.png" /> </p>
+<p>之前用Wireshark抓的包：</p>
+<p><img alt="image-20220920093607533" src="D:\MyStudy\http协议\http协议.assets\image-20220920093607533.png" /> </p>
+<p>分析：在这个浏览器发出的请求报文里，第一行“GET / HTTP/1.1”就是请求行，而后面的“Host”“Connection”等等都属于header，报文的最后是一个空白行结束，没有body。</p>
+<p>在很多时候，特别是浏览器发送GET请求的时候都是这样，HTTP报文经常是只有header而没body，相当于只发了一个超级“大头”过来，你可以想象的出来：每时每刻网络上都会有数不清的“大头儿子”在跑来跑去。</p>
+<p>不过这个“大头”也不能太大，虽然HTTP协议对header的大小没有做限制，但各个Web服务器都不允许过大的请求头，因为头部太大可能会占用大量的服务器资源，影响运行效率。</p>
+<h3 id="_17">请求行</h3>
+<p>了解了HTTP报文的基本结构后，我们来看看请求报文里的起始行也就是<strong>请求行</strong>（request line），它简要地描述了<strong>客户端想要如何操作服务器端的资源</strong>。</p>
+<p>请求行由三部分构成：</p>
+<ol>
+<li>请求方法：是一个动词，如GET/POST，表示对资源的操作；</li>
+<li>请求目标：通常是一个URI，标记了请求方法要操作的资源；</li>
+<li>版本号：表示报文使用的HTTP协议版本。</li>
+</ol>
+<p>这三个部分通常使用空格（space）来分隔，最后要用CRLF换行表示结束。</p>
+<p><img alt="image-20220920094440023" src="D:\MyStudy\http协议\http协议.assets\image-20220920094440023.png" /> </p>
+<p>还是用Wireshark抓包的数据来举例：</p>
+<pre><code class="language-http">GET / HTTP/1.1
+</code></pre>
+<p>在这个请求行里，“GET”是请求方法，“/”是请求目标，“HTTP/1.1”是版本号，把这三部分连起来，意思就是“服务器你好，我想获取网站根目录下的默认文件，我用的协议版本号是1.1，请不要用1.0或者2.0回复我。”</p>
+<p>别看请求行就一行，貌似很简单，其实这里面的“讲究”是非常多的，尤其是前面的请求方法和请求目标，组合起来变化多端，后面我还会详细介绍。</p>
+<h3 id="_18">状态行</h3>
+<p>响应报文里的起始行，在这里它不叫“响应行”，而是叫“<strong>状态行</strong>”（status line），意思是<strong>服务器响应的状态</strong>。</p>
+<p>比起请求行来说，状态行要简单一些，同样也是由三部分构成：</p>
+<ol>
+<li>
+<p>版本号：表示报文使用的HTTP协议版本；</p>
+</li>
+<li>
+<p>状态码：一个三位数，用代码的形式表示处理的结果，比如200是成功，500是服务器错误；</p>
+</li>
+<li>
+<p>原因：作为数字状态码补充，是更详细的解释文字，帮助人理解原因。</p>
+</li>
+</ol>
+<p><img alt="image-20220920095156525" src="D:\MyStudy\http协议\http协议.assets\image-20220920095156525.png" /> </p>
+<p>看一下上一讲里Wireshark抓包里的响应报文，状态行是：</p>
+<pre><code class="language-apache">HTTP/1.1 200 OK
+</code></pre>
+<p>意思就是：“浏览器你好，我已经处理完了你的请求，这个报文使用的协议版本号是1.1，状态码是200，一切OK。”</p>
+<p>而另一个“GET /favicon.ico HTTP/1.1”的响应报文状态行是：</p>
+<pre><code class="language-apache">HTTP/1.1 404 Not Found
+</code></pre>
+<p>翻译成人话就是：“抱歉啊浏览器，刚才你的请求收到了，但我没找到你要的资源，错误代码是404，接下来的事情你就看着办吧。”</p>
+<h3 id="_19">常用头字段</h3>
+<p>HTTP协议规定了非常多的头部字段，实现各种各样的功能，但基本上可以分为四大类：</p>
+<ol>
+<li>通用字段：在请求头和响应头里都可以出现；</li>
+<li>请求字段：仅能出现在请求头里，进一步说明请求信息或者额外的附加条件；</li>
+<li>响应字段：仅能出现在响应头里，补充说明响应报文的信息；</li>
+<li>实体字段：它实际上属于通用字段，但专门描述body的额外信息。</li>
+</ol>
+<p>对HTTP报文的解析和处理实际上主要就是对头字段的处理，<strong>理解了头字段也就理解了HTTP报文</strong>。</p>
+<p><strong>Host</strong>字段属于请求字段，只能出现在请求头里，它同时也是唯一一个HTTP/1.1规范里要求<strong>必须出现</strong>的字段，也就是说，如果请求头里没有Host，那这就是一个错误的报文。</p>
+<p><strong>User-Agent</strong>字段属于请求字段，只出现在请求头里。它使用一个字符串来描述发起HTTP请求的客户端，服务器可以依据它来返回最合适此浏览器显示的页面。</p>
+<p>但由于历史的原因，User-Agent非常混乱，每个浏览器都自称是“Mozilla”“Chrome”“Safari”，企图使用这个字段来互相“伪装”，导致User-Agent变得越来越长，最终变得毫无意义。</p>
+<p>不过有的比较“诚实”的爬虫会在User-Agent里用“spider”标明自己是爬虫，所以可以利用这个字段实现简单的反爬虫策略。</p>
+<p><strong>Date</strong>字段是一个通用字段，但通常出现在响应头里，表示HTTP报文创建的时间，客户端可以使用这个时间再搭配其他字段决定缓存策略。</p>
+<p><strong>Server</strong>字段是响应字段，只能出现在响应头里。它告诉客户端当前正在提供Web服务的软件名称和版本号，例如在我们的实验环境里它就是“Server: openresty/1.15.8.1”，即使用的是OpenResty 1.15.8.1。</p>
+<p><strong>Content-Length</strong>是一个实体字段，它表示报文里body的长度，也就是请求头或响应头空行后面数据的长度。服务器看到这个字段，就知道了后续有多少数据，可以直接接收。如果没有这个字段，那么body就是不定长的，需要使用chunked方式分段传输。</p>
+<h3 id="_20">小结</h3>
+<ol>
+<li>HTTP报文结构就像是“大头儿子”，由“起始行+头部+空行+实体”组成，简单地说就是“header+body”；</li>
+<li>HTTP报文可以没有body，但必须要有header，而且header后也必须要有空行，形象地说就是“大头”必须要带着“脖子”；</li>
+<li>请求头由“请求行+头部字段”构成，响应头由“状态行+头部字段”构成；</li>
+<li>请求行有三部分：请求方法，请求目标和版本号；</li>
+<li>状态行也有三部分：版本号，状态码和原因字符串；</li>
+<li>头部字段是key-value的形式，用“:”分隔，不区分大小写，顺序任意，除了规定的标准头，也可以任意添加自定义字段，实现功能扩展；</li>
+<li>HTTP/1.1里唯一要求必须提供的头字段是Host，它必须出现在请求头里，标记虚拟主机名。</li>
+</ol>
+<h2 id="http_7">八、http协议标准请求方法</h2>
+<h3 id="_21">标准请求方法</h3>
+<p>HTTP协议里为什么要有“请求方法”这个东西呢？</p>
+<p>这就要从HTTP协议设计时的定位说起了。还记得吗？蒂姆·伯纳斯-李最初设想的是要用HTTP协议构建一个超链接文档系统，使用URI来定位这些文档，也就是资源。那么，该怎么在协议里操作这些资源呢？</p>
+<p>很显然，需要有某种“动作的指示”，告诉操作这些资源的方式。所以，就这么出现了“请求方法”。它的实际含义就是客户端发出了一个“动作指令”，要求服务器端对URI定位的资源执行这个动作。</p>
+<p>目前HTTP/1.1规定了八种方法，单词<strong>都必须是大写的形式</strong>，我先简单地列把它们列出来，后面再详细讲解。</p>
+<ol>
+<li>GET：获取资源，可以理解为读取或者下载数据；</li>
+<li>HEAD：获取资源的元信息；</li>
+<li>POST：向资源提交数据，相当于写入或上传数据；</li>
+<li>PUT：类似POST；</li>
+<li>DELETE：删除资源；</li>
+<li>CONNECT：建立特殊的连接隧道；</li>
+<li>OPTIONS：列出可对资源实行的方法；</li>
+<li>TRACE：追踪请求-响应的传输路径。</li>
+</ol>
+<p><img alt="image-20220920104047270" src="D:\MyStudy\http协议\http协议.assets\image-20220920104047270.png" /> </p>
+<p>客户端自然就没有决定权，服务器掌控着所有资源，也就有绝对的决策权力。它收到HTTP请求报文后，看到里面的请求方法，可以执行也可以拒绝，或者改变动作的含义，毕竟HTTP是一个“协议”，两边都要“商量着来”。</p>
+<p>比如，你发起了一个GET请求，想获取“/orders”这个文件，但这个文件保密级别比较高，不是谁都能看的，服务器就可以有如下的几种响应方式：</p>
+<ol>
+<li>假装这个文件不存在，直接返回一个404 Not found报文；</li>
+<li>稍微友好一点，明确告诉你有这个文件，但不允许访问，返回一个403 Forbidden；</li>
+<li>再宽松一些，返回405 Method Not Allowed，然后用Allow头告诉你可以用HEAD方法获取文件的元信息。</li>
+</ol>
+<h3 id="gethead">GET/HEAD</h3>
+<p><strong>GET</strong>方法含义是请求<strong>从服务器获取资源</strong>，这个资源既可以是静态的文本、页面、图片、视频，也可以是由PHP、Java动态生成的页面或者其他格式的数据。</p>
+<p>GET方法虽然基本动作比较简单，但搭配URI和其他头字段就能实现对资源更精细的操作。</p>
+<p>例如，在URI后使用“#”，就可以在获取页面后直接定位到某个标签所在的位置；使用If-Modified-Since字段就变成了“有条件的请求”，仅当资源被修改时才会执行获取动作；使用Range字段就是“范围请求”，只获取资源的一部分数据。</p>
+<p><strong>HEAD</strong>方法与GET方法类似，也是请求从服务器获取资源，服务器的处理机制也是一样的，但服务器不会返回请求的实体数据，只会传回响应头，也就是资源的“元信息”。</p>
+<p>HEAD方法可以看做是GET方法的一个“简化版”或者“轻量版”。因为它的响应头与GET完全相同，所以可以用在很多并不真正需要资源的场合，避免传输body数据的浪费。</p>
+<p>比如，想要检查一个文件是否存在，只要发个HEAD请求就可以了，没有必要用GET把整个文件都取下来。再比如，要检查文件是否有最新版本，同样也应该用HEAD，服务器会在响应头里把文件的修改时间传回来。</p>
+<h3 id="postput">POST/PUT</h3>
+<p>GET和HEAD方法是从服务器获取数据，而POST和PUT方法则是相反操作，向URI指定的资源提交数据，数据就放在报文的body里。</p>
+<p>POST也是一个经常用到的请求方法，使用频率应该是仅次于GET，应用的场景也非常多，只要向服务器发送数据，用的大多数都是POST。</p>
+<h3 id="_22">其他方法</h3>
+<p>讲完了GET/HEAD/POST/PUT，还剩下四个标准请求方法，它们属于比较“冷僻”的方法，应用的不是很多。</p>
+<p><strong>DELETE</strong>方法指示服务器删除资源，因为这个动作危险性太大，所以通常服务器不会执行真正的删除操作，而是对资源做一个删除标记。当然，更多的时候服务器就直接不处理DELETE请求。</p>
+<p><strong>CONNECT</strong>是一个比较特殊的方法，要求服务器为客户端和另一台远程服务器建立一条特殊的连接隧道，这时Web服务器在中间充当了代理的角色。</p>
+<p><strong>OPTIONS</strong>方法要求服务器列出可对资源实行的操作方法，在响应头的Allow字段里返回。它的功能很有限，用处也不大，有的服务器（例如Nginx）干脆就没有实现对它的支持。</p>
+<p><strong>TRACE</strong>方法多用于对HTTP链路的测试或诊断，可以显示出请求-响应的传输路径。它的本意是好的，但存在漏洞，会泄漏网站的信息，所以Web服务器通常也是禁止使用。</p>
+<h3 id="_23">安全与幂等</h3>
+<p>关于请求方法还有两个<strong>面试时</strong>有可能会问到、比较重要的概念：<strong>安全</strong>与<strong>幂等</strong>。</p>
+<p>在HTTP协议里，所谓的“<strong>安全</strong>”是指请求方法不会“破坏”服务器上的资源，即不会对服务器上的资源造成实质的修改。</p>
+<p>按照这个定义，只有GET和HEAD方法是“安全”的，因为它们是“只读”操作，只要服务器不故意曲解请求方法的处理方式，无论GET和HEAD操作多少次，服务器上的数据都是“安全的”。</p>
+<p>而POST/PUT/DELETE操作会修改服务器上的资源，增加或删除数据，所以是“不安全”的。</p>
+<p>所谓的“<strong>幂等</strong>”实际上是一个数学用语，被借用到了HTTP协议里，意思是多次执行相同的操作，结果也都是相同的，即多次“幂”后结果“相等”。</p>
+<h3 id="_24">小结</h3>
+<p>今天我们学习了HTTP报文里请求方法相关的知识，简单小结一下。</p>
+<ol>
+<li>请求方法是客户端发出的、要求服务器执行的、对资源的一种操作；</li>
+<li>请求方法是对服务器的“指示”，真正应如何处理由服务器来决定；</li>
+<li>最常用的请求方法是GET和POST，分别是获取数据和发送数据；</li>
+<li>HEAD方法是轻量级的GET，用来获取资源的元信息；</li>
+<li>PUT基本上是POST的同义词，多用于更新数据；</li>
+<li>“安全”与“幂等”是描述请求方法的两个重要属性，具有理论指导意义，可以帮助我们设计系统。</li>
+</ol>
+<h2 id="uri">九、URI深度理解</h2>
+<p>URI本质上是一个字符串，这个字符串的作用是<strong>唯一地标记资源的位置或者名字</strong>。</p>
+<p>URI最常用的形式，由scheme、host:port、path和query四个部分组成，但有的部分可以视情况省略。</p>
+<p><img alt="image-20220920110905872" src="D:\MyStudy\http协议\http协议.assets\image-20220920110905872.png" /> </p>
+<h3 id="uri_1">URI的基本组成</h3>
+<p>URI第一个组成部分叫<strong>scheme</strong>，翻译成中文叫“<strong>方案名</strong>”或者“<strong>协议名</strong>”，表示<strong>资源应该使用哪种协议</strong>来访问。</p>
+<p>最常见的当然就是“http”了，表示使用HTTP协议。另外还有“https”，表示使用经过加密、安全的HTTPS协议。此外还有其他不是很常见的scheme，例如ftp、ldap、file、news等。</p>
+<p>在scheme之后，必须是<strong>三个特定的字符</strong>“<strong>://</strong>”，它把scheme和后面的部分分离开。</p>
+<p>在“://”之后，是被称为“<strong>authority</strong>”的部分，表示<strong>资源所在的主机名</strong>，通常的形式是“host:port”，即主机名加端口号。</p>
+<p>有了协议名和主机地址、端口号，再加上后面<strong>标记资源所在位置</strong>的<strong>path</strong>，浏览器就可以连接服务器访问资源了。</p>
+<h3 id="uri_2">URI的查询参数</h3>
+<p>URI后面还有一个“<strong>query</strong>”部分，它在path之后，用一个“?”开始，但不包含“?”，表示对资源附加的额外要求。这是个很形象的符号，比“://”要好的多，很明显地表示了“查询”的含义。</p>
+<p>查询参数query有一套自己的格式，是多个“<strong>key=value</strong>”的字符串，这些KV值用字符“<strong>&amp;</strong>”连接，浏览器和服务器都可以按照这个格式把长串的查询参数解析成可理解的字典或关联数组形式。</p>
+<p>你可以在实验环境里用Chrome试试下面这个加了query参数的URI：</p>
+<pre><code class="language-apache">http://www.chrono.com:8080/11-1?uid=1234&amp;name=mario&amp;referer=xxx
+</code></pre>
+<p>Chrome的开发者工具也能解码出query里的KV对，省得我们“人肉”分解。</p>
+<p><img alt="image-20220920113053868" src="D:\MyStudy\http协议\http协议.assets\image-20220920113053868.png" /> </p>
+<h3 id="uri_3">URI的完整格式</h3>
+<p><img alt="image-20220920113151782" src="D:\MyStudy\http协议\http协议.assets\image-20220920113151782.png" /> </p>
+<p>这个“真正”形态比基本形态多了两部分。</p>
+<p>第一个多出的部分是协议名之后、主机名之前的<strong>身份信息</strong>“user:passwd@”，表示登录主机时的用户名和密码，但现在已经不推荐使用这种形式了（RFC7230），因为它把敏感信息以明文形式暴露出来，存在严重的安全隐患。</p>
+<p>第二个多出的部分是查询参数后的<strong>片段标识符</strong>“#fragment”，它是URI所定位的资源内部的一个“锚点”或者说是“标签”，浏览器可以在获取资源后直接跳转到它指示的位置。</p>
+<p>但片段标识符仅能由浏览器这样的客户端使用，服务器是看不到的。也就是说，浏览器永远不会把带“#fragment”的URI发送给服务器，服务器也永远不会用这种方式去处理资源的片段。</p>
+<h3 id="uri_4">URI的编码</h3>
+<p>在URI里只能使用ASCII码，但如果要在URI里使用英语以外的汉语、日语等其他语言该怎么办呢？</p>
+<p>还有，某些特殊的URI，会在path、query里出现“@&amp;?"等起界定符作用的字符，会导致URI解析错误，这时又该怎么办呢？</p>
+<p>所以，URI引入了编码机制，对于ASCII码以外的字符集和特殊字符做一个特殊的操作，把它们转换成与URI语义不冲突的形式。这在RFC规范里称为“escape”和“unescape”，俗称“转义”。</p>
+<p>URI转义的规则有点“简单粗暴”，直接把非ASCII码或特殊字符转换成十六进制字节值，然后前面再加上一个“%”。</p>
+<p>例如，空格被转义成“%20”，“?”被转义成“%3F”。而中文、日文等则通常使用UTF-8编码后再转义，例如“银河”会被转义成“%E9%93%B6%E6%B2%B3”。</p>
+<p>有了这个编码规则后，URI就更加完美了，可以支持任意的字符集用任何语言来标记资源。</p>
+<p>不过我们在浏览器的地址栏里通常是不会看到这些转义后的“乱码”的，这实际上是浏览器一种“友好”表现，隐藏了URI编码后的“丑陋一面”，不信你可以试试下面的这个URI。</p>
+<pre><code class="language-apache">http://www.chrono.com:8080/11-1?夸父逐日
+</code></pre>
+<p>先在Chrome的地址栏里输入这个query里含有中文的URI，然后点击地址栏，把它再拷贝到其他的编辑器里，它就会“现出原形”：</p>
+<pre><code class="language-perl">http://www.chrono.com:8080/11-1?%E5%A4%B8%E7%88%B6%E9%80%90%E6%97%A5
+</code></pre>
+<h3 id="_25">小结</h3>
+<p>今天我们学习了网址也就是URI的知识，在这里小结一下今天的内容。</p>
+<ol>
+<li>URI是用来唯一标记服务器上资源的一个字符串，通常也称为URL；</li>
+<li>URI通常由scheme、host:port、path和query四个部分组成，有的可以省略；</li>
+<li>scheme叫“方案名”或者“协议名”，表示资源应该使用哪种协议来访问；</li>
+<li>“host:port”表示资源所在的主机名和端口号；</li>
+<li>path标记资源所在的位置；</li>
+<li>query表示对资源附加的额外要求；</li>
+<li>在URI里对“@&amp;/”等特殊字符和汉字必须要做编码，否则服务器收到HTTP报文后会无法正确处理。</li>
+</ol>
+<h2 id="_26">十、状态码</h2>
+<h3 id="_27">状态行</h3>
+<p>状态行的结构，有三部分：</p>
+<p><img alt="image-20220920140318284" src="D:\MyStudy\http协议\http协议.assets\image-20220920140318284.png" /> </p>
+<p>开头的Version部分是HTTP协议的版本号，通常是HTTP/1.1，用处不是很大。</p>
+<p>后面的Reason部分是原因短语，是状态码的简短文字描述，例如“OK”“Not Found”等等，也可以自定义。但它只是为了兼容早期的文本客户端而存在，提供的信息很有限，目前的大多数客户端都会忽略它。</p>
+<p>所以，状态行里有用的就只剩下中间的<strong>状态码</strong>（Status Code）了。它是一个十进制数字，以代码的形式表示服务器对请求的处理结果，就像我们通常编写程序时函数返回的错误码一样。</p>
+<p>名字是“状态码”而不是“错误码”，它的含义不仅是错误，更重要的意义在于表达HTTP数据处理的“状态”，客户端可以依据代码适时转换处理状态，例如继续发送请求、切换协议，重定向跳转等，有那么点TCP状态转换的意思。</p>
+<p>目前RFC标准里规定的状态码是三位数，所以取值范围就是从000到999。但如果把代码简单地从000开始顺序编下去就显得有点太“low”，不灵活、不利于扩展，所以状态码也被设计成有一定的格式。</p>
+<p>RFC标准把状态码分成了五类，用数字的第一位表示分类，而0~99不用，这样状态码的实际可用范围就大大缩小了，由000~999变成了100~599。</p>
+<p>这五类的具体含义是：</p>
+<ul>
+<li>1××：提示信息，表示目前是协议处理的中间状态，还需要后续的操作；</li>
+<li>2××：成功，报文已经收到并被正确处理；</li>
+<li>3××：重定向，资源位置发生变动，需要客户端重新发送请求；</li>
+<li>4××：客户端错误，请求报文有误，服务器无法处理；</li>
+<li>5××：服务器错误，服务器在处理请求时内部发生了错误。</li>
+</ul>
+<p>在HTTP协议中，正确地理解并应用这些状态码不是客户端或服务器单方的责任，而是双方共同的责任。</p>
+<p>际开发中比较有价值的状态码逐个详细介绍。</p>
+<h3 id="1">1××</h3>
+<p>1××类状态码属于提示信息，是协议处理的中间状态，实际能够用到的时候很少。</p>
+<p>我们偶尔能够见到的是“<strong>101 Switching Protocols</strong>”。它的意思是客户端使用Upgrade头字段，要求在HTTP协议的基础上改成其他的协议继续通信，比如WebSocket。而如果服务器也同意变更协议，就会发送状态码101，但这之后的数据传输就不会再使用HTTP了。</p>
+<h3 id="2">2××</h3>
+<p>2××类状态码表示服务器收到并成功处理了客户端的请求，这也是客户端最愿意看到的状态码。</p>
+<p>“<strong>200 OK</strong>”是最常见的成功状态码，表示一切正常，服务器如客户端所期望的那样返回了处理结果，如果是非HEAD请求，通常在响应头后都会有body数据。</p>
+<p>“<strong>204 No Content</strong>”是另一个很常见的成功状态码，它的含义与“200 OK”基本相同，但响应头后没有body数据。所以对于Web服务器来说，正确地区分200和204是很必要的。</p>
+<p>“<strong>206 Partial Content</strong>”是HTTP分块下载或断点续传的基础，在客户端发送“范围请求”、要求获取资源的部分数据时出现，它与200一样，也是服务器成功处理了请求，但body里的数据不是资源的全部，而是其中的一部分。</p>
+<p>状态码206通常还会伴随着头字段“<strong>Content-Range</strong>”，表示响应报文里body数据的具体范围，供客户端确认，例如“Content-Range: bytes 0-99/2000”，意思是此次获取的是总计2000个字节的前100个字节。</p>
+<h3 id="3">3××</h3>
+<p>3××类状态码表示客户端请求的资源发生了变动，客户端必须用新的URI重新发送请求获取资源，也就是通常所说的“重定向”，包括著名的301、302跳转。</p>
+<p>“<strong>301 Moved Permanently</strong>”俗称“永久重定向”，含义是此次请求的资源已经不存在了，需要改用新的URI再次访问。</p>
+<p>与它类似的是“<strong>302 Found</strong>”，曾经的描述短语是“<strong>Moved Temporarily</strong>”，俗称“临时重定向”，意思是请求的资源还在，但需要暂时用另一个URI来访问。</p>
+<p>301和302都会在响应头里使用字段<strong>Location</strong>指明后续要跳转的URI，最终的效果很相似，浏览器都会重定向到新的URI。两者的根本区别在于语义，一个是“永久”，一个是“临时”，所以在场景、用法上差距很大。</p>
+<p>比如，你的网站升级到了HTTPS，原来的HTTP不打算用了，这就是“永久”的，所以要配置301跳转，把所有的HTTP流量都切换到HTTPS。</p>
+<p>再比如，今天夜里网站后台要系统维护，服务暂时不可用，这就属于“临时”的，可以配置成302跳转，把流量临时切换到一个静态通知页面，浏览器看到这个302就知道这只是暂时的情况，不会做缓存优化，第二天还会访问原来的地址。</p>
+<p>“<strong>304 Not Modified</strong>” 是一个比较有意思的状态码，它用于If-Modified-Since等条件请求，表示资源未修改，用于缓存控制。它不具有通常的跳转含义，但可以理解成“重定向已到缓存的文件”（即“缓存重定向”）。</p>
+<p>301、302和304分别涉及了HTTP协议里重要的“重定向跳转”和“缓存控制”，在之后的课程中我还会细讲。</p>
+<h3 id="4">4××</h3>
+<p>4××类状态码表示客户端发送的请求报文有误，服务器无法处理，它就是真正的“错误码”含义了。</p>
+<p>“<strong>400 Bad Request</strong>”是一个通用的错误码，表示请求报文有错误，但具体是数据格式错误、缺少请求头还是URI超长它没有明确说，只是一个笼统的错误，客户端看到400只会是“一头雾水”“不知所措”。所以，在开发Web应用时应当尽量避免给客户端返回400，而是要用其他更有明确含义的状态码。</p>
+<p>“<strong>403 Forbidden</strong>”实际上不是客户端的请求出错，而是表示服务器禁止访问资源。原因可能多种多样，例如信息敏感、法律禁止等，如果服务器友好一点，可以在body里详细说明拒绝请求的原因，不过现实中通常都是直接给一个“闭门羹”。</p>
+<p>“<strong>404 Not Found</strong>”可能是我们最常看见也是最不愿意看到的一个状态码，它的原意是资源在本服务器上未找到，所以无法提供给客户端。但现在已经被“用滥了”，只要服务器“不高兴”就可以给出个404，而我们也无从得知后面到底是真的未找到，还是有什么别的原因，某种程度上它比403还要令人讨厌。</p>
+<p>4××里剩下的一些代码较明确地说明了错误的原因，都很好理解，开发中常用的有：</p>
+<ul>
+<li>405 Method Not Allowed：不允许使用某些方法操作资源，例如不允许POST只能GET；</li>
+<li>406 Not Acceptable：资源无法满足客户端请求的条件，例如请求中文但只有英文；</li>
+<li>408 Request Timeout：请求超时，服务器等待了过长的时间；</li>
+<li>409 Conflict：多个请求发生了冲突，可以理解为多线程并发时的竞态；</li>
+<li>413 Request Entity Too Large：请求报文里的body太大；</li>
+<li>414 Request-URI Too Long：请求行里的URI太大；</li>
+<li>429 Too Many Requests：客户端发送了太多的请求，通常是由于服务器的限连策略；</li>
+<li>431 Request Header Fields Too Large：请求头某个字段或总体太大；</li>
+</ul>
+<h3 id="5">5××</h3>
+<p>5××类状态码表示客户端请求报文正确，但服务器在处理时内部发生了错误，无法返回应有的响应数据，是服务器端的“错误码”。</p>
+<p>“<strong>500 Internal Server Error</strong>”与400类似，也是一个通用的错误码，服务器究竟发生了什么错误我们是不知道的。不过对于服务器来说这应该算是好事，通常不应该把服务器内部的详细信息，例如出错的函数调用栈告诉外界。虽然不利于调试，但能够防止黑客的窥探或者分析。</p>
+<p>“<strong>501 Not Implemented</strong>”表示客户端请求的功能还不支持，这个错误码比500要“温和”一些，和“即将开业，敬请期待”的意思差不多，不过具体什么时候“开业”就不好说了。</p>
+<p>“<strong>502 Bad Gateway</strong>”通常是服务器作为网关或者代理时返回的错误码，表示服务器自身工作正常，访问后端服务器时发生了错误，但具体的错误原因也是不知道的。</p>
+<p>“<strong>503 Service Unavailable</strong>”表示服务器当前很忙，暂时无法响应服务，我们上网时有时候遇到的“网络服务正忙，请稍后重试”的提示信息就是状态码503。</p>
+<p>503是一个“临时”的状态，很可能过几秒钟后服务器就不那么忙了，可以继续提供服务，所以503响应报文里通常还会有一个“<strong>Retry-After</strong>”字段，指示客户端可以在多久以后再次尝试发送请求。</p>
+<h3 id="_28">小结</h3>
+<ol>
+<li>状态码在响应报文里表示了服务器对请求的处理结果；</li>
+<li>状态码后的原因短语是简单的文字描述，可以自定义；</li>
+<li>状态码是十进制的三位数，分为五类，从100到599；</li>
+<li>2××类状态码表示成功，常用的有200、204、206；</li>
+<li>3××类状态码表示重定向，常用的有301、302、304；</li>
+<li>4××类状态码表示客户端错误，常用的有400、403、404；</li>
+<li>5××类状态码表示服务器错误，常用的有500、501、502、503。</li>
+</ol>
+<h2 id="http_8">十一、http特点</h2>
+<h3 id="_29">灵活可扩展</h3>
+<p>首先， HTTP协议是一个“灵活可扩展”的传输协议。</p>
+<p>HTTP协议最初诞生的时候就比较简单，本着开放的精神只规定了报文的基本格式，比如用空格分隔单词，用换行分隔字段，“header+body”等，报文里的各个组成部分都没有做严格的语法语义限制，可以由开发者任意定制。</p>
+<p>所以，HTTP协议就随着互联网的发展一同成长起来了。在这个过程中，HTTP协议逐渐增加了请求方法、版本号、状态码、头字段等特性。而body也不再限于文本形式的TXT或HTML，而是能够传输图片、音频视频等任意数据，这些都是源于它的“灵活可扩展”的特点。</p>
+<h3 id="_30">可靠传输</h3>
+<p>第二个特点， HTTP协议是一个“可靠”的传输协议。</p>
+<p>这个特点显而易见，因为HTTP协议是基于TCP/IP的，而TCP本身是一个“可靠”的传输协议，所以HTTP自然也就继承了这个特性，能够在请求方和应答方之间“可靠”地传输数据。</p>
+<p>它的具体做法与TCP/UDP差不多，都是对实际传输的数据（entity）做了一层包装，加上一个头，然后调用Socket API，通过TCP/IP协议栈发送或者接收。</p>
+<h3 id="_31">应用层协议</h3>
+<p>第三个特点，HTTP协议是一个应用层的协议。</p>
+<p>这个特点也是不言自明的，但却很重要。</p>
+<p>在TCP/IP诞生后的几十年里，虽然出现了许多的应用层协议，但它们都仅关注很小的应用领域，局限在很少的应用场景。例如FTP只能传输文件、SMTP只能发送邮件、SSH只能远程登录等，在通用的数据传输方面“完全不能打”。</p>
+<p>所以HTTP凭借着可携带任意头字段和实体数据的报文结构，以及连接控制、缓存代理等方便易用的特性，一出现就“技压群雄”，迅速成为了应用层里的“明星”协议。只要不太苛求性能，HTTP几乎可以传递一切东西，满足各种需求，称得上是一个“万能”的协议。</p>
+<h3 id="-">请求-应答</h3>
+<p>第四个特点，HTTP协议使用的是请求-应答通信模式。</p>
+<p>这个请求-应答模式是HTTP协议最根本的通信模型，通俗来讲就是“一发一收”“有来有去”，就像是写代码时的函数调用，只要填好请求头里的字段，“调用”后就会收到答复。</p>
+<p>请求-应答模式也明确了HTTP协议里通信双方的定位，永远是请求方先发起连接和请求，是主动的，而应答方只有在收到请求后才能答复，是被动的，如果没有请求时不会有任何动作。</p>
+<h3 id="_32">无状态</h3>
+<p>第五个特点，HTTP协议是无状态的。</p>
+<p>这个所谓的“状态”应该怎么理解呢？</p>
+<p>“状态”其实就是客户端或者服务器里保存的一些数据或者标志，记录了通信过程中的一些变化信息。</p>
+<p>你一定知道，TCP协议是有状态的，一开始处于CLOSED状态，连接成功后是ESTABLISHED状态，断开连接后是FIN-WAIT状态，最后又是CLOSED状态。</p>
+<p>这些“状态”就需要TCP在内部用一些数据结构去维护，可以简单地想象成是个标志量，标记当前所处的状态，例如0是CLOSED，2是ESTABLISHED等等。</p>
+<p>再来看HTTP，那么对比一下TCP就看出来了，在整个协议里没有规定任何的“状态”，客户端和服务器永远是处在一种“<strong>无知</strong>”的状态。建立连接前两者互不知情，每次收发的报文也都是互相独立的，没有任何的联系。收发报文也不会对客户端或服务器产生任何影响，连接后也不会要求保存任何信息。</p>
+<p>“无状态”形象地来说就是“没有记忆能力”。比如，浏览器发了一个请求，说“我是小明，请给我A文件。”，服务器收到报文后就会检查一下权限，看小明确实可以访问A文件，于是把文件发回给浏览器。接着浏览器还想要B文件，但服务器不会记录刚才的请求状态，不知道第二个请求和第一个请求是同一个浏览器发来的，所以浏览器必须还得重复一次自己的身份才行：“我是刚才的小明，请再给我B文件。”</p>
+<p>我们可以再对比一下UDP协议，不过它是无连接也无状态的，顺序发包乱序收包，数据包发出去后就不管了，收到后也不会顺序整理。而HTTP是有连接无状态，顺序发包顺序收包，按照收发的顺序管理报文。</p>
+<p>但不要忘了HTTP是“灵活可扩展”的，虽然标准里没有规定“状态”，但完全能够在协议的框架里给它“打个补丁”，增加这个特性。</p>
+<h3 id="_33">其他特点</h3>
+<p>除了以上的五大特点，其实HTTP协议还可以列出非常多的特点，例如传输的实体数据可缓存可压缩、可分段获取数据、支持身份认证、支持国际化语言等。但这些并不能算是HTTP的基本特点，因为这都是由第一个“灵活可扩展”的特点所衍生出来的。</p>
+<h3 id="_34">小结</h3>
+<ol>
+<li>HTTP是灵活可扩展的，可以任意添加头字段实现任意功能；</li>
+<li>HTTP是可靠传输协议，基于TCP/IP协议“尽量”保证数据的送达；</li>
+<li>HTTP是应用层协议，比FTP、SSH等更通用功能更多，能够传输任意数据；</li>
+<li>HTTP使用了请求-应答模式，客户端主动发起请求，服务器被动回复请求；</li>
+<li>HTTP本质上是无状态的，每个请求都是互相独立、毫无关联的，协议不要求客户端或服务器记录请求相关的信息。</li>
+</ol>
+<h2 id="http_9">十二、http优缺点</h2>
+<h3 id="_35">简单、灵活、易于扩展</h3>
+<p>首先，HTTP最重要也是最突出的优点是“<strong>简单、灵活、易于扩展</strong>”。</p>
+<p>初次接触HTTP的人都会认为，HTTP协议是很“<strong>简单</strong>”的，基本的报文格式就是“header+body”，头部信息也是简单的文本格式，用的也都是常见的英文单词，即使不去看RFC文档，只靠猜也能猜出个“八九不离十”。</p>
+<p>可不要小看了“简单”这个优点，它不仅降低了学习和使用的门槛，能够让更多的人研究和开发HTTP应用，而且我在<a href="https://time.geekbang.org/column/article/97837">第1讲</a>时就说过，“简单”蕴含了进化和扩展的可能性，所谓“少即是多”，“把简单的系统变复杂”，要比“把复杂的系统变简单”容易得多<strong>。</strong></p>
+<h3 id="_36">应用广泛、环境成熟</h3>
+<p>HTTP协议的另一大优点是“<strong>应用广泛</strong>”，软硬件环境都非常成熟。</p>
+<p>随着互联网特别是移动互联网的普及，HTTP的触角已经延伸到了世界的每一个角落：从简单的Web页面到复杂的JSON、XML数据，从台式机上的浏览器到手机上的各种APP，从看新闻、泡论坛到购物、理财、“吃鸡”，你很难找到一个没有使用HTTP的地方。</p>
+<h3 id="_37">无状态</h3>
+<p>看过了两个优点，我们再来看看一把“双刃剑”，也就是上一讲中说到的“无状态”，它对于HTTP来说既是优点也是缺点。</p>
+<p>“无状态”有什么好处呢？</p>
+<p>因为服务器没有“记忆能力”，所以就不需要额外的资源来记录状态信息，不仅实现上会简单一些，而且还能减轻服务器的负担，能够把更多的CPU和内存用来对外提供服务。</p>
+<p>而且，“无状态”也表示服务器都是相同的，没有“状态”的差异，所以可以很容易地组成集群，让负载均衡把请求转发到任意一台服务器，不会因为状态不一致导致处理出错，使用“堆机器”的“笨办法”轻松实现高并发高可用。</p>
+<p>那么，“无状态”又有什么坏处呢？</p>
+<p>既然服务器没有“记忆能力”，它就无法支持需要连续多个步骤的“事务”操作。例如电商购物，首先要登录，然后添加购物车，再下单、结算、支付，这一系列操作都需要知道用户的身份才行，但“无状态”服务器是不知道这些请求是相互关联的，每次都得问一遍身份信息，不仅麻烦，而且还增加了不必要的数据传输量。</p>
+<p>所以，HTTP协议最好是既“无状态”又“有状态”，不过还真有“鱼和熊掌”两者兼得这样的好事，这就是“小甜饼”Cookie技术。</p>
+<h3 id="_38">明文</h3>
+<p>HTTP协议里还有一把优缺点一体的“双刃剑”，就是<strong>明文传输</strong>。</p>
+<p>“明文”意思就是协议里的报文（准确地说是header部分）不使用二进制数据，而是用简单可阅读的文本形式。</p>
+<p>对比TCP、UDP这样的二进制协议，它的优点显而易见，不需要借助任何外部工具，用浏览器、Wireshark或者tcpdump抓包后，直接用肉眼就可以很容易地查看或者修改，为我们的开发调试工作带来极大的便利。</p>
+<p>当然，明文的缺点也是一样显而易见，HTTP报文的所有信息都会暴露在“光天化日之下”，在漫长的传输链路的每一个环节上都毫无隐私可言，不怀好意的人只要侵入了这个链路里的某个设备，简单地“旁路”一下流量，就可以实现对通信的窥视。</p>
+<p>你有没有听说过“免费WiFi陷阱”之类的新闻呢？</p>
+<p>黑客就是利用了HTTP明文传输的缺点，在公共场所架设一个WiFi热点开始“钓鱼”，诱骗网民上网。一旦你连上了这个WiFi热点，所有的流量都会被截获保存，里面如果有银行卡号、网站密码等敏感信息的话那就危险了，黑客拿到了这些数据就可以冒充你为所欲为。</p>
+<h3 id="_39">不安全</h3>
+<p>与“明文”缺点相关但不完全等同的另一个缺点是“不安全”。</p>
+<p>安全有很多的方面，明文只是“机密”方面的一个缺点，在“身份认证”和“完整性校验”这两方面HTTP也是欠缺的。</p>
+<p>“身份认证”简单来说就是“<strong>怎么证明你就是你</strong>”。在现实生活中比较好办，你可以拿出身份证、驾照或者护照，上面有照片和权威机构的盖章，能够证明你的身份。</p>
+<p>但在虚拟的网络世界里这却是个麻烦事。HTTP没有提供有效的手段来确认通信双方的真实身份。虽然协议里有一个基本的认证机制，但因为刚才所说的明文传输缺点，这个机制几乎可以说是“纸糊的”，非常容易被攻破。如果仅使用HTTP协议，很可能你会连到一个页面一模一样但却是个假冒的网站，然后再被“钓”走各种私人信息。</p>
+<p>HTTP协议也不支持“完整性校验”，数据在传输过程中容易被篡改而无法验证真伪。</p>
+<p>比如，你收到了一条银行用HTTP发来的消息：“小明向你转账一百元”，你无法知道小明是否真的就只转了一百元，也许他转了一千元或者五十元，但被黑客篡改成了一百元，真实情况到底是什么样子HTTP协议没有办法给你答案。</p>
+<p>虽然银行可以用MD5、SHA1等算法给报文加上数字摘要，但还是因为“明文”这个致命缺点，黑客可以连同摘要一同修改，最终还是判断不出报文是否被篡改。</p>
+<h3 id="_40">性能</h3>
+<p>最后我们来谈谈HTTP的性能，可以用六个字来概括：“<strong>不算差，不够好</strong>”。</p>
+<p>HTTP协议基于TCP/IP，并且使用了“请求-应答”的通信模式，所以性能的关键就在这两点上。</p>
+<p>必须要说的是，TCP的性能是不差的，否则也不会纵横互联网江湖四十余载了，而且它已经被研究的很透，集成在操作系统内核里经过了细致的优化，足以应付大多数的场景。</p>
+<p>只可惜如今的江湖已经不是从前的江湖，现在互联网的特点是移动和高并发，不能保证稳定的连接质量，所以在TCP层面上HTTP协议有时候就会表现的不够好。</p>
+<p>而“请求-应答”模式则加剧了HTTP的性能问题，这就是著名的“队头阻塞”（Head-of-line blocking），当顺序发送的请求序列中的一个请求因为某种原因被阻塞时，在后面排队的所有请求也一并被阻塞，会导致客户端迟迟收不到数据。</p>
+<p>为了解决这个问题，就诞生出了一个专门的研究课题“Web性能优化”，HTTP官方标准里就有“缓存”一章（RFC7234），非官方的“花招”就更多了，例如切图、数据内嵌与合并，域名分片、JavaScript“黑科技”等等。</p>
+<p>不过现在已经有了终极解决方案：HTTP/2和HTTP/3，</p>
+<h3 id="_41">小结</h3>
+<ol>
+<li>HTTP最大的优点是简单、灵活和易于扩展；</li>
+<li>HTTP拥有成熟的软硬件环境，应用的非常广泛，是互联网的基础设施；</li>
+<li>HTTP是无状态的，可以轻松实现集群化，扩展性能，但有时也需要用Cookie技术来实现“有状态”；</li>
+<li>HTTP是明文传输，数据完全肉眼可见，能够方便地研究分析，但也容易被窃听；</li>
+<li>HTTP是不安全的，无法验证通信双方的身份，也不能判断报文是否被篡改；</li>
+<li>HTTP的性能不算差，但不完全适应现在的互联网，还有很大的提升空间。</li>
+</ol>
+<p>虽然HTTP免不了这样那样的缺点，但你也不要怕，别忘了它有一个最重要的“灵活可扩展”的优点，所有的缺点都可以在这个基础上想办法解决，接下来的“进阶篇”和“安全篇”就会讲到。</p>
+<h2 id="https_1">十三、https协议原理</h2>
+<p>HTTPS其实是一个“非常简单”的协议，RFC文档很小，只有短短的7页，里面规定了<strong>新的协议名“https”，默认端口号443</strong>，至于其他的什么请求-应答模式、报文结构、请求方法、URI、头字段、连接管理等等都完全沿用HTTP，没有任何新的东西。</p>
+<p>也就是说，除了协议名“http”和端口号80这两点不同，HTTPS协议在语法、语义上和HTTP完全一样，优缺点也“照单全收”（当然要除去“明文”和“不安全”）。</p>
+<p>HTTPS凭什么就能做到机密性、完整性这些安全特性呢？</p>
+<p>秘密就在于HTTPS名字里的“S”，它把HTTP下层的传输协议由TCP/IP换成了SSL/TLS，由“<strong>HTTP over TCP/IP</strong>”变成了“<strong>HTTP over SSL/TLS</strong>”，让HTTP运行在了安全的SSL/TLS协议上（可参考第4讲和第5讲），收发报文不再使用Socket API，而是调用专门的安全接口。</p>
+<p><img alt="image-20220920152643473" src="D:\MyStudy\http协议\http协议.assets\image-20220920152643473.png" /> </p>
+<h3 id="ssltls">SSL/TLS</h3>
+<p>现在我们就来看看SSL/TLS，它到底是个什么来历。</p>
+<p>SSL即安全套接层（Secure Sockets Layer），在OSI模型中处于第5层（会话层），由网景公司于1994年发明，有v2和v3两个版本，而v1因为有严重的缺陷从未公开过。</p>
+<p>SSL发展到v3时已经证明了它自身是一个非常好的安全通信协议，于是互联网工程组IETF在1999年把它改名为TLS（传输层安全，Transport Layer Security），正式标准化，版本号从1.0重新算起，所以TLS1.0实际上就是SSLv3.1。</p>
+<p>到今天TLS已经发展出了三个版本，分别是2006年的1.1、2008年的1.2和去年（2018）的1.3，每个新版本都紧跟密码学的发展和互联网的现状，持续强化安全和性能，已经成为了信息安全领域中的权威标准。</p>
+<p>目前应用的最广泛的TLS是1.2，而之前的协议（TLS1.1/1.0、SSLv3/v2）都已经被认为是不安全的，各大浏览器即将在2020年左右停止支持，所以接下来的讲解都针对的是TLS1.2。</p>
+<p>TLS由记录协议、握手协议、警告协议、变更密码规范协议、扩展协议等几个子协议组成，综合使用了对称加密、非对称加密、身份认证等许多密码学前沿技术。</p>
+<p>浏览器和服务器在使用TLS建立连接时需要选择一组恰当的加密算法来实现安全通信，这些算法的组合被称为“密码套件”（cipher suite，也叫加密套件）。</p>
+<p>访问实验环境的URI“/23-1”，对TLS和密码套件有个感性的认识。</p>
+<p><img alt="image-20220920152844541" src="D:\MyStudy\http协议\http协议.assets\image-20220920152844541.png" /> </p>
+<p>你可以看到，实验环境使用的TLS是1.2，客户端和服务器都支持非常多的密码套件，而最后协商选定的是“ECDHE-RSA-AES256-GCM-SHA384”。</p>
+<p>这么长的名字看着有点晕吧，不用怕，其实TLS的密码套件命名非常规范，格式很固定。基本的形式是“密钥交换算法+签名算法+对称加密算法+摘要算法”，比如刚才的密码套件的意思就是：</p>
+<p>“握手时使用ECDHE算法进行密钥交换，用RSA签名和身份认证，握手后的通信使用AES对称算法，密钥长度256位，分组模式是GCM，摘要算法SHA384用于消息认证和产生随机数。”</p>
+<h3 id="openssl">OpenSSL</h3>
+<p>说到TLS，就不能不谈到OpenSSL，它是一个著名的开源密码学程序库和工具包，几乎支持所有公开的加密算法和协议，已经成为了事实上的标准，许多应用软件都会使用它作为底层库来实现TLS功能，包括常用的Web服务器Apache、Nginx等。</p>
+<p>OpenSSL是从另一个开源库SSLeay发展出来的，曾经考虑命名为“OpenTLS”，但当时（1998年）TLS还未正式确立，而SSL早已广为人知，所以最终使用了“OpenSSL”的名字。</p>
+<p>OpenSSL目前有三个主要的分支，1.0.2和1.1.0都将在今年（2019）年底不再维护，最新的长期支持版本是1.1.1，我们的实验环境使用的OpenSSL是“1.1.0j”。</p>
+<p>由于OpenSSL是开源的，所以它还有一些代码分支，比如Google的BoringSSL、OpenBSD的LibreSSL，这些分支在OpenSSL的基础上删除了一些老旧代码，也增加了一些新特性，虽然背后有“大金主”，但离取代OpenSSL还差得很远。</p>
+<h3 id="_42">小结</h3>
+<ol>
+<li>
+<p>因为HTTP是明文传输，所以不安全，容易被黑客窃听或篡改；</p>
+</li>
+<li>
+<p>通信安全必须同时具备机密性、完整性、身份认证和不可否认这四个特性；</p>
+</li>
+<li>
+<p>HTTPS的语法、语义仍然是HTTP，但把下层的协议由TCP/IP换成了SSL/TLS；</p>
+</li>
+<li>
+<p>SSL/TLS是信息安全领域中的权威标准，采用多种先进的加密技术保证通信安全；</p>
+</li>
+<li>
+<p>OpenSSL是著名的开源密码学工具包，是SSL/TLS的具体实现。</p>
+</li>
+</ol>
+<h2 id="_43">十四、对称与非对称加密</h2>
+<h3 id="_44">对称加密</h3>
+<p>“对称加密”很好理解，就是指加密和解密时使用的密钥都是同一个，是“对称”的。只要保证了密钥的安全，那整个通信过程就可以说具有了机密性。</p>
+<p>举个例子，你想要登录某网站，只要事先和它约定好使用一个对称密钥，通信过程中传输的全是用密钥加密后的密文，只有你和网站才能解密。黑客即使能够窃听，看到的也只是乱码，因为没有密钥无法解出明文，所以就实现了机密性。</p>
+<p><img alt="image-20220920154536462" src="D:\MyStudy\http协议\http协议.assets\image-20220920154536462.png" /> </p>
+<p>TLS里有非常多的对称加密算法可供选择，比如RC4、DES、3DES、AES、ChaCha20等，但前三种算法都被认为是不安全的，通常都禁止使用，<strong>目前常用的只有AES和ChaCha20。</strong></p>
+<p>AES的意思是“高级加密标准”（Advanced Encryption Standard），密钥长度可以是128、192或256。它是DES算法的替代者，安全强度很高，性能也很好，而且有的硬件还会做特殊优化，所以非常流行，是应用最广泛的对称加密算法。</p>
+<p>ChaCha20是Google设计的另一种加密算法，密钥长度固定为256位，纯软件运行性能要超过AES，曾经在移动客户端上比较流行，但ARMv8之后也加入了AES硬件优化，所以现在不再具有明显的优势，但仍然算得上是一个不错的算法。</p>
+<h3 id="_45">非对称加密</h3>
+<p>对称加密看上去好像完美地实现了机密性，但其中有一个很大的问题：如何把密钥安全地传递给对方，术语叫“<strong>密钥交换</strong>”。</p>
+<p>因为在对称加密算法中只要持有密钥就可以解密。如果你和网站约定的密钥在传递途中被黑客窃取，那他就可以在之后随意解密收发的数据，通信过程也就没有机密性可言了。</p>
+<p>这个问题该怎么解决呢？</p>
+<p>你或许会说：“把密钥再加密一下发过去就好了”，但传输“加密密钥的密钥”又成了新问题。这就像是“鸡生蛋、蛋生鸡”，可以无限递归下去。只用对称加密算法，是绝对无法解决密钥交换的问题的。</p>
+<p>所以，就出现了非对称加密（也叫公钥加密算法）。</p>
+<p>它有两个密钥，一个叫“<strong>公钥</strong>”（public key），一个叫“<strong>私钥</strong>”（private key）。两个密钥是不同的，“不对称”，公钥可以公开给任何人使用，而私钥必须严格保密。</p>
+<p>公钥和私钥有个特别的“<strong>单向</strong>”性，虽然都可以用来加密解密，但公钥加密后只能用私钥解密，反过来，私钥加密后也只能用公钥解密。</p>
+<p>非对称加密可以解决“密钥交换”的问题。网站秘密保管私钥，在网上任意分发公钥，你想要登录网站只要用公钥加密就行了，密文只能由私钥持有者才能解密。而黑客因为没有私钥，所以就无法破解密文。</p>
+<p><img alt="image-20220920155114450" src="D:\MyStudy\http协议\http协议.assets\image-20220920155114450.png" /> </p>
+<p>非对称加密算法的设计要比对称算法难得多，在TLS里只有很少的几种，比如DH、DSA、RSA、ECC等。</p>
+<p>RSA可能是其中最著名的一个，几乎可以说是非对称加密的代名词，它的安全性基于“<strong>整数分解</strong>”的数学难题，使用两个超大素数的乘积作为生成密钥的材料，想要从公钥推算出私钥是非常困难的。</p>
+<h3 id="_46">混合加密</h3>
+<p>看到这里，你是不是认为可以抛弃对称加密，只用非对称加密来实现机密性呢？</p>
+<p>很遗憾，虽然非对称加密没有“密钥交换”的问题，但因为它们都是基于复杂的数学难题，运算速度很慢，即使是ECC也要比AES差上好几个数量级。如果仅用非对称加密，虽然保证了安全，但通信速度有如乌龟、蜗牛，实用性就变成了零。</p>
+<p>实验环境的URI“/24-3”对比了AES和RSA这两种算法的性能，下面列出了一次测试的结果：</p>
+<pre><code class="language-apache">aes_128_cbc enc/dec 1000 times : 0.97ms, 13.11MB/s
+
+rsa_1024 enc/dec 1000 times : 138.59ms, 93.80KB/s
+rsa_1024/aes ratio = 143.17
+
+rsa_2048 enc/dec 1000 times : 840.35ms, 15.47KB/s
+rsa_2048/aes ratio = 868.13
+</code></pre>
+<p>可以看到，RSA的运算速度是非常慢的，2048位的加解密大约是15KB/S（微秒或毫秒级），而AES128则是13MB/S（纳秒级），差了几百倍。</p>
+<p>那么，是不是能够把对称加密和非对称加密结合起来呢，两者互相取长补短，即能高效地加密解密，又能安全地密钥交换。</p>
+<p>这就是现在TLS里使用的<strong>混合加密</strong>方式，其实说穿了也很简单：</p>
+<p>在通信刚开始的时候使用非对称算法，比如RSA、ECDHE，首先解决密钥交换的问题。</p>
+<p>然后用随机数产生对称算法使用的“<strong>会话密钥</strong>”（session key），再用公钥加密。因为会话密钥很短，通常只有16字节或32字节，所以慢一点也无所谓。</p>
+<p>对方拿到密文后用私钥解密，取出会话密钥。这样，双方就实现了对称密钥的安全交换，后续就不再使用非对称加密，全都使用对称加密。</p>
+<p><img alt="image-20220920160024838" src="D:\MyStudy\http协议\http协议.assets\image-20220920160024838.png" /> </p>
+<h3 id="_47">小结</h3>
+<ol>
+<li>加密算法的核心思想是“把一个小秘密（密钥）转化为一个大秘密（密文消息）”，守住了小秘密，也就守住了大秘密；</li>
+<li>对称加密只使用一个密钥，运算速度快，密钥必须保密，无法做到安全的密钥交换，常用的有AES和ChaCha20；</li>
+<li>非对称加密使用两个密钥：公钥和私钥，公钥可以任意分发而私钥保密，解决了密钥交换问题但速度慢，常用的有RSA和ECC；</li>
+<li>把对称加密和非对称加密结合起来就得到了“又好又快”的混合加密，也就是TLS里使用的加密方式。</li>
+</ol>
+<h2 id="http_10">十五、HTTP实体数据</h2>
+<h3 id="_48">数据类型与编码</h3>
+<p>HTTP协议诞生之前就已经有了针对这种问题的解决方案，不过它是用在电子邮件系统里的，让电子邮件可以发送ASCII码以外的任意数据，方案的名字叫做“<strong>多用途互联网邮件扩展</strong>”（Multipurpose Internet Mail Extensions），简称为MIME。</p>
+<p>MIME是一个很大的标准规范，但HTTP只“顺手牵羊”取了其中的一部分，用来标记body的数据类型，这就是我们平常总能听到的“<strong>MIME type</strong>”。</p>
+<p>MIME把数据分成了八大类，每个大类下再细分出多个子类，形式是“type/subtype”的字符串，巧得很，刚好也符合了HTTP明文的特点，所以能够很容易地纳入HTTP头字段里。</p>
+<p>HTTP里经常遇到的几个类别：</p>
+<ol>
+<li>text：即文本格式的可读数据，我们最熟悉的应该就是text/html了，表示超文本文档，此外还有纯文本text/plain、样式表text/css等。</li>
+<li>image：即图像文件，有image/gif、image/jpeg、image/png等。</li>
+<li>audio/video：音频和视频数据，例如audio/mpeg、video/mp4等。</li>
+<li>application：数据格式不固定，可能是文本也可能是二进制，必须由上层应用程序来解释。常见的有application/json，application/javascript、application/pdf等，另外，如果实在是不知道数据是什么类型，像刚才说的“黑盒”，就会是application/octet-stream，即不透明的二进制数据。</li>
+</ol>
+<p>但仅有MIME type还不够，因为HTTP在传输时为了节约带宽，有时候还会压缩数据，为了不要让浏览器继续“猜”，还需要有一个“Encoding type”，告诉数据是用的什么编码格式，这样对方才能正确解压缩，还原出原始的数据。</p>
+<p>比起MIME type来说，Encoding type就少了很多，常用的只有下面三种：</p>
+<ol>
+<li>
+<p>gzip：GNU zip压缩格式，也是互联网上最流行的压缩格式；</p>
+</li>
+<li>
+<p>deflate：zlib（deflate）压缩格式，流行程度仅次于gzip；</p>
+</li>
+<li>
+<p>br：一种专门为HTTP优化的新压缩算法（Brotli）。</p>
+</li>
+</ol>
+<h3 id="_49">数据类型使用的头字段</h3>
+<p>有了MIME type和Encoding type，无论是浏览器还是服务器就都可以轻松识别出body的类型，也就能够正确处理数据了。</p>
+<p>HTTP协议为此定义了两个Accept请求头字段和两个Content实体头字段，用于客户端和服务器进行“<strong>内容协商</strong>”。也就是说，客户端用Accept头告诉服务器希望接收什么样的数据，而服务器用Content头告诉客户端实际发送了什么样的数据。</p>
+<p><img alt="image-20220921104928191" src="D:\MyStudy\http协议\http协议.assets\image-20220921104928191.png" /> </p>
+<p><strong>Accept</strong>字段标记的是客户端可理解的MIME type，可以用“,”做分隔符列出多个类型，让服务器有更多的选择余地，例如下面的这个头：</p>
+<pre><code class="language-awk">Accept: text/html,application/xml,image/webp,image/png
+</code></pre>
+<p>这就是告诉服务器：“我能够看懂HTML、XML的文本，还有webp和png的图片，请给我这四类格式的数据”。</p>
+<p>相应的，服务器会在响应报文里用头字段<strong>Content-Type</strong>告诉实体数据的真实类型：</p>
+<pre><code class="language-sqf">Content-Type: text/html
+Content-Type: image/png
+</code></pre>
+<p>这样浏览器看到报文里的类型是“text/html”就知道是HTML文件，会调用排版引擎渲染出页面，看到“image/png”就知道是一个PNG文件，就会在页面上显示出图像。</p>
+<p><strong>Accept-Encoding</strong>字段标记的是客户端支持的压缩格式，例如上面说的gzip、deflate等，同样也可以用“,”列出多个，服务器可以选择其中一种来压缩数据，实际使用的压缩格式放在响应头字段<strong>Content-Encoding</strong>里。</p>
+<pre><code class="language-http">Accept-Encoding: gzip, deflate, br
+Content-Encoding: gzip
+</code></pre>
+<p>不过这两个字段是可以省略的，如果请求报文里没有Accept-Encoding字段，就表示客户端不支持压缩数据；如果响应报文里没有Content-Encoding字段，就表示响应数据没有被压缩。</p>
+<h3 id="_50">内容协商的质量值</h3>
+<p>在HTTP协议里用Accept、Accept-Encoding、Accept-Language等请求头字段进行内容协商的时候，还可以用一种特殊的“q”参数表示权重来设定优先级，这里的“q”是“quality factor”的意思。</p>
+<p>权重的最大值是1，最小值是0.01，默认值是1，如果值是0就表示拒绝。具体的形式是在数据类型或语言代码后面加一个“;”，然后是“q=value”。</p>
+<p>这里要提醒的是“;”的用法，在大多数编程语言里“;”的断句语气要强于“,”，而在HTTP的内容协商里却恰好反了过来，“;”的意义是小于“,”的。</p>
+<p>例如下面的Accept字段：</p>
+<pre><code class="language-apache">Accept: text/html,application/xml;q=0.9,*/*;q=0.8
+</code></pre>
+<p>它表示浏览器最希望使用的是HTML文件，权重是1，其次是XML文件，权重是0.9，最后是任意数据类型，权重是0.8。服务器收到请求头后，就会计算权重，再根据自己的实际情况优先输出HTML或者XML。</p>
+<h3 id="_51">内容协商的结果</h3>
+<p>内容协商的过程是不透明的，每个Web服务器使用的算法都不一样。但有的时候，服务器会在响应头里多加一个<strong>Vary</strong>字段，记录服务器在内容协商时参考的请求头字段，给出一点信息，例如：</p>
+<pre><code class="language-ada">Vary: Accept-Encoding,User-Agent,Accept
+</code></pre>
+<p>这个Vary字段表示服务器依据了Accept-Encoding、User-Agent和Accept这三个头字段，然后决定了发回的响应报文。</p>
+<p>Vary字段可以认为是响应报文的一个特殊的“版本标记”。每当Accept等请求头变化时，Vary也会随着响应报文一起变化。也就是说，同一个URI可能会有多个不同的“版本”，主要用在传输链路中间的代理服务器实现缓存服务，这个之后讲“HTTP缓存”时还会再提到。</p>
+<h3 id="_52">小结</h3>
+<p><img alt="image-20220921111558985" src="D:\MyStudy\http协议\http协议.assets\image-20220921111558985.png" /> </p>
+<ol>
+<li>数据类型表示实体数据的内容是什么，使用的是MIME type，相关的头字段是Accept和Content-Type；</li>
+<li>数据编码表示实体数据的压缩方式，相关的头字段是Accept-Encoding和Content-Encoding；</li>
+<li>语言类型表示实体数据的自然语言，相关的头字段是Accept-Language和Content-Language；</li>
+<li>字符集表示实体数据的编码方式，相关的头字段是Accept-Charset和Content-Type；</li>
+<li>客户端需要在请求头里使用Accept等头字段与服务器进行“内容协商”，要求服务器返回最合适的数据；</li>
+<li>Accept等头字段可以用“,”顺序列出多个可能的选项，还可以用“;q=”参数来精确指定权重。</li>
+</ol>
+<h3 id="_53">课下作业</h3>
+<ol>
+<li>试着解释一下这个请求头“Accept-Encoding: gzip, deflate;q=1.0, *;q=0.5, br;q=0”，再模拟一下服务器的响应头。</li>
+</ol>
+<p><code>客户端最希望使用的是gzip或deflate，权重都是1；其他非br类型的权重0.5；不能是br类型</code></p>
+<ol>
+<li>假设你要使用POST方法向服务器提交一些JSON格式的数据，里面包含有中文，请求头应该是什么样子的呢？</li>
+</ol>
+<p><code>Accept: text/plain, */*;q=0.01
+   Accept-Encoding: gzip, deflate, br
+   Accept-Language: zh-CN
+   ...</code></p>
+<ol>
+<li>试着用快递发货收货比喻一下MIME、Encoding等概念。</li>
+</ol>
+<h2 id="_54">十六、数据传输</h2>
+<h3 id="_55">数据压缩</h3>
+<p>通常浏览器在发送请求时都会带着“<strong>Accept-Encoding</strong>”头字段，里面是浏览器支持的压缩格式列表，例如gzip、deflate、br等，这样服务器就可以从中选择一种压缩算法，放进“<strong>Content-Encoding</strong>”响应头里，再把原数据压缩后发给浏览器。</p>
+<p>如果压缩率能有50%，也就是说100K的数据能够压缩成50K的大小，那么就相当于在带宽不变的情况下网速提升了一倍，加速的效果是非常明显的。</p>
+<p>不过这个解决方法也有个缺点，gzip等压缩算法通常只对文本文件有较好的压缩率，而图片、音频视频等多媒体数据本身就已经是高度压缩的，再用gzip处理也不会变小（甚至还有可能会增大一点），所以它就失效了。</p>
+<p>不过数据压缩在处理文本的时候效果还是很好的，所以各大网站的服务器都会使用这个手段作为“保底”。例如，在Nginx里就会使用“gzip on”指令，启用对“text/html”的压缩。</p>
+<h3 id="_56">分块传输</h3>
+<p>在数据压缩之外，还能有什么办法来解决大文件的问题呢？</p>
+<p>压缩是把大文件整体变小，我们可以反过来思考，如果大文件整体不能变小，那就把它“拆开”，分解成多个小块，把这些小块分批发给浏览器，浏览器收到后再组装复原。</p>
+<p>这样浏览器和服务器都不用在内存里保存文件的全部，每次只收发一小部分，网络也不会被大文件长时间占用，内存、带宽等资源也就节省下来了。</p>
+<p>这种“<strong>化整为零</strong>”的思路在HTTP协议里就是“<strong>chunked</strong>”分块传输编码，在响应报文里用头字段“<strong>Transfer-Encoding: chunked</strong>”来表示，意思是报文里的body部分不是一次性发过来的，而是分成了许多的块（chunk）逐个发送。</p>
+<p>这就好比是用魔法把大象变成“乐高积木”，拆散了逐个装进冰箱，到达目的地后再施法拼起来“满血复活”。</p>
+<p>分块传输也可以用于“流式数据”，例如由数据库动态生成的表单页面，这种情况下body数据的长度是未知的，无法在头字段“<strong>Content-Length</strong>”里给出确切的长度，所以也只能用chunked方式分块发送。</p>
+<p><strong>“Transfer-Encoding: chunked”和“Content-Length”这两个字段是互斥的</strong>，也就是说响应报文里这两个字段不能同时出现，一个响应报文的传输要么是长度已知，要么是长度未知（chunked），这一点你一定要记住。</p>
+<p>下面我们来看一下分块传输的编码规则，其实也很简单，同样采用了明文的方式，很类似响应头。</p>
+<ol>
+<li>每个分块包含两个部分，长度头和数据块；</li>
+<li>长度头是以CRLF（回车换行，即\r\n）结尾的一行明文，用16进制数字表示长度；</li>
+<li>数据块紧跟在长度头后，最后也用CRLF结尾，但数据不包含CRLF；</li>
+<li>最后用一个长度为0的块表示结束，即“0\r\n\r\n”。</li>
+</ol>
+<p>听起来好像有点难懂，看一下图就好理解了：</p>
+<p><img alt="image-20220921141733008" src="D:\MyStudy\http协议\http协议.assets\image-20220921141733008.png" /> </p>
+<h3 id="_57">范围请求</h3>
+<p>HTTP协议为了满足这样的需求，提出了“<strong>范围请求</strong>”（range requests）的概念，允许客户端在请求头里使用专用字段来表示只获取文件的一部分，相当于是<strong>客户端的“化整为零”</strong>。</p>
+<p>范围请求不是Web服务器必备的功能，可以实现也可以不实现，所以服务器必须在响应头里使用字段“<strong>Accept-Ranges: bytes</strong>”明确告知客户端：“我是支持范围请求的”。</p>
+<p>如果不支持的话该怎么办呢？服务器可以发送“Accept-Ranges: none”，或者干脆不发送“Accept-Ranges”字段，这样客户端就认为服务器没有实现范围请求功能，只能老老实实地收发整块文件了。</p>
+<p>请求头<strong>Range</strong>是HTTP范围请求的专用字段，格式是“<strong>bytes=x-y</strong>”，其中的x和y是以字节为单位的数据范围。</p>
+<p>要注意x、y表示的是“偏移量”，范围必须从0计数，例如前10个字节表示为“0-9”，第二个10字节表示为“10-19”，而“0-10”实际上是前11个字节。</p>
+<p>Range的格式也很灵活，起点x和终点y可以省略，能够很方便地表示正数或者倒数的范围。假设文件是100个字节，那么：</p>
+<ul>
+<li>“0-”表示从文档起点到文档终点，相当于“0-99”，即整个文件；</li>
+<li>“10-”是从第10个字节开始到文档末尾，相当于“10-99”；</li>
+<li>“-1”是文档的最后一个字节，相当于“99-99”；</li>
+<li>“-10”是从文档末尾倒数10个字节，相当于“90-99”。</li>
+</ul>
+<p>服务器收到Range字段后，需要做四件事。</p>
+<p>第一，它必须检查范围是否合法，比如文件只有100个字节，但请求“200-300”，这就是范围越界了。服务器就会返回状态码<strong>416</strong>，意思是“你的范围请求有误，我无法处理，请再检查一下”。</p>
+<p>第二，如果范围正确，服务器就可以根据Range头计算偏移量，读取文件的片段了，返回状态码“<strong>206 Partial Content</strong>”，和200的意思差不多，但表示body只是原数据的一部分。</p>
+<p>第三，服务器要添加一个响应头字段<strong>Content-Range</strong>，告诉片段的实际偏移量和资源的总大小，格式是“<strong>bytes x-y/length</strong>”，与Range头区别在没有“=”，范围后多了总长度。例如，对于“0-10”的范围请求，值就是“bytes 0-10/100”。</p>
+<p>最后剩下的就是发送数据了，直接把片段用TCP发给客户端，一个范围请求就算是处理完了。</p>
+<p>你可以用实验环境的URI“/16-2”来测试范围请求，它处理的对象是“/mime/a.txt”。不过我们不能用Chrome浏览器，因为它没有编辑HTTP请求头的功能（这点上不如Firefox方便），所以还是要用Telnet。</p>
+<p>如下面的这个请求使用Range字段获取了文件的前32个字节：</p>
+<pre><code class="language-http">GET /16-2 HTTP/1.1
+Host: www.chrono.com
+Range: bytes=0-31
+</code></pre>
+<p>返回的数据是（去掉了几个无关字段）：</p>
+<pre><code class="language-http">HTTP/1.1 206 Partial Content
+Content-Length: 32
+Accept-Ranges: bytes
+Content-Range: bytes 0-31/96
+
+// this is a plain text json doc
+</code></pre>
+<p>有了范围请求之后，HTTP处理大文件就更加轻松了，看视频时可以根据时间点计算出文件的Range，不用下载整个文件，直接精确获取片段所在的数据内容。</p>
+<p>不仅看视频的拖拽进度需要范围请求，常用的下载工具里的多段下载、断点续传也是基于它实现的，要点是：</p>
+<ul>
+<li>先发个HEAD，看服务器是否支持范围请求，同时获取文件的大小；</li>
+<li>开N个线程，每个线程使用Range字段划分出各自负责下载的片段，发请求传输数据；</li>
+<li>下载意外中断也不怕，不必重头再来一遍，只要根据上次的下载记录，用Range请求剩下的那一部分就可以了。</li>
+</ul>
+<h3 id="_58">多段数据</h3>
+<p>刚才说的范围请求一次只获取一个片段，其实它还支持在Range头里使用多个“x-y”，一次性获取多个片段数据。</p>
+<p>这种情况需要使用一种特殊的MIME类型：“<strong>multipart/byteranges</strong>”，表示报文的body是由多段字节序列组成的，并且还要用一个参数“<strong>boundary=xxx</strong>”给出段之间的分隔标记。</p>
+<p>多段数据的格式与分块传输也比较类似，但它需要用分隔标记boundary来区分不同的片段，可以通过图来对比一下。</p>
+<p><img alt="image-20220921144928296" src="D:\MyStudy\http协议\http协议.assets\image-20220921144928296.png" /> </p>
+<p>每一个分段必须以“- -boundary”开始（前面加两个“-”），之后要用“Content-Type”和“Content-Range”标记这段数据的类型和所在范围，然后就像普通的响应头一样以回车换行结束，再加上分段数据，最后用一个“- -boundary- -”（前后各有两个“-”）表示所有的分段结束。</p>
+<p>例如，我们在实验环境里用Telnet发出有两个范围的请求：</p>
+<pre><code class="language-apache">GET /16-2 HTTP/1.1
+Host: www.chrono.com
+Range: bytes=0-9, 20-29
+</code></pre>
+<p>得到的就会是下面这样：</p>
+<pre><code class="language-http">HTTP/1.1 206 Partial Content
+Content-Type: multipart/byteranges; boundary=00000000001
+Content-Length: 189
+Connection: keep-alive
+Accept-Ranges: bytes
+
+
+--00000000001
+Content-Type: text/plain
+Content-Range: bytes 0-9/96
+
+// this is
+--00000000001
+Content-Type: text/plain
+Content-Range: bytes 20-29/96
+
+ext json d
+--00000000001--
+</code></pre>
+<p>报文里的“- -00000000001”就是多段的分隔符，使用它客户端就可以很容易地区分出多段Range 数据。</p>
+<h3 id="_59">小结</h3>
+<p>今天我们学习了HTTP传输大文件相关的知识，在这里做一下简单小结：</p>
+<ol>
+<li>压缩HTML等文本文件是传输大文件最基本的方法；</li>
+<li>分块传输可以流式收发数据，节约内存和带宽，使用响应头字段“Transfer-Encoding: chunked”来表示，分块的格式是16进制长度头+数据块；</li>
+<li>范围请求可以只获取部分数据，即“分块请求”，实现视频拖拽或者断点续传，使用请求头字段“Range”和响应头字段“Content-Range”，响应状态码必须是206；</li>
+<li>也可以一次请求多个范围，这时候响应报文的数据类型是“multipart/byteranges”，body里的多个部分会用boundary字符串分隔。</li>
+</ol>
+<p>要注意这四种方法不是互斥的，而是可以混合起来使用，例如压缩后再分块传输，或者分段后再分块，实验环境的URI“/16-3”就模拟了后一种的情形，你可以自己用Telnet试一下。</p>
+<h3 id="http_11">十七、http连接管理</h3>
+<h3 id="_60">短连接</h3>
+<p>HTTP协议最初（0.9/1.0）是个非常简单的协议，通信过程也采用了简单的“请求-应答”方式。</p>
+<p>它底层的数据传输基于TCP/IP，每次发送请求前需要先与服务器建立连接，收到响应报文后会立即关闭连接。</p>
+<p>因为客户端与服务器的整个连接过程很短暂，不会与服务器保持长时间的连接状态，所以就被称为“<strong>短连接</strong>”（short-lived connections）。早期的HTTP协议也被称为是“<strong>无连接</strong>”的协议。</p>
+<p>短连接的缺点相当严重，因为在TCP协议里，建立连接和关闭连接都是非常“昂贵”的操作。TCP建立连接要有“三次握手”，发送3个数据包，需要1个RTT；关闭连接是“四次挥手”，4个数据包需要2个RTT。</p>
+<p>而HTTP的一次简单“请求-响应”通常只需要4个包，如果不算服务器内部的处理时间，最多是2个RTT。这么算下来，浪费的时间就是“3÷5=60%”，有三分之二的时间被浪费掉了，传输效率低得惊人。</p>
+<h3 id="_61">长连接</h3>
+<p>针对短连接暴露出的缺点，HTTP协议就提出了“<strong>长连接</strong>”的通信方式，也叫“持久连接”（persistent connections）、“连接保活”（keep alive）、“连接复用”（connection reuse）。</p>
+<p>其实解决办法也很简单，用的就是“<strong>成本均摊</strong>”的思路，既然TCP的连接和关闭非常耗时间，那么就把这个时间成本由原来的一个“请求-应答”均摊到多个“请求-应答”上。</p>
+<p>这样虽然不能改善TCP的连接效率，但基于“<strong>分母效应</strong>”，每个“请求-应答”的无效时间就会降低不少，整体传输效率也就提高了。</p>
+<p><img alt="image-20220921145548943" src="D:\MyStudy\http协议\http协议.assets\image-20220921145548943.png" /> </p>
+<h3 id="_62">连接相关的头字段</h3>
+<p>由于长连接对性能的改善效果非常显著，所以在HTTP/1.1中的连接都会默认启用长连接。</p>
+<p>我们可以在请求头里明确地要求使用长连接机制，使用的字段是<strong>Connection</strong>，值是“<strong>keep-alive</strong>”。</p>
+<p>不过不管客户端是否显式要求长连接，如果服务器支持长连接，它总会在响应报文里放一个“<strong>Connection: keep-alive</strong>”字段，告诉客户端：“我是支持长连接的，接下来就用这个TCP一直收发数据吧”。</p>
+<p>不过长连接也有一些小缺点，问题就出在它的“长”字上。</p>
+<p>因为TCP连接长时间不关闭，服务器必须在内存里保存它的状态，这就占用了服务器的资源。如果有大量的空闲长连接只连不发，就会很快耗尽服务器的资源，导致服务器无法为真正有需要的用户提供服务。</p>
+<p>所以，长连接也需要在恰当的时间关闭，不能永远保持与服务器的连接，这在客户端或者服务器都可以做到。</p>
+<p>在客户端，可以在请求头里加上“<strong>Connection: close</strong>”字段，告诉服务器：“这次通信后就关闭连接”。服务器看到这个字段，就知道客户端要主动关闭连接，于是在响应报文里也加上这个字段，发送之后就调用Socket API关闭TCP连接。</p>
+<p>服务器端通常不会主动关闭连接，但也可以使用一些策略。拿Nginx来举例，它有两种方式：</p>
+<ol>
+<li>使用“keepalive_timeout”指令，设置长连接的超时时间，如果在一段时间内连接上没有任何数据收发就主动断开连接，避免空闲连接占用系统资源。</li>
+<li>使用“keepalive_requests”指令，设置长连接上可发送的最大请求次数。比如设置成1000，那么当Nginx在这个连接上处理了1000个请求后，也会主动断开连接。</li>
+</ol>
+<p>另外，客户端和服务器都可以在报文里附加通用头字段“Keep-Alive: timeout=value”，限定长连接的超时时间。但这个字段的约束力并不强，通信的双方可能并不会遵守，所以不太常见。</p>
+<p>我们的实验环境配置了“keepalive_timeout 60”和“keepalive_requests 5”，意思是空闲连接最多60秒，最多发送5个请求。所以，如果连续刷新五次页面，就能看到响应头里的“Connection: close”了。</p>
+<h3 id="_63">队头阻塞</h3>
+<p>看完了短连接和长连接，接下来就要说到著名的“队头阻塞”（Head-of-line blocking，也叫“队首阻塞”）了。</p>
+<p>“队头阻塞”与短连接和长连接无关，而是由HTTP基本的“请求-应答”模型所导致的。</p>
+<p>因为HTTP规定报文必须是“一发一收”，这就形成了一个先进先出的“串行”队列。队列里的请求没有轻重缓急的优先级，只有入队的先后顺序，排在最前面的请求被最优先处理。</p>
+<p>如果队首的请求因为处理的太慢耽误了时间，那么队列里后面的所有请求也不得不跟着一起等待，结果就是其他的请求承担了不应有的时间成本。</p>
+<p><img alt="image-20220921150059599" src="D:\MyStudy\http协议\http协议.assets\image-20220921150059599.png" /> </p>
+<h3 id="_64">性能优化</h3>
+<p>因为在一条长连接中，“请求-应答”模型不能变，所以“队头阻塞”问题在HTTP/1.1里无法解决，只能缓解，有什么办法呢？</p>
+<ul>
+<li><strong>并发连接</strong></li>
+</ul>
+<p>“并发连接”（concurrent connections），也就是同时对<strong>一个域名</strong>发起<strong>多个长连接</strong>，用数量来解决质量的问题。</p>
+<ul>
+<li><strong>域名分片</strong></li>
+</ul>
+<p>“域名分片”（domain sharding）技术，还是用数量来解决质量的思路。</p>
+<p>HTTP协议和浏览器不是限制并发连接数量吗？好，那我就多开几个域名，比如shard1.chrono.com、shard2.chrono.com，而这些域名都指向同一台服务器www.chrono.com，这样实际长连接的数量就又上去了，真是“美滋滋”。不过实在是有点“上有政策，下有对策”的味道。</p>
+<h3 id="_65">小结</h3>
+<ol>
+<li>早期的HTTP协议使用短连接，收到响应后就立即关闭连接，效率很低；</li>
+<li>HTTP/1.1默认启用长连接，在一个连接上收发多个请求响应，提高了传输效率；</li>
+<li>服务器会发送“Connection: keep-alive”字段表示启用了长连接；</li>
+<li>报文头里如果有“Connection: close”就意味着长连接即将关闭；</li>
+<li>过多的长连接会占用服务器资源，所以服务器会用一些策略有选择地关闭长连接；</li>
+<li>“队头阻塞”问题会导致性能下降，可以用“并发连接”和“域名分片”技术缓解。</li>
+</ol>
+<h3 id="_66">十八、重定向与跳转</h3>
+<p>点击页面“链接”时的跳转是怎样的呢？具体一点，比如在Nginx的主页上点了一下“download”链接，会发生什么呢？</p>
+<p>结合之前的课程，稍微思考一下你就能得到答案：浏览器首先要解析链接文字里的URI。</p>
+<pre><code class="language-awk">http://nginx.org/en/download.html
+</code></pre>
+<p>再用这个URI发起一个新的HTTP请求，获取响应报文后就会切换显示内容，渲染出新URI指向的页面。</p>
+<p>这样的跳转动作是由浏览器的使用者主动发起的，可以称为“<strong>主动跳转</strong>”，但还有一类跳转是由服务器来发起的，浏览器使用者无法控制，相对地就可以称为“<strong>被动跳转</strong>”，这在HTTP协议里有个专门的名词，叫做“<strong>重定向</strong>”（Redirection）。</p>
+<h3 id="_67">重定向的过程</h3>
+<p>先在实验环境里看一下重定向的过程吧，用Chrome访问URI “/18-1”，它会使用302立即跳转到“/index.html”。</p>
+<p><img alt="image-20220921152218752" src="D:\MyStudy\http协议\http协议.assets\image-20220921152218752.png" /> </p>
+<p>从这个实验可以看到，这一次“重定向”实际上发送了两次HTTP请求，第一个请求返回了302，然后第二个请求就被重定向到了“/index.html”。但如果不用开发者工具的话，你是完全看不到这个跳转过程的，也就是说，重定向是“用户无感知”的。</p>
+<p>我们再来看看第一个请求返回的响应报文：</p>
+<p><img alt="image-20220921152245122" src="D:\MyStudy\http协议\http协议.assets\image-20220921152245122.png" /> </p>
+<h3 id="_68">小结</h3>
+<ol>
+<li>重定向是服务器发起的跳转，要求客户端改用新的URI重新发送请求，通常会自动进行，用户是无感知的；</li>
+<li>301/302是最常用的重定向状态码，分别是“永久重定向”和“临时重定向”；</li>
+<li>响应头字段Location指示了要跳转的URI，可以用绝对或相对的形式；</li>
+<li>重定向可以把一个URI指向另一个URI，也可以把多个URI指向同一个URI，用途很多；</li>
+<li>使用重定向时需要当心性能损耗，还要避免出现循环跳转。</li>
+</ol>
+<h2 id="cookie">十九、Cookie</h2>
+<p>HTTP的Cookie机制，既然服务器没有记住用户的功能，那就在外部想办法记住。相当于是服务器给每个客户端都贴上一张小纸条，上面写了一些只有服务器才能理解的数据，需要的时候客户端把这些信息发给服务器，服务器看到Cookie，就能够认出对方是谁了。</p>
+<h3 id="cookie_1">Cookie的工作过程</h3>
+<p>那么，Cookie这张小纸条是怎么传递的呢？</p>
+<p>这要用到两个字段：响应头字段<strong>Set-Cookie</strong>和请求头字段<strong>Cookie</strong>。</p>
+<p>当用户通过浏览器第一次访问服务器的时候，服务器肯定是不知道他的身份的。所以，就要创建一个独特的身份标识数据，格式是“<strong>key=value</strong>”，然后放进Set-Cookie字段里，随着响应报文一同发给浏览器。</p>
+<p>浏览器收到响应报文，看到里面有Set-Cookie，知道这是服务器给的身份标识，于是就保存起来，下次再请求的时候就自动把这个值放进Cookie字段里发给服务器。</p>
+<p>因为第二次请求里面有了Cookie字段，服务器就知道这个用户不是新人，之前来过，就可以拿出Cookie里的值，识别出用户的身份，然后提供个性化的服务。</p>
+<p>不过因为服务器的“记忆能力”实在是太差，一张小纸条经常不够用。所以，服务器有时会在响应头里添加多个Set-Cookie，存储多个“key=value”。但浏览器这边发送时不需要用多个Cookie字段，只要在一行里用“;”隔开就行。</p>
+<p><img alt="image-20220922085624566" src="D:\MyStudy\http协议\http协议.assets\image-20220922085624566.png" /> </p>
+<p>Cookie是由浏览器负责存储的，而不是操作系统。所以，它是“浏览器绑定”的，只能在本浏览器内生效。</p>
+<p>如果你换个浏览器或者换台电脑，新的浏览器里没有服务器对应的Cookie，就好像是脱掉了贴着纸条的衣服，“健忘”的服务器也就认不出来了，只能再走一遍Set-Cookie流程。</p>
+<h3 id="cookie_2">Cookie的属性</h3>
+<p>说到这里，你应该知道了，Cookie就是服务器委托浏览器存储在客户端里的一些数据，而这些数据通常都会记录用户的关键识别信息。所以，就需要在“key=value”外再用一些手段来保护，防止外泄或窃取，这些手段就是Cookie的属性。</p>
+<p>下面这个截图是实验环境“/19-2”的响应头，我来对着这个实际案例讲一下都有哪些常见的Cookie属性。</p>
+<p><img alt="image-20220922085817139" src="D:\MyStudy\http协议\http协议.assets\image-20220922085817139.png" /> </p>
+<p>首先，我们应该<strong>设置Cookie的生存周期</strong>，也就是它的有效期，让它只能在一段时间内可用，就像是食品的“保鲜期”，一旦超过这个期限浏览器就认为是Cookie失效，在存储里删除，也不会发送给服务器。</p>
+<p>Cookie的有效期可以使用Expires和Max-Age两个属性来设置。</p>
+<p>“<strong>Expires</strong>”俗称“过期时间”，用的是绝对时间点，可以理解为“截止日期”（deadline）。“<strong>Max-Age</strong>”用的是相对时间，单位是秒，浏览器用收到报文的时间点再加上Max-Age，就可以得到失效的绝对时间。</p>
+<p>Expires和Max-Age可以同时出现，两者的失效时间可以一致，也可以不一致，但浏览器会优先采用Max-Age计算失效期。</p>
+<p>比如在这个例子里，Expires标记的过期时间是“GMT 2019年6月7号8点19分”，而Max-Age则只有10秒，如果现在是6月6号零点，那么Cookie的实际有效期就是“6月6号零点过10秒”。</p>
+<p>其次，我们需要<strong>设置Cookie的作用域</strong>，让浏览器仅发送给特定的服务器和URI，避免被其他网站盗用。</p>
+<p>作用域的设置比较简单，“<strong>Domain</strong>”和“<strong>Path</strong>”指定了Cookie所属的域名和路径，浏览器在发送Cookie前会从URI中提取出host和path部分，对比Cookie的属性。如果不满足条件，就不会在请求头里发送Cookie。</p>
+<p>使用这两个属性可以为不同的域名和路径分别设置各自的Cookie，比如“/19-1”用一个Cookie，“/19-2”再用另外一个Cookie，两者互不干扰。不过现实中为了省事，通常Path就用一个“/”或者直接省略，表示域名下的任意路径都允许使用Cookie，让服务器自己去挑。</p>
+<p>最后要考虑的就是<strong>Cookie的安全性</strong>了，尽量不要让服务器以外的人看到。</p>
+<p>写过前端的同学一定知道，在JS脚本里可以用document.cookie来读写Cookie数据，这就带来了安全隐患，有可能会导致“跨站脚本”（XSS）攻击窃取数据。</p>
+<p>属性“<strong>HttpOnly</strong>”会告诉浏览器，此Cookie只能通过浏览器HTTP协议传输，禁止其他方式访问，浏览器的JS引擎就会禁用document.cookie等一切相关的API，脚本攻击也就无从谈起了。</p>
+<p>另一个属性“<strong>SameSite</strong>”可以防范“跨站请求伪造”（XSRF）攻击，设置成“SameSite=Strict”可以严格限定Cookie不能随着跳转链接跨站发送，而“SameSite=Lax”则略宽松一点，允许GET/HEAD等安全方法，但禁止POST跨站发送。</p>
+<p>还有一个属性叫“<strong>Secure</strong>”，表示这个Cookie仅能用HTTPS协议加密传输，明文的HTTP协议会禁止发送。但Cookie本身不是加密的，浏览器里还是以明文的形式存在。</p>
+<p>Chrome开发者工具是查看Cookie的有力工具，在“Network-Cookies”里可以看到单个页面Cookie的各种属性，另一个“Application”面板里则能够方便地看到全站的所有Cookie。</p>
+<p><img alt="image-20220922085854770" src="D:\MyStudy\http协议\http协议.assets\image-20220922085854770.png" /> </p>
+<h3 id="cookie_3">Cookie的应用</h3>
+<p>现在回到我们最开始的话题，有了Cookie，服务器就有了“记忆能力”，能够保存“状态”，那么应该如何使用Cookie呢？</p>
+<p>Cookie最基本的一个用途就是<strong>身份识别</strong>，保存用户的登录信息，实现会话事务。</p>
+<p>比如，你用账号和密码登录某电商，登录成功后网站服务器就会发给浏览器一个Cookie，内容大概是“name=yourid”，这样就成功地把身份标签贴在了你身上。</p>
+<p>之后你在网站里随便访问哪件商品的页面，浏览器都会自动把身份Cookie发给服务器，所以服务器总会知道你的身份，一方面免去了重复登录的麻烦，另一方面也能够自动记录你的浏览记录和购物下单（在后台数据库或者也用Cookie），实现了“状态保持”。</p>
+<p>Cookie的另一个常见用途是<strong>广告跟踪</strong>。</p>
+<p>你上网的时候肯定看过很多的广告图片，这些图片背后都是广告商网站（例如Google），它会“偷偷地”给你贴上Cookie小纸条，这样你上其他的网站，别的广告就能用Cookie读出你的身份，然后做行为分析，再推给你广告。</p>
+<p>这种Cookie不是由访问的主站存储的，所以又叫“第三方Cookie”（third-party cookie）。如果广告商势力很大，广告到处都是，那么就比较“恐怖”了，无论你走到哪里它都会通过Cookie认出你来，实现广告“精准打击”。</p>
+<p>为了防止滥用Cookie搜集用户隐私，互联网组织相继提出了DNT（Do Not Track）和P3P（Platform for Privacy Preferences Project），但实际作用不大。</p>
+<h3 id="_69">小结</h3>
+<p>今天我们学习了HTTP里的Cookie知识。虽然现在已经出现了多种Local Web Storage技术，能够比Cookie存储更多的数据，但Cookie仍然是最通用、兼容性最强的客户端数据存储手段。</p>
+<p>简单小结一下今天的内容：</p>
+<ol>
+<li>Cookie是服务器委托浏览器存储的一些数据，让服务器有了“记忆能力”；</li>
+<li>响应报文使用Set-Cookie字段发送“key=value”形式的Cookie值；</li>
+<li>请求报文里用Cookie字段发送多个Cookie值；</li>
+<li>为了保护Cookie，还要给它设置有效期、作用域等属性，常用的有Max-Age、Expires、Domain、HttpOnly等；</li>
+<li>Cookie最基本的用途是身份识别，实现有状态的会话事务。</li>
+</ol>
+<p>还要提醒你一点，因为Cookie并不属于HTTP标准（RFC6265，而不是RFC2616/7230），所以语法上与其他字段不太一致，使用的分隔符是“;”，与Accept等字段的“,”不同，小心不要弄错了。</p>
+<h2 id="cache">二十、缓存（Cache）</h2>
+<h3 id="_70">服务器的缓存控制</h3>
+<p>服务器标记资源有效期使用的头字段是“<strong>Cache-Control</strong>”，里面的值“<strong>max-age=30</strong>”就是资源的有效时间，相当于告诉浏览器，“这个页面只能缓存30秒，之后就算是过期，不能用。”</p>
+<p><img alt="image-20220922090953038" src="D:\MyStudy\http协议\http协议.assets\image-20220922090953038.png" /> </p>
+<p>“Cache-Control”字段里的“max-age”和上一讲里Cookie有点像，都是标记资源的有效期。</p>
+<p>但我必须提醒你注意，这里的max-age是“<strong>生存时间</strong>”（又叫“新鲜度”“缓存寿命”，类似TTL，Time-To-Live），时间的计算起点是响应报文的创建时刻（即Date字段，也就是离开服务器的时刻），而不是客户端收到报文的时刻，也就是说包含了在链路传输过程中所有节点所停留的时间。</p>
+<p>比如，服务器设定“max-age=5”，但因为网络质量很糟糕，等浏览器收到响应报文已经过去了4秒，那么这个资源在客户端就最多能够再存1秒钟，之后就会失效。</p>
+<p>“max-age”是HTTP缓存控制最常用的属性，此外在响应报文里还可以用其他的属性来更精确地指示浏览器应该如何使用缓存：</p>
+<ul>
+<li>no-store：<strong>不允许缓存</strong>，用于某些变化非常频繁的数据，例如秒杀页面；</li>
+<li>no-cache：它的字面含义容易与no-store搞混，实际的意思并不是不允许缓存，而是<strong>可以缓存</strong>，但在使用之前必须要去服务器验证是否过期，是否有最新的版本；</li>
+<li>must-revalidate：又是一个和no-cache相似的词，它的意思是如果缓存不过期就可以继续使用，但过期了如果还想用就必须去服务器验证。</li>
+</ul>
+<h3 id="_71">客户端的缓存控制</h3>
+<p>现在冰箱里已经有了“缓存”的西瓜，是不是就可以直接开吃了呢？</p>
+<p>你可以在Chrome里点几次“刷新”按钮，估计你会失望，页面上的ID一直在变，根本不是缓存的结果，明明说缓存30秒，怎么就不起作用呢？</p>
+<p>其实不止服务器可以发“Cache-Control”头，浏览器也可以发“Cache-Control”，也就是说请求-应答的双方都可以用这个字段进行缓存控制，互相协商缓存的使用策略。</p>
+<p>当你点“刷新”按钮的时候，浏览器会在请求头里加一个“<strong>Cache-Control: max-age=0</strong>”。因为max-age是“<strong>生存时间</strong>”，max-age=0的意思就是“我要一个最最新鲜的西瓜”，而本地缓存里的数据至少保存了几秒钟，所以浏览器就不会使用缓存，而是向服务器发请求。服务器看到max-age=0，也就会用一个最新生成的报文回应浏览器。</p>
+<p>Ctrl+F5的“强制刷新”又是什么样的呢？</p>
+<p>它其实是发了一个“<strong>Cache-Control: no-cache</strong>”，含义和“max-age=0”基本一样，就看后台的服务器怎么理解，通常两者的效果是相同的。</p>
+<p><img alt="image-20220922092753781" src="D:\MyStudy\http协议\http协议.assets\image-20220922092753781.png" /> </p>
+<h3 id="_72">条件请求</h3>
+<p>浏览器用“Cache-Control”做缓存控制只能是刷新数据，不能很好地利用缓存数据，又因为缓存会失效，使用前还必须要去服务器验证是否是最新版。</p>
+<p>那么该怎么做呢？</p>
+<p>浏览器可以用两个连续的请求组成“验证动作”：先是一个HEAD，获取资源的修改时间等元信息，然后与缓存数据比较，如果没有改动就使用缓存，节省网络流量，否则就再发一个GET请求，获取最新的版本。</p>
+<p>但这样的两个请求网络成本太高了，所以HTTP协议就定义了一系列“<strong>If</strong>”开头的“<strong>条件请求</strong>”字段，专门用来检查验证资源是否过期，把两个请求才能完成的工作合并在一个请求里做。而且，验证的责任也交给服务器，浏览器只需“坐享其成”。</p>
+<p>条件请求一共有5个头字段，我们最常用的是“<strong>if-Modified-Since</strong>”和“<strong>If-None-Match</strong>”这两个。需要第一次的响应报文预先提供“<strong>Last-modified</strong>”和“<strong>ETag</strong>”，然后第二次请求时就可以带上缓存里的原值，验证资源是否是最新的。</p>
+<p>如果资源没有变，服务器就回应一个“<strong>304 Not Modified</strong>”，表示缓存依然有效，浏览器就可以更新一下有效期，然后放心大胆地使用缓存了。</p>
+<p><img alt="image-20220922093232671" src="D:\MyStudy\http协议\http协议.assets\image-20220922093232671.png" /> </p>
+<p>“Last-modified”很好理解，就是文件的最后修改时间。ETag是什么呢？</p>
+<p>ETag是“实体标签”（Entity Tag）的缩写，<strong>是资源的一个唯一标识</strong>，主要是用来解决修改时间无法准确区分文件变化的问题。</p>
+<p>比如，一个文件在一秒内修改了多次，但因为修改时间是秒级，所以这一秒内的新版本无法区分。</p>
+<p>再比如，一个文件定期更新，但有时会是同样的内容，实际上没有变化，用修改时间就会误以为发生了变化，传送给浏览器就会浪费带宽。</p>
+<p>使用ETag就可以精确地识别资源的变动情况，让浏览器能够更有效地利用缓存。</p>
+<p>ETag还有“强”“弱”之分。</p>
+<p>强ETag要求资源在字节级别必须完全相符，弱ETag在值前有个“W/”标记，只要求资源在语义上没有变化，但内部可能会有部分发生了改变（例如HTML里的标签顺序调整，或者多了几个空格）。</p>
+<p>再来看看实验环境的URI “/20-2”。它为资源增加了ETag字段，刷新页面时浏览器就会同时发送缓存控制头“max-age=0”和条件请求头“If-None-Match”，如果缓存有效服务器就会返回304：</p>
+<p><img alt="image-20220922104416686" src="D:\MyStudy\http协议\http协议.assets\image-20220922104416686.png" /> </p>
+<p>条件请求里其他的三个头字段是“If-Unmodified-Since”“If-Match”和“If-Range”，其实只要你掌握了“if-Modified-Since”和“If-None-Match”，可以轻易地“举一反三”。</p>
+<h3 id="_73">小结</h3>
+<ol>
+<li>缓存是优化系统性能的重要手段，HTTP传输的每一个环节中都可以有缓存；</li>
+<li>服务器使用“Cache-Control”设置缓存策略，常用的是“max-age”，表示资源的有效期；</li>
+<li>浏览器收到数据就会存入缓存，如果没过期就可以直接使用，过期就要去服务器验证是否仍然可用；</li>
+<li>验证资源是否失效需要使用“条件请求”，常用的是“if-Modified-Since”和“If-None-Match”，收到304就可以复用缓存里的资源；</li>
+<li>验证资源是否被修改的条件有两个：“Last-modified”和“ETag”，需要服务器预先在响应报文里设置，搭配条件请求使用；</li>
+<li>浏览器也可以发送“Cache-Control”字段，使用“max-age=0”或“no_cache”刷新数据。</li>
+</ol>
+<p>HTTP缓存看上去很复杂，但基本原理说白了就是一句话：“没有消息就是好消息”，“没有请求的请求，才是最快的请求。”</p>
+<h2 id="http_12">二十一、http代理服务</h2>
+<p>HTTP协议严格遵循了HTTP的“请求-应答”模型，协议中只有两个互相通信的角色，分别是“请求方”浏览器（客户端）和“应答方”服务器。</p>
+<p>今天，我们要在这个模型里引入一个新的角色，那就是HTTP代理。</p>
+<p>引入HTTP代理后，原来简单的双方通信就变复杂了一些，加入了一个或者多个中间人，但整体上来看，还是一个有顺序关系的链条，而且链条里相邻的两个角色仍然是简单的一对一通信，不会出现越级的情况。</p>
+<p><img alt="image-20220922104710376" src="D:\MyStudy\http协议\http协议.assets\image-20220922104710376.png" /> </p>
+<p>链条的起点还是客户端（也就是浏览器），中间的角色被称为代理服务器（proxy server），链条的终点被称为源服务器（origin server），意思是数据的“源头”“起源”。</p>
+<h3 id="_74">代理服务</h3>
+<p>代理，HTTP协议里对它并没有什么特别的描述，它就是在客户端和服务器原本的通信链路中插入的一个中间环节，也是一台服务器，但提供的是“代理服务”。</p>
+<p>所谓的“代理服务”就是指服务本身不生产内容，而是处于中间位置转发上下游的请求和响应，具有双重身份：面向下游的用户时，表现为服务器，代表源服务器响应客户端的请求；而面向上游的源服务器时，又表现为客户端，代表客户端发送请求。</p>
+<h3 id="_75">代理的作用</h3>
+<p>为什么要有代理呢？换句话说，代理能干什么、带来什么好处呢？</p>
+<p>你也许听过这样一句至理名言：“计算机科学领域里的任何问题，都可以通过引入一个中间层来解决”（在这句话后面还可以再加上一句“如果一个中间层解决不了问题，那就再加一个中间层”）。</p>
+<p>TCP/IP协议栈是这样，而代理也是这样。</p>
+<p>由于代理处在HTTP通信过程的中间位置，相应地就对上屏蔽了真实客户端，对下屏蔽了真实服务器，简单的说就是“<strong>欺上瞒下</strong>”。在这个中间层的“小天地”里就可以做很多的事情，为HTTP协议增加更多的灵活性，实现客户端和服务器的“双赢”。</p>
+<p>代理最基本的一个功能是<strong>负载均衡</strong>。因为在面向客户端时屏蔽了源服务器，客户端看到的只是代理服务器，源服务器究竟有多少台、是哪些IP地址都不知道。于是代理服务器就可以掌握请求分发的“大权”，决定由后面的哪台服务器来响应请求。</p>
+<p><img alt="image-20220922105235716" src="D:\MyStudy\http协议\http协议.assets\image-20220922105235716.png" /> </p>
+<p>代理中常用的负载均衡算法你应该也有所耳闻吧，比如轮询、一致性哈希等等，这些算法的目标都是尽量把外部的流量合理地分散到多台源服务器，提高系统的整体资源利用率和性能。</p>
+<p>在负载均衡的同时，代理服务还可以执行更多的功能，比如：</p>
+<ul>
+<li><strong>健康检查</strong>：使用“心跳”等机制监控后端服务器，发现有故障就及时“踢出”集群，保证服务高可用；</li>
+<li><strong>安全防护</strong>：保护被代理的后端服务器，限制IP地址或流量，抵御网络攻击和过载；</li>
+<li><strong>加密卸载</strong>：对外网使用SSL/TLS加密通信认证，而在安全的内网不加密，消除加解密成本；</li>
+<li><strong>数据过滤</strong>：拦截上下行的数据，任意指定策略修改请求或者响应；</li>
+<li><strong>内容缓存</strong>：暂存、复用服务器响应，这个与<a href="https://time.geekbang.org/column/article/106804">第20讲</a>密切相关，我们稍后再说。</li>
+</ul>
+<h3 id="_76">代理相关头字段</h3>
+<p>代理的好处很多，但因为它“欺上瞒下”的特点，隐藏了真实客户端和服务器，如果双方想要获得这些“丢失”的原始信息，该怎么办呢？</p>
+<p>首先，代理服务器需要用字段“<strong>Via</strong>”标明代理的身份。</p>
+<p>Via是一个通用字段，请求头或响应头里都可以出现。每当报文经过一个代理节点，代理服务器就会把自身的信息追加到字段的末尾，就像是经手人盖了一个章。</p>
+<p>如果通信链路中有很多中间代理，就会在Via里形成一个链表，这样就可以知道报文究竟走过了多少个环节才到达了目的地。</p>
+<p>例如下图中有两个代理：proxy1和proxy2，客户端发送请求会经过这两个代理，依次添加就是“Via: proxy1, proxy2”，等到服务器返回响应报文的时候就要反过来走，头字段就是“Via: proxy2, proxy1”。</p>
+<p><img alt="image-20220922110159485" src="D:\MyStudy\http协议\http协议.assets\image-20220922110159485.png" /> </p>
+<p>Via字段只解决了客户端和源服务器判断是否存在代理的问题，还不能知道对方的真实信息。</p>
+<p>但服务器的IP地址应该是保密的，关系到企业的内网安全，所以一般不会让客户端知道。不过反过来，通常服务器需要知道客户端的真实IP地址，方便做访问控制、用户画像、统计分析。</p>
+<p>可惜的是HTTP标准里并没有为此定义头字段，但已经出现了很多“事实上的标准”，最常用的两个头字段是“<strong>X-Forwarded-For</strong>”和“<strong>X-Real-IP</strong>”。</p>
+<p>“X-Forwarded-For”的字面意思是“为谁而转发”，形式上和“Via”差不多，也是每经过一个代理节点就会在字段里追加一个信息。但“Via”追加的是代理主机名（或者域名），而“X-Forwarded-For”追加的是请求方的IP地址。所以，在字段里最左边的IP地址就是客户端的地址。</p>
+<p>“X-Real-IP”是另一种获取客户端真实IP的手段，它的作用很简单，就是记录客户端IP地址，没有中间的代理信息，相当于是“X-Forwarded-For”的简化版。如果客户端和源服务器之间只有一个代理，那么这两个字段的值就是相同的。</p>
+<p>我们的实验环境实现了一个反向代理，访问“http://www.chrono.com/21-1”，它会转而访问“<a href="http://origin.io/">http://origin.io</a>”。这里的“origin.io”就是源站，它会在响应报文里输出“Via”“X-Forwarded-For”等代理头字段信息：</p>
+<p><img alt="image-20220922110637330" src="D:\MyStudy\http协议\http协议.assets\image-20220922110637330.png" /> </p>
+<p>单从浏览器的页面上很难看出代理做了哪些工作，因为代理的转发都在后台不可见，所以我把这个过程用Wireshark抓了一个包：</p>
+<p><img alt="image-20220922111151101" src="D:\MyStudy\http协议\http协议.assets\image-20220922111151101.png" /> </p>
+<p>从抓包里就可以清晰地看出代理与客户端、源服务器的通信过程：</p>
+<ol>
+<li>客户端55061先用三次握手连接到代理的80端口，然后发送GET请求；</li>
+<li>代理不直接生产内容，所以就代表客户端，用55063端口连接到源服务器，也是三次握手；</li>
+<li>代理成功连接源服务器后，发出了一个HTTP/1.0 的GET请求；</li>
+<li>因为HTTP/1.0默认是短连接，所以源服务器发送响应报文后立即用四次挥手关闭连接；</li>
+<li>代理拿到响应报文后再发回给客户端，完成了一次代理服务。</li>
+</ol>
+<p>在这个实验中，你可以看到除了“X-Forwarded-For”和“X-Real-IP”，还出现了两个字段：“X-Forwarded-Host”和“X-Forwarded-Proto”，它们的作用与“X-Real-IP”类似，只记录客户端的信息，分别是客户端请求的原始域名和原始协议名。</p>
+<h3 id="_77">代理协议</h3>
+<p>有了“X-Forwarded-For”等头字段，源服务器就可以拿到准确的客户端信息了。但对于代理服务器来说它并不是一个最佳的解决方案。</p>
+<p>因为通过“X-Forwarded-For”操作代理信息必须要解析HTTP报文头，这对于代理来说成本比较高，原本只需要简单地转发消息就好，而现在却必须要费力解析数据再修改数据，会降低代理的转发性能。</p>
+<p>另一个问题是“X-Forwarded-For”等头必须要修改原始报文，而有些情况下是不允许甚至不可能的（比如使用HTTPS通信被加密）。</p>
+<p>所以就出现了一个专门的“代理协议”（The PROXY protocol），它由知名的代理软件HAProxy所定义，也是一个“事实标准”，被广泛采用（注意并不是RFC）。</p>
+<p>“代理协议”有v1和v2两个版本，v1和HTTP差不多，也是明文，而v2是二进制格式。今天只介绍比较好理解的v1，它在HTTP报文前增加了一行ASCII码文本，相当于又多了一个头。</p>
+<p>这一行文本其实非常简单，开头必须是“PROXY”五个大写字母，然后是“TCP4”或者“TCP6”，表示客户端的IP地址类型，再后面是请求方地址、应答方地址、请求方端口号、应答方端口号，最后用一个回车换行（\r\n）结束。</p>
+<p>例如下面的这个例子，在GET请求行前多出了PROXY信息行，客户端的真实IP地址是“1.1.1.1”，端口号是55555。</p>
+<pre><code class="language-http">PROXY TCP4 1.1.1.1 2.2.2.2 55555 80\r\n
+GET / HTTP/1.1\r\n
+Host: www.xxx.com\r\n
+\r\n
+</code></pre>
+<p>服务器看到这样的报文，只要解析第一行就可以拿到客户端地址，不需要再去理会后面的HTTP数据，省了很多事情。</p>
+<p>不过代理协议并不支持“X-Forwarded-For”的链式地址形式，所以拿到客户端地址后再如何处理就需要代理服务器与后端自行约定。</p>
+<h3 id="_78">小结</h3>
+<ol>
+<li>HTTP代理就是客户端和服务器通信链路中的一个中间环节，为两端提供“代理服务”；</li>
+<li>代理处于中间层，为HTTP处理增加了更多的灵活性，可以实现负载均衡、安全防护、数据过滤等功能；</li>
+<li>代理服务器需要使用字段“Via”标记自己的身份，多个代理会形成一个列表；</li>
+<li>如果想要知道客户端的真实IP地址，可以使用字段“X-Forwarded-For”和“X-Real-IP”；</li>
+<li>专门的“代理协议”可以在不改动原始报文的情况下传递客户端的真实IP。</li>
+</ol>
+<h2 id="_79">缓存代理</h2>
+<p><strong>代理</strong>”，也就是支持缓存控制的代理服务。</p>
+<p>之前谈到缓存时，主要讲了客户端（浏览器）上的缓存控制，它能够减少响应时间、节约带宽，提升客户端的用户体验。</p>
+<p>但HTTP传输链路上，不只是客户端有缓存，服务器上的缓存也是非常有价值的，可以让请求不必走完整个后续处理流程，“就近”获得响应结果。</p>
+<p>特别是对于那些“读多写少”的数据，例如突发热点新闻、爆款商品的详情页，一秒钟内可能有成千上万次的请求。即使仅仅缓存数秒钟，也能够把巨大的访问流量挡在外面，让RPS（request per second）降低好几个数量级，减轻应用服务器的并发压力，对性能的改善是非常显著的。</p>
+<p>HTTP的服务器缓存功能主要由代理服务器来实现（即缓存代理），而源服务器系统内部虽然也经常有各种缓存（如Memcache、Redis、Varnish等），但与HTTP没有太多关系，所以这里暂且不说。</p>
+<h3 id="_80">缓存代理服务</h3>
+<p><img alt="image-20220922113834524" src="D:\MyStudy\http协议\http协议.assets\image-20220922113834524.png" /> </p>
+<p>在没有缓存的时候，代理服务器每次都是直接转发客户端和服务器的报文，中间不会存储任何数据，只有最简单的中转功能。</p>
+<p>加入了缓存后就不一样了。</p>
+<p>代理服务收到源服务器发来的响应数据后需要做两件事。第一个当然是把报文转发给客户端，而第二个就是把报文存入自己的Cache里。</p>
+<p>下一次再有相同的请求，代理服务器就可以直接发送304或者缓存数据，不必再从源服务器那里获取。这样就降低了客户端的等待时间，同时节约了源服务器的网络带宽。</p>
+<p>在HTTP的缓存体系中，缓存代理的身份十分特殊，它“既是客户端，又是服务器”，同时也“既不是客户端，又不是服务器”。</p>
+<p>说它“即是客户端又是服务器”，是因为它面向源服务器时是客户端，在面向客户端时又是服务器，所以它即可以用客户端的缓存控制策略也可以用服务器端的缓存控制策略，也就是说它可以同时使用第20讲的各种“Cache-Control”属性。</p>
+<p>但缓存代理也“即不是客户端又不是服务器”，因为它只是一个数据的“中转站”，并不是真正的数据消费者和生产者，所以还需要有一些新的“Cache-Control”属性来对它做特别的约束。</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.instant", "navigation.tabs", "search.highlight", "content.code.annotate"], "search": "../../assets/javascripts/workers/search.973d3a69.min.js", "tags": null, "translations": {"clipboard.copied": "\u5df2\u590d\u5236", "clipboard.copy": "\u590d\u5236", "search.result.more.one": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.more.other": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 # \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.none": "\u6ca1\u6709\u627e\u5230\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.one": "\u627e\u5230 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.other": "# \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.placeholder": "\u952e\u5165\u4ee5\u5f00\u59cb\u641c\u7d22", "search.result.term.missing": "\u7f3a\u5c11", "select.version": "\u9009\u62e9\u5f53\u524d\u7248\u672c"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.f55a23d4.min.js"></script>
+      
+    
+  </body>
+</html>

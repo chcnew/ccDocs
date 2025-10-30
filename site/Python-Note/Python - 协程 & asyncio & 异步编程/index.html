@@ -1,0 +1,1582 @@
+
+<!doctype html>
+<html lang="zh" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="个人知识笔记与技术文档">
+      
+      
+        <meta name="author" content="HC">
+      
+      
+        <link rel="canonical" href="https://chcnew.github.io/mydocs/Python-Note/Python%20-%20%E5%8D%8F%E7%A8%8B%20%26%20asyncio%20%26%20%E5%BC%82%E6%AD%A5%E7%BC%96%E7%A8%8B/">
+      
+      
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.22">
+    
+    
+      
+        <title>协程 & asyncio & 异步编程 - CC学习文档库</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.84d31ad4.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    <body dir="ltr">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#asyncio" class="md-skip">
+          跳转至
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="页眉">
+    <a href="../.." title="CC学习文档库" class="md-header__button md-logo" aria-label="CC学习文档库" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            CC学习文档库
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              协程 &amp; asyncio &amp; 异步编程
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="搜索" placeholder="搜索" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="查找">
+        
+        <button type="reset" class="md-search__icon md-icon" title="清空当前内容" aria-label="清空当前内容" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            正在初始化搜索引擎
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="标签" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../.." class="md-tabs__link">
+        
+  
+  
+    
+  
+  首页
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../Python-%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/" class="md-tabs__link">
+          
+  
+  
+  Python 学习笔记
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../FastAPI-Note/" class="md-tabs__link">
+          
+  
+  
+  FastAPI 系列
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="导航栏" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="CC学习文档库" class="md-nav__button md-logo" aria-label="CC学习文档库" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    CC学习文档库
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    首页
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Python 学习笔记
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            Python 学习笔记
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Python-%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    高级
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../DRF-Note/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    高级
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    FastAPI 系列
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            FastAPI 系列
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../FastAPI-Note/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    入门->高级
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="目录">
+  
+  
+  
+    
+  
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="asyncio">协程 &amp; asyncio &amp; 异步编程</h1>
+<p>为什么要学习？ --&gt; 提升性能</p>
+<ul>
+<li>异步非阻塞、asyncio</li>
+<li>异步框架：tornado、fastapi、django&gt;=3.x（asgi应用）、aiohttp</li>
+</ul>
+<p>学习内容：</p>
+<ul>
+<li>协程</li>
+<li>异步编程模块asyncio</li>
+<li>实战案例</li>
+</ul>
+<h1 id="_1">一、协程</h1>
+<p>协程(Coroutine)不是计算机提供的，是一种人为描述的技术；协程，也可以被称为微线程，是一种用户态内的上下文切换技术。</p>
+<p>简而言之，其实就是通过一个线程实现代码块相互切换执行。例如：</p>
+<pre><code class="language-python">def func1():
+    print(1)
+    ...
+    print(2)
+
+def func2():
+    print(3)
+    ...
+    print(4)
+
+
+func1()
+func2()
+
+</code></pre>
+<p>协程具体实现模块：</p>
+<ul>
+<li>greenlet（早期模块，适合精确控制协程执行流程场景，是构建更高级别异步框架的基础）</li>
+<li>yield关键字（python&lt;3.4）</li>
+<li>asyncio装饰器（python&gt;=3.4）</li>
+<li>async/await关键字（python&gt;=3.5 -- 版本3.8及之后推荐写法）</li>
+</ul>
+<h2 id="1-greenlet">1 greenlet协程</h2>
+<pre><code class="language-python">import greenlet
+
+
+def test1():
+    print(&quot;12&quot;)
+    gr2.switch()  # 切换到 gr2
+    print(&quot;34&quot;)
+    gr2.switch()
+
+
+def test2():
+    print(&quot;56&quot;)
+    gr1.switch()  # 切换回 gr1
+    print(&quot;78&quot;)
+
+
+gr1 = greenlet.greenlet(test1)
+gr2 = greenlet.greenlet(test2)
+gr1.switch()
+
+# 执行结果：
+# 12
+# 56
+# 34
+# 78
+
+</code></pre>
+<h2 id="2-yield">2 yield关键字协程</h2>
+<pre><code class="language-python">def func1():
+    yield 1
+    yield from func2()  # 执行完成之后再继续后面逻辑
+    yield 2
+
+
+def func2():
+    yield 3
+    yield 4
+
+
+f1 = func1()
+for item in f1:
+    print(item)
+
+# 执行结果：
+# 1
+# 3
+# 4
+# 2
+
+</code></pre>
+<h2 id="3-asyncio">3 asyncio装饰器</h2>
+<pre><code class="language-python">import asyncio
+
+
+@asyncio.coroutine
+def func1():
+    print(1)
+    yield from asyncio.sleep(8)
+    print(2)
+
+
+@asyncio.coroutine
+def func2():
+    print(3)
+    yield from asyncio.sleep(2)
+    print(4)
+
+
+tasks = [
+    asyncio.ensure_future(func1()),
+    asyncio.ensure_future(func2())
+]
+
+loop = asyncio.get_event_loop()
+loop.run_until_complete(asyncio.wait(tasks))
+
+# 运行结果：
+# 1
+# 3
+# 4
+# 2
+
+</code></pre>
+<p>asyncio厉害之处：遇到IO操作的时候，会自动切换其他任务执行，而本身的操作被监听，有返回则继续执行。</p>
+<h2 id="4-asyncawait">4 async/await关键字（推荐）</h2>
+<h3 id="41-python37">4.1 python&lt;3.7</h3>
+<pre><code class="language-python">import asyncio
+
+
+async def func1():
+    print(1)
+    await asyncio.sleep(8)
+    print(2)
+
+
+async def func2():
+    print(3)
+    await asyncio.sleep(2)
+    print(4)
+
+
+tasks = [
+    asyncio.ensure_future(func1()),
+    asyncio.ensure_future(func2())
+]
+
+# python&lt;3.7写法
+loop = asyncio.get_event_loop()
+loop.run_until_complete(asyncio.wait(tasks))
+# 或
+# loop = asyncio.get_event_loop_policy().get_event_loop()
+# loop.run_until_complete(asyncio.wait(tasks))
+</code></pre>
+<h3 id="42-python37">4.2 python&gt;=3.7（更现代的写法）</h3>
+<pre><code class="language-python">import asyncio
+
+
+async def func1():
+    print(1)
+    await asyncio.sleep(8)
+    print(2)
+
+
+async def func2():
+    print(3)
+    await asyncio.sleep(2)
+    print(4)
+
+
+async def main():
+    tasks = [
+        asyncio.create_task(func1()),
+        asyncio.create_task(func2())
+    ]
+    # await asyncio.wait(tasks)
+    await asyncio.gather(*tasks)
+
+
+asyncio.run(main())
+
+</code></pre>
+<h3 id="43-asynciowait-asynciogather">4.3 asyncio.wait 与 asyncio.gather区别对比</h3>
+<table>
+<thead>
+<tr>
+<th>方法</th>
+<th>作用总结</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>asyncio.gather()</code></td>
+<td>等待所有任务完成，<strong>收集返回值</strong></td>
+</tr>
+<tr>
+<td><code>asyncio.wait()</code></td>
+<td>等待任务，提供<strong>更灵活的控制</strong></td>
+</tr>
+</tbody>
+</table>
+<pre><code class="language-python">results = await asyncio.gather(task1(), task2())
+print(results)  # =&gt; [task1的返回值, task2的返回值]
+
+# 如果有一个任务抛异常，gather() 会立刻传播异常
+</code></pre>
+<pre><code class="language-python">done, pending = await asyncio.wait(tasks)
+
+# 你可以检查哪些完成了，哪些还没完成，适合更复杂的控制逻辑。
+# 默认是等到所有任务完成，但你也可以加参数 return_when=asyncio.FIRST_COMPLETED 等控制。
+</code></pre>
+<p>示例：</p>
+<pre><code class="language-python">import asyncio
+
+async def task(name, delay):
+    await asyncio.sleep(delay)
+    return f'{name} done'
+
+async def main():
+    tasks = [task(&quot;A&quot;, 2), task(&quot;B&quot;, 1)]
+
+    # gather
+    res = await asyncio.gather(*tasks)
+    print(&quot;gather:&quot;, res)  # ['A done', 'B done']
+
+    # wait
+    tasks2 = [asyncio.create_task(task(&quot;C&quot;, 2)), asyncio.create_task(task(&quot;D&quot;, 1))]
+    done, pending = await asyncio.wait(tasks2)
+    for d in done:
+        print(&quot;wait:&quot;, await d)
+
+asyncio.run(main())
+
+</code></pre>
+<h2 id="5">5. 总结协程的意义</h2>
+<p>协程技术的意义：单个线程中，如果遇见IO操作需要等待时，可以利用等待的时间，可以同时去处理其他任务；由此提高程序执行的性能，减少执行时间。</p>
+<hr />
+<h1 id="aiohttp-">二、aiohttp-高性能网络请求模块-示例</h1>
+<h2 id="1">1 简单的下载文件示例</h2>
+<pre><code class="language-python">import asyncio
+import logging
+from urllib.parse import unquote, urlparse
+
+from aiohttp import ClientSession
+
+logger = logging.getLogger(__name__)
+logger.setLevel(logging.DEBUG)
+logger.addHandler(logging.StreamHandler())
+handler = logging.FileHandler(&quot;log.txt&quot;, encoding=&quot;utf-8&quot;)
+formatter = logging.Formatter(' - %(asctime)s - %(levelname)s - %(message)s')
+handler.setFormatter(formatter)
+logger.addHandler(handler)
+
+
+async def fetch(session, url):
+    url = unquote(url)
+    print(&quot;发送请求：&quot;, url)
+    async with session.get(url, verify_ssl=False) as response:
+        content = await response.content.read()
+        file_name = urlparse(url).path.split(&quot;/&quot;)[-1]
+        with open(file_name, mode='wb') as file_object:
+            file_object.write(content)
+
+
+async def main():
+    async with ClientSession() as session:
+        urls = [
+            &quot;http://localhost/xxx1.rar&quot;,
+            &quot;http://localhost/xxx2.zip&quot;,
+            &quot;http://localhost/xxx3.zip&quot;,
+            &quot;http://localhost/xxx4.tgz&quot;,
+            &quot;http://localhost/notExist.tgz&quot;
+        ]
+
+        tasks = [asyncio.create_task(fetch(session, url), name=url) for url in urls]
+        await asyncio.wait(tasks)
+
+asyncio.run(main())
+
+</code></pre>
+<h2 id="2">2 正式的下载文件示例：显示下载进度</h2>
+<pre><code class="language-python">import asyncio
+import logging
+from urllib.parse import unquote, urlparse
+
+import tqdm
+from aiohttp import ClientSession
+
+logger = logging.getLogger(__name__)
+logger.setLevel(logging.DEBUG)
+logger.addHandler(logging.StreamHandler())
+handler = logging.FileHandler(&quot;log.txt&quot;, encoding=&quot;utf-8&quot;)
+formatter = logging.Formatter(' - %(asctime)s - %(levelname)s - %(message)s')
+handler.setFormatter(formatter)
+logger.addHandler(handler)
+
+
+async def fetch(session: ClientSession, url: str):
+    url = unquote(url)
+    logger.info(f'发送请求：{url}')
+
+    async with session.get(url, verify_ssl=False) as resp:
+        resp.raise_for_status()  # 请求失败会抛出异常
+
+        # 获取文件大小用于进度条
+        total_size = int(resp.headers.get('Content-Length', 0))
+
+        # 从URL中提取文件名
+        fname = urlparse(url).path.split('/')[-1]
+
+        # 创建进度条
+        progress = tqdm.tqdm(
+            total=total_size,
+            unit='B',
+            unit_scale=True,
+            desc=fname,
+            # file=logger.handlers[1].stream if logger.handlers else None,
+            position=0
+        )
+
+        with open(fname, &quot;wb&quot;) as f:
+            while True:
+                chunk = await resp.content.read(1024)  # 读取1KB数据
+                if not chunk:
+                    break
+                f.write(chunk)
+                progress.update(len(chunk))
+
+        progress.close()
+
+
+async def main():
+    async with ClientSession() as session:
+        urls = [
+            &quot;http://localhost/xxx1.rar&quot;,
+            &quot;http://localhost/xxx2.zip&quot;,
+            &quot;http://localhost/xxx3.zip&quot;,
+            &quot;http://localhost/xxx4.tgz&quot;,
+            &quot;http://localhost/notExist.tgz&quot;
+        ]
+
+        tasks = [asyncio.create_task(fetch(session, url), name=url) for url in urls]
+        done, pending = await asyncio.wait(tasks)
+
+        # 检查已完成的任务是否有异常
+        for task in done:
+            name = unquote(task.get_name())
+            if exc := task.exception():
+                logger.error(f&quot;任务失败: {name}, 异常: {exc}&quot;)
+            else:
+                logger.info(f&quot;任务成功: {name}&quot;)
+
+        # 检查未完成的任务（如果有）
+        if pending:
+            for task in pending:
+                name = unquote(task.get_name())
+                logger.warning(
+                    f&quot;未完成任务: {name}, &quot;
+                    f&quot;取消状态: {task.cancelled()}, &quot;
+                    f&quot;异常: {task.exception()}&quot;
+                )
+
+
+asyncio.run(main())
+
+</code></pre>
+<h1 id="_2">三、异步编程</h1>
+<h2 id="1_1">1 事件循环</h2>
+<p>事件循环实现逻辑伪代码：</p>
+<pre><code class="language-python"># 伪代码
+
+# 任务列表=[任务1, 任务2, 任务3, ...]
+
+while True:
+    可执行的任务列表，已完成的任务列表 = 去任务列表中检查所有的任务，将'可执行'和'已完成'的任务返回
+
+    for 就绪任务 in 可执行的任务列表：
+        执行已就绪的任务
+
+    for 已完成的任务 in 已完成的任务列表：
+        在任务列表中移除 已完成的任务
+
+    如果 任务列表 中的任务都已完成，则终止循环
+</code></pre>
+<h2 id="2_1">2 协程语法</h2>
+<h3 id="21">2.1 基本语法</h3>
+<p>一段协程逻辑需要执行需要：协程函数 -&gt; 协程对象 -&gt; 事件循环</p>
+<p><strong>协程函数</strong>：<span style="color:red"><code>async def 函数名()</code></span></p>
+<p><strong>协程对象</strong>：<span style="color:red">协程函数名+ () ，执行之后得到协程对象</span></p>
+<p><strong>协程函数运行</strong>：<span style="color:red">事件循环入参协程对象 -&gt; 协程对象作为参数传入指定方法，运行协程函数逻辑</span></p>
+<pre><code class="language-python">import asyncio
+
+
+async def func():
+    print(&quot;wokao!&quot;)
+
+
+coroutine_objetct = func()
+
+# loop = asyncio.get_event_loop()
+# loop.run_until_complete(coroutine_objetct)
+
+# python3.7+
+asyncio.run(coroutine_objetct)
+</code></pre>
+<h3 id="22-await">2.2 await关键字</h3>
+<p><strong>await使用方式：</strong><span style="color:red">await + 协程可等待对象（协程对象、Task对象、Future对象 -&gt; IO等待）</span></p>
+<h4 id="221-await">2.2.1 await + 协程对象</h4>
+<pre><code class="language-python">import asyncio
+
+
+async def coroutine_print_message(name):
+    print(f&quot;coroutine_print_message - {name} - start&quot;)
+    await asyncio.sleep(3)
+    print(f&quot;coroutine_print_message - {name} - end&quot;)
+    return f&quot;coroutine_print_message - {name} - finished!&quot;
+
+
+async def main():
+    print(&quot;start!&quot;)
+    response1 = await coroutine_print_message(&quot;A&quot;)
+    print(&quot;response1:&quot;, response1)
+    response2 = await coroutine_print_message(&quot;B&quot;)
+    print(&quot;response2:&quot;, response2)
+    print(&quot;end!&quot;)
+
+
+asyncio.run(main())
+
+# start!
+# coroutine_print_message - A - start
+# coroutine_print_message - A - end
+# response1: coroutine_print_message - A - finished!
+# coroutine_print_message - B - start
+# coroutine_print_message - B - end
+# response2: coroutine_print_message - B - finished!
+# end!
+
+</code></pre>
+<p><strong>结论</strong>：await关键字+协程对象，会在此等待执行获取到结果之后，再继续往下执行。（依然是同步编程）</p>
+<h4 id="222-await-task">2.2.2 await + Task对象</h4>
+<p><strong>写法一</strong>：</p>
+<pre><code class="language-python">&quot;&quot;&quot;
+创建Task对象有三种方式：
+    1. asyncio.create_task()  &lt;- python3.7版本及之后
+    2. ensure_future() &lt;- python3.6版本及之前
+    3. loop.create_task()
+&quot;&quot;&quot;
+import asyncio
+import time
+
+
+async def coroutine_print_message(name, wtime=3):
+    print(f&quot;coroutine_print_message - {name} - start&quot;)
+    await asyncio.sleep(wtime)
+    print(f&quot;coroutine_print_message - {name} - end&quot;)
+    return f&quot;coroutine_print_message - {name} - finished!&quot;
+
+
+async def main():
+    &quot;&quot;&quot;
+    遇到IO操作挂起当前协程（任务），等IO操作完成之后再继续往下执行；当前协程挂起时，事件循环可以去执行其他协程（任务）。
+    &quot;&quot;&quot;
+    print(&quot;main start!&quot;)
+    # 创建Task对象 -&gt; 将协程对象加入事件循环
+    task1 = asyncio.create_task(coroutine_print_message(&quot;A&quot;, wtime=2))
+    task2 = asyncio.create_task(coroutine_print_message(&quot;B&quot;, wtime=8))
+    # 等待所有Task对象返回
+    response1 = await task1
+    response2 = await task2
+
+    # 等待所有Task对象全部获取返回值之后才继续
+    print(&quot;response1:&quot;, response1)
+    print(&quot;response2:&quot;, response2)
+
+    print(&quot;main end!&quot;)
+
+
+asyncio.run(main())
+
+# main start!
+# coroutine_print_message - A - start
+# coroutine_print_message - B - start
+# coroutine_print_message - A - end
+# coroutine_print_message - B - end
+# response1: coroutine_print_message - A - finished!
+# response2: coroutine_print_message - B - finished!
+# main end!
+
+</code></pre>
+<p><strong>写法二（推荐）</strong>：</p>
+<pre><code class="language-python">import asyncio
+
+
+async def coroutine_print_message(name, wtime=3):
+    print(f&quot;coroutine_print_message - {name} - start&quot;)
+    await asyncio.sleep(wtime)
+    print(f&quot;coroutine_print_message - {name} - end&quot;)
+    return f&quot;coroutine_print_message - {name} - finished!&quot;
+
+
+async def main():
+    print(&quot;main start!&quot;)
+    task_list = [
+        asyncio.create_task(coroutine_print_message(&quot;A&quot;, wtime=2), name=&quot;Task-A&quot;),
+        asyncio.create_task(coroutine_print_message(&quot;B&quot;, wtime=8), name=&quot;Task-B&quot;),
+    ]
+    done, pending = await asyncio.wait(task_list, timeout=None)
+    print(&quot;done:&quot;, done)
+    print(&quot;pending:&quot;, pending)
+    print(&quot;main end!&quot;)
+
+
+asyncio.run(main())
+
+</code></pre>
+<p><strong>写法三</strong>：注意事件循环创建的问题</p>
+<pre><code class="language-python">import asyncio
+
+
+async def coroutine_print_message(name, wtime=3):
+    print(f&quot;coroutine_print_message - {name} - start&quot;)
+    await asyncio.sleep(wtime)
+    print(f&quot;coroutine_print_message - {name} - end&quot;)
+    return f&quot;coroutine_print_message - {name} - finished!&quot;
+
+
+print(&quot;main start!&quot;)
+coroutine_object_list = [
+    coroutine_print_message(&quot;A&quot;, wtime=2),
+    coroutine_print_message(&quot;B&quot;, wtime=8)
+]
+# 不包一层主线程协程函数时：需要传入的参数为协程对象列表，事件循环会自动创建，才不会报错
+done, pending = asyncio.run(asyncio.wait(coroutine_object_list, timeout=None))
+print(&quot;done:&quot;, done)
+print(&quot;pending:&quot;, pending)
+print(&quot;main end!&quot;)
+
+</code></pre>
+<h3 id="23-asynciofuture">2.3 asyncio.Future对象</h3>
+<p>Future 是一个特殊的低级可等待对象，代表异步操作的最终结果。</p>
+<p>示例一：</p>
+<pre><code class="language-python">import asyncio
+
+
+async def coroutine_print_message(future: asyncio.Future, name: str, wtime: int = 3):
+    print(f&quot;coroutine_print_message - {name} - start&quot;)
+    await asyncio.sleep(wtime)
+    print(f&quot;coroutine_print_message - {name} - end&quot;)
+    future.set_result(f&quot;coroutine_print_message - {name} - finished!&quot;)
+
+
+async def main():
+    # 获取当前事件循环
+    loop = asyncio.get_event_loop()
+
+    # 创建任务 - Future对象，这个对象内部啥也不干
+    future = loop.create_future()
+    await loop.create_task(coroutine_print_message(future, &quot;A&quot;), name=&quot;Task-A&quot;)
+    # 等待 Future 完成
+    results = await future
+    print(&quot;results:&quot;, results)
+
+
+asyncio.run(main())
+
+</code></pre>
+<p>示例二：</p>
+<pre><code class="language-py">import asyncio
+
+
+async def coroutine_print_message(future: asyncio.Future, name: str, wtime: int = 3):
+    print(f&quot;coroutine_print_message - {name} - start&quot;)
+    await asyncio.sleep(wtime)
+    print(f&quot;coroutine_print_message - {name} - end&quot;)
+    future.set_result(f&quot;coroutine_print_message - {name} - finished!&quot;)
+
+
+async def main():
+    # 获取当前事件循环
+    loop = asyncio.get_event_loop()
+
+    # 创建任务 - Future对象，这个对象内部啥也不干
+    future1 = loop.create_future()
+    future2 = loop.create_future()
+
+    await loop.create_task(coroutine_print_message(future1, &quot;A&quot;), name=&quot;Task-A&quot;)
+    await loop.create_task(coroutine_print_message(future2, &quot;B&quot;), name=&quot;Task-B&quot;)
+
+    # 等待所有 Future 完成
+    results = await asyncio.gather(future1, future2)
+    print(&quot;所有任务完成:&quot;, results)
+
+
+asyncio.run(main())
+
+</code></pre>
+<h3 id="24-concurrentfuturesfuture">2.4 concurrent.futures.Future对象</h3>
+<p>使用线程池、进程池实现异步操作时用到的对象。</p>
+<p><strong>线程池/进程池 Future对象（提交任务获得，等待结果）：</strong></p>
+<pre><code class="language-python">&quot;&quot;&quot;
+1.concurrent.futures与线程池和进程池的使用
+2.探讨协程与线程池混用场景
+&quot;&quot;&quot;
+from concurrent.futures import Future
+# from concurrent.futures import ProcessPoolExecutor
+from concurrent.futures import ThreadPoolExecutor
+
+
+def func(value):
+    print(value)
+    time.sleep(1)
+    return value
+
+
+if __name__ == '__main__':
+    pool = ThreadPoolExecutor(max_workers=5)
+    # pool = ProcessPoolExecutor(max_workers=5)
+
+    for i in range(10):
+        future: Future = pool.submit(func, i)
+        # print(future)
+
+</code></pre>
+<p><strong>协程 搭配 线程池/进程池混合使用：</strong></p>
+<p>适用场景：当某个项目80%实现方式使用协程异步编程 + 某个不支持协程的模块（例如：mysql - 支持线程/进程异步编程）</p>
+<p>示例1-深入理解：</p>
+<pre><code class="language-python">&quot;&quot;&quot;
+1.concurrent.futures与线程池和进程池的使用
+2.探讨协程与线程池混用场景
+&quot;&quot;&quot;
+import asyncio
+import time
+
+
+def func(v1, v2):
+    print(&quot;v1:&quot;, v1, &quot;v2:&quot;, v2)
+    time.sleep(1)
+    return {&quot;v1:&quot;, v1, &quot;v2:&quot;, v2}
+
+
+async def main():
+    &quot;&quot;&quot;
+    关于loop.run_in_executor函数的解释：
+        关于传参：
+            第一个参数为None，表示使用默认线程池；也可以传入指定线程池对象/进程池对象。
+        函数内部：
+            第一步：调用submit函数提交任务申请到一个线程，并返回一个concurrent.futures.Future对象；
+            第二步：调用asyncio.wrap_future将concurrent.futures.Future对象包装成一个调用asyncio.Future对象，以便在asyncio中使用；
+    &quot;&quot;&quot;
+    loop = asyncio.get_running_loop()
+    fut = loop.run_in_executor(None, func, &quot;666&quot;, &quot;999&quot;)
+    result = await fut
+    print(&quot;result:&quot;, result)
+
+    # 线程池+协程 -&gt; 与上面写法等价
+    # with concurrent.futures.ThreadPoolExecutor(max_workers=5) as pool:
+    #     result = await loop.run_in_executor(pool, func, &quot;hello&quot;)
+    #     print(&quot;result:&quot;, result)
+
+    # 进程池+协程
+    # with concurrent.futures.ProcessPoolExecutor(max_workers=5) as pool:
+    #     result = await loop.run_in_executor(pool, func, &quot;hello&quot;)
+    #     print(&quot;result:&quot;, result)
+
+
+if __name__ == '__main__':
+    asyncio.run(main())
+
+</code></pre>
+<p>示例2-实际应用：</p>
+<pre><code class="language-python">&quot;&quot;&quot;
+异步协程函数+同步函数（使用线程池）混合使用场景示例
+&quot;&quot;&quot;
+import asyncio
+import logging
+from urllib.parse import unquote
+
+import requests
+
+logger = logging.getLogger(__name__)
+logger.setLevel(logging.DEBUG)
+logger.addHandler(logging.StreamHandler())
+handler = logging.FileHandler(&quot;log.txt&quot;, encoding=&quot;utf-8&quot;)
+formatter = logging.Formatter(' - %(asctime)s - %(levelname)s - %(message)s')
+handler.setFormatter(formatter)
+logger.addHandler(handler)
+
+
+async def download_file(url: str):
+    logger.info(f&quot;url: {url}&quot;)
+    loop = asyncio.get_event_loop()
+    # requests.get不支持协程异步，需要转换
+    future = loop.run_in_executor(None, requests.get, url)
+    response = await future
+    if response.status_code != 200:
+        logger.info(f&quot;下载失败：url: {url}\n返回内容：{response.text}&quot;)
+        return response.status_code
+
+    # 文件保存
+    file_name = url.rsplit(&quot;/&quot;)[-1]
+    with open(file_name, mode=&quot;wb&quot;) as fp:
+        fp.write(response.content)
+
+
+async def main():
+    urls = [
+        'http://localhost/10%E5%BA%A6%E6%97%B6%E9%95%BF.zip',
+        'http://localhost/%E5%B1%8F%E5%B9%95%E5%94%A4%E9%86%92%E5%A4%B1%E8%B4%A5.zip',
+        'http://localhost/ollama-linux-amd64.tgz'
+        'http://localhost/notExist.txt'
+    ]
+    tasks = [download_file(unquote(url)) for url in urls]
+    results = await asyncio.gather(*tasks)
+    logger.debug(f&quot;results: {results}&quot;)
+
+
+if __name__ == '__main__':
+    asyncio.run(main())
+
+</code></pre>
+<h2 id="3">3 异步迭代器</h2>
+<p><a href="https://docs.python.org/zh-cn/3/reference/datamodel.html#asynchronous-iterators">异步迭代器 — Python 3.13.5 文档</a></p>
+<p><em>异步迭代器</em> 可以在其 <code>__anext__</code> 方法中调用异步代码。</p>
+<p>异步迭代器可在 <a href="https://docs.python.org/zh-cn/3/reference/compound_stmts.html#async-for"><code>async for</code></a> 语句中使用。</p>
+<p><a href="https://docs.python.org/zh-cn/3/library/functions.html#object"><code>object</code></a> 类本身不提供这些方法。</p>
+<ul>
+<li>object.<strong><strong>aiter</strong></strong>(<em>self</em>)</li>
+</ul>
+<p>必须返回一个 <em>异步迭代器</em> 对象。</p>
+<ul>
+<li>object.<strong><strong>anext</strong></strong>(<em>self</em>)</li>
+</ul>
+<p>必须返回一个 <em>可等待对象</em> 输出迭代器的下一结果值。 当迭代结束时应该引发 <a href="https://docs.python.org/zh-cn/3/library/exceptions.html#StopAsyncIteration"><code>StopAsyncIteration</code></a> 错误。</p>
+<p>异步可迭代对象的一个示例:</p>
+<pre><code class="language-python">class Reader:
+    async def readline(self):
+        ...
+
+    def __aiter__(self):
+        return self
+
+    async def __anext__(self):
+        val = await self.readline()
+        if val == b'':
+            raise StopAsyncIteration
+        return val
+</code></pre>
+<p>实际示例：<strong>执行异步循环的时候可以同时干别的事情</strong></p>
+<pre><code class="language-python">import asyncio
+
+
+class Reader:
+    &quot;&quot;&quot;异步迭代器&quot;&quot;&quot;
+
+    def __init__(self):
+        self.count = 0
+
+    def __aiter__(self):
+        return self
+
+    async def __anext__(self):
+        val = await self.readline()
+        if val is None:
+            raise StopAsyncIteration
+        return val
+
+    async def readline(self):
+        await asyncio.sleep(2)  # 模拟异步读取耗时
+        self.count += 1
+        if self.count &gt; 5:
+            return None
+        return self.count
+
+
+async def read_lines(reader):
+    print(&quot;开始读取数据&quot;)
+    async for line in reader:
+        print(f&quot;[读取到] {line}&quot;)
+    print(&quot;数据读取完成&quot;)
+
+
+async def other_task():
+    for i in range(10):
+        await asyncio.sleep(0.5)
+        print(f&quot;[其他任务] Tick {i}&quot;)
+
+
+async def main():
+    reader = Reader()
+    print(f&quot;Reader 类型: {type(reader)}&quot;)
+
+    # 同时运行读取任务和其他任务
+    await asyncio.gather(
+        read_lines(reader),
+        other_task()
+    )
+
+    print(&quot;所有任务完成&quot;)
+
+
+if __name__ == '__main__':
+    asyncio.run(main())
+
+</code></pre>
+<h2 id="4">4 异步上下文管理器</h2>
+<h3 id="41">4.1 上下文管理器是什么？</h3>
+<p>上下文管理器是 Python 中用于管理资源的一种机制，它确保资源在使用后被正确释放或清理，即使在处理过程中发生异常也是如此。</p>
+<p>上下文管理器通过 <code>with</code> 语句使用，主要包含两个特殊方法：</p>
+<p>​   <strong>1）</strong><code>__enter__()</code>: 进入上下文时调用，返回资源对象；</p>
+<p>​   <strong>2）</strong><code>__exit__()</code>: 退出上下文时调用，处理清理工作。</p>
+<ul>
+<li>
+<p><strong>实现方式</strong></p>
+</li>
+<li>
+<p><strong>类实现</strong></p>
+</li>
+</ul>
+<p>```python
+  class MyContextManager:
+      def <strong>enter</strong>(self):
+          print("Entering the context")
+          return self  # 例如：with语句 as f -&gt; f就是这个返回值</p>
+<pre><code>  def __exit__(self, exc_type, exc_val, exc_tb):
+      print("Exiting the context")
+      if exc_type is not None:
+          print(f"An exception occurred: {exc_val}")
+      return True  # 如果返回True，则抑制异常
+</code></pre>
+<p>with MyContextManager() as cm:
+      print("Inside the context")
+  ```</p>
+<ul>
+<li><strong>使用 contextlib 模块</strong></li>
+</ul>
+<p>```python
+  from contextlib import contextmanager</p>
+<p>@contextmanager
+  def my_context_manager(value):
+      print("Entering the context")  # 相当于 <strong>enter</strong>
+      try:
+          yield value  # 这是 as 后面的值 执行时将会在这里暂停，将文件对象返回给with语句的as变量，然后执行with下面的代码，最后进入finally
+      finally:
+          print("Exiting the context")  # 相当于 <strong>exit</strong></p>
+<p>with my_context_manager(value=100) as resource:
+      print(f"Using {resource}")</p>
+<p>```</p>
+<ul>
+<li><strong>使用场景</strong></li>
+<li>文件操作（自动关闭）</li>
+<li>数据库连接（自动提交/回滚和关闭）</li>
+<li>线程锁（自动获取和释放）</li>
+<li>临时修改系统状态（如环境变量）</li>
+<li>计时器</li>
+</ul>
+<h3 id="42">4.2 实现异步上下文管理器</h3>
+<p>异步上下文管理器是 Python 中用于管理异步资源的一种机制，它允许在异步代码中安全地获取和释放资源，类似于常规上下文管理器但在异步环境中工作。</p>
+<p>实现方式有三种：第三方模块aiohttp方法、自定义类实现以及contextlib模块方法</p>
+<h4 id="421-aiohttp">4.2.1 第三方模块aiohttp方法</h4>
+<pre><code class="language-python">import aiohttp
+
+async def fetch_data():
+    async with aiohttp.ClientSession() as session:  # 异步上下文管理器
+        async with session.get('https://example.com') as response:
+            return await response.text()
+</code></pre>
+<h4 id="422">4.2.2 类实现</h4>
+<pre><code class="language-python">import asyncio
+
+
+class SyncContextManager:
+    def __init__(self, conn):
+        self.conn = conn
+
+    async def __aenter__(self):
+        # 异步连接数据库
+        await asyncio.sleep(1)
+        return self
+
+    async def __aexit__(self, exc_type, exc_val, exc_tb):
+        # 异步断开数据库
+        await asyncio.sleep(1)
+
+    async def do_something(self):
+        print(f&quot;do something, conn={self.conn}&quot;)
+        await asyncio.sleep(1)
+        print(&quot;done&quot;)
+        return &quot;ok&quot;
+
+
+async def main():
+    async with SyncContextManager('mysql') as cm:
+        result = await cm.do_something()
+        print(result)
+
+
+if __name__ == '__main__':
+    asyncio.run(main())
+
+</code></pre>
+<h4 id="423-contextlib">4.2.3 contextlib模块</h4>
+<pre><code class="language-python">import asyncio
+import time
+from contextlib import asynccontextmanager
+
+
+@asynccontextmanager
+async def async_timer():
+    start = time.time()
+    try:
+        yield 888
+    finally:
+        end = time.time()
+        print(f&quot;Execution took {end - start:.2f} seconds&quot;)
+
+
+async def some_async_task():
+    await asyncio.sleep(2)
+
+
+async def main():
+    async with async_timer() as atr:
+        print(&quot;atr:&quot;, atr)
+        await some_async_task()
+
+
+asyncio.run(main())
+
+</code></pre>
+<h1 id="uvloop">四、uvloop</h1>
+<p>uvloop是asyncio内置事件循环的替代方案。</p>
+<pre><code class="language-python">import asyncio
+
+if os.name != 'nt':
+    # uvloop仅支持linux系统 -&gt; 更快，接近GO语言的速度
+    import uvloop
+
+    asyncio.set_event_loop_policy(uvloop.EventLoopPolicy)
+
+
+# #####################
+# 其他逻辑代码与之前保持一致
+# #####################
+
+async def main():
+    pass
+
+
+asyncio.run(main())
+
+</code></pre>
+<p>注意：asgi -&gt; uvicorn</p>
+<h1 id="_3">五、实战案例</h1>
+<h2 id="1-redis">1 redis异步操作</h2>
+<p>当高并发场景需要将请求分散到多台Redis操作时，可以使用异步操作Redis</p>
+<h3 id="11">1.1 方式一：每次创建连接（不推荐）</h3>
+<pre><code class="language-python">import asyncio
+
+import redis.asyncio as aioredis
+
+
+async def excute(host, port, db, password):
+    print(f&quot;host:{host}, port:{port}&quot;)
+    r = await aioredis.Redis(host=host, port=port, db=db, password=password)
+    await r.set(&quot;TTT&quot;, &quot;123&quot;, ex=10)
+    value = await r.get(&quot;TTT&quot;)
+    print(&quot;value:&quot;, value)
+    await r.close()
+
+
+async def main():
+    tasks = [
+        asyncio.create_task(excute(&quot;192.168.127.140&quot;, 6379, 1, &quot;xxx&quot;)),
+        asyncio.create_task(excute(&quot;192.168.127.140&quot;, 6379, 2, &quot;xxx&quot;)),
+    ]
+    await asyncio.gather(*tasks)
+
+
+asyncio.run(main())
+
+</code></pre>
+<h3 id="12">1.2 <span style="color:red">方式二：连接池（<strong>推荐</strong>）</span></h3>
+<p><strong>连接复用</strong>：多个 Redis 实例共享同一个连接池，可以节省连接创建/销毁的开销。</p>
+<pre><code class="language-python">import asyncio
+
+from redis.asyncio import Redis, ConnectionPool
+
+
+async def execute_with_pool(pool: ConnectionPool):
+    r = Redis(connection_pool=pool)
+    await r.set(&quot;TTT&quot;, &quot;123&quot;, ex=20)
+    value = await r.get(&quot;TTT&quot;)
+    print(&quot;value:&quot;, value)
+    await r.close()  # 虽然不是必须，推荐调用
+
+
+async def main():
+    # 分别创建连接池：一个 Redis db=1，一个 Redis db=2；decode_responses=True 是让返回的值为字符串（否则是字节串 b'123'）
+    pool1 = ConnectionPool(host=&quot;192.168.127.140&quot;, port=6379, db=6, password=&quot;xxx&quot;, decode_responses=True)
+    pool2 = ConnectionPool(host=&quot;192.168.127.140&quot;, port=6379, db=7, password=&quot;xxx&quot;, decode_responses=True)
+
+    tasks = [
+        execute_with_pool(pool1),
+        execute_with_pool(pool2),
+    ]
+    await asyncio.gather(*tasks)
+
+    # 最后关闭连接池
+    await pool1.disconnect()
+    await pool2.disconnect()
+
+
+asyncio.run(main())
+
+</code></pre>
+<h2 id="2-mysql">2 mysql异步操作</h2>
+<p><strong>连接复用</strong>：多个mysql 实例共享同一个连接池，可以节省连接创建/销毁的开销。</p>
+<pre><code class="language-python">import asyncio
+import aiomysql
+
+async def main():
+    # 创建连接池
+    pool = await aiomysql.create_pool(
+        host='localhost',
+        port=3306,
+        user='your_user',
+        password='your_password',
+        db='your_database',
+        minsize=1,
+        maxsize=10,  # 并发连接数
+        autocommit=True
+    )
+
+    async with pool.acquire() as conn:
+        async with conn.cursor() as cur:
+            await cur.execute(&quot;SELECT id, name FROM users LIMIT 5;&quot;)
+            rows = await cur.fetchall()
+            for row in rows:
+                print(row)
+
+    pool.close()
+    await pool.wait_closed()
+
+asyncio.run(main())
+
+</code></pre>
+<h2 id="3-flaskapi">3 FlaskAPI框架</h2>
+<p>方便的支持使用异步编程方式 的 web框架，性能更优！</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.instant", "navigation.tabs", "search.highlight", "content.code.annotate"], "search": "../../assets/javascripts/workers/search.973d3a69.min.js", "tags": null, "translations": {"clipboard.copied": "\u5df2\u590d\u5236", "clipboard.copy": "\u590d\u5236", "search.result.more.one": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.more.other": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 # \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.none": "\u6ca1\u6709\u627e\u5230\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.one": "\u627e\u5230 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.other": "# \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.placeholder": "\u952e\u5165\u4ee5\u5f00\u59cb\u641c\u7d22", "search.result.term.missing": "\u7f3a\u5c11", "select.version": "\u9009\u62e9\u5f53\u524d\u7248\u672c"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.f55a23d4.min.js"></script>
+      
+    
+  </body>
+</html>
