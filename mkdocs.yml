@@ -1,0 +1,21 @@
+site_name: CC学习文档库
+site_description: 个人知识笔记与技术文档
+site_author: HC
+site_url: https://chcnew.github.io/ccDocs/
+
+theme:
+  name: material
+  language: zh
+  features:
+    - navigation.instant
+    - navigation.tabs
+    - search.highlight
+    - content.code.annotate
+
+nav:
+  - 首页: index.md
+  - Python 学习笔记:
+      - 并发编程: Python-Note/Python-并发编程.md
+      - DRF 框架: Python-Note/DRF-Note.md
+  - FastAPI 系列:
+      - FastAPI 入门: Python-Note/FastAPI-Note.md
