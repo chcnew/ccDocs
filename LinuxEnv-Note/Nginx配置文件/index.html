@@ -12,21 +12,23 @@
         <meta name="author" content="HC">
       
       
-        <link rel="canonical" href="https://chcnew.github.io/ccDocs/Python-Note/uwsgi%2Bnginx%2Bdjango%E7%8E%AF%E5%A2%83%E9%83%A8%E7%BD%B2%E6%96%87%E6%A1%A3/Nginx%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6/">
+        <link rel="canonical" href="https://chcnew.github.io/ccDocs/LinuxEnv-Note/Nginx%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6/">
+      
+      
+        <link rel="prev" href="../../GoLang-Note/GoLang-%E5%85%A5%E9%97%A8/">
       
       
       
-      
-      <link rel="icon" href="../../../assets/images/favicon.png">
+      <link rel="icon" href="../../assets/images/favicon.png">
       <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.22">
     
     
       
-        <title>Nginx配置文件 - CC学习文档库</title>
+        <title>LinuxEnv-Note - CC学习文档库</title>
       
     
     
-      <link rel="stylesheet" href="../../../assets/stylesheets/main.84d31ad4.min.css">
+      <link rel="stylesheet" href="../../assets/stylesheets/main.84d31ad4.min.css">
       
       
 
@@ -45,7 +47,7 @@
       
     
     
-    <script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
 
@@ -78,7 +80,7 @@
 
 <header class="md-header" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="页眉">
-    <a href="../../.." title="CC学习文档库" class="md-header__button md-logo" aria-label="CC学习文档库" data-md-component="logo">
+    <a href="../.." title="CC学习文档库" class="md-header__button md-logo" aria-label="CC学习文档库" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
@@ -98,7 +100,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Nginx配置文件
+              LinuxEnv-Note
             
           </span>
         </div>
@@ -171,7 +173,7 @@
   
   
     <li class="md-tabs__item">
-      <a href="../../.." class="md-tabs__link">
+      <a href="../.." class="md-tabs__link">
         
   
   
@@ -192,11 +194,11 @@
     
     
       <li class="md-tabs__item">
-        <a href="../../Python-%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/" class="md-tabs__link">
+        <a href="../../Python-Note/FastAPI-Note/" class="md-tabs__link">
           
   
   
-  Python 学习笔记
+  Python
 
         </a>
       </li>
@@ -212,11 +214,33 @@
     
     
       <li class="md-tabs__item">
-        <a href="../../FastAPI-Note/" class="md-tabs__link">
+        <a href="../../GoLang-Note/GoLang-%E5%85%A5%E9%97%A8/" class="md-tabs__link">
           
   
   
-  FastAPI 系列
+  Golang
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="./" class="md-tabs__link">
+          
+  
+  
+  Linux环境配置
 
         </a>
       </li>
@@ -246,7 +270,7 @@
 
 <nav class="md-nav md-nav--primary md-nav--lifted" aria-label="导航栏" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href="../../.." title="CC学习文档库" class="md-nav__button md-logo" aria-label="CC学习文档库" data-md-component="logo">
+    <a href="../.." title="CC学习文档库" class="md-nav__button md-logo" aria-label="CC学习文档库" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
@@ -264,7 +288,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../.." class="md-nav__link">
+      <a href="../.." class="md-nav__link">
         
   
   
@@ -305,7 +329,7 @@
   
   
   <span class="md-ellipsis">
-    Python 学习笔记
+    Python
     
   </span>
   
@@ -316,7 +340,7 @@
         <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_2">
             <span class="md-nav__icon md-icon"></span>
-            Python 学习笔记
+            Python
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
@@ -327,12 +351,12 @@
   
   
     <li class="md-nav__item">
-      <a href="../../Python-%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/" class="md-nav__link">
+      <a href="../../Python-Note/FastAPI-Note/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
-    并发编程
+    FastAPI-入门
     
   </span>
   
@@ -350,12 +374,127 @@
   
   
     <li class="md-nav__item">
-      <a href="../../DRF-Note/" class="md-nav__link">
+      <a href="../../Python-Note/celery%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
-    DRF 框架
+    celery-入门
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Python-Note/Python-%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    并发编程1
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Python-Note/Python-%E5%8D%8F%E7%A8%8B%26asyncio%26%E5%BC%82%E6%AD%A5%E7%BC%96%E7%A8%8B/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    异步编程2
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Python-Note/DRF-Note/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    DRF框架
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Python-Note/uwsgi%2Bnginx%2Bdjango%E7%8E%AF%E5%A2%83%E9%83%A8%E7%BD%B2%E6%96%87%E6%A1%A3/uwsgi%2Bnginx%2Bdjango%E9%A1%B9%E7%9B%AE%E9%83%A8%E7%BD%B2%E6%96%87%E6%A1%A3/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    uwsgi+nginx+django环境部署文档
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Python-Note/uwsgi%2Bnginx%2Bdjango%E7%8E%AF%E5%A2%83%E9%83%A8%E7%BD%B2%E6%96%87%E6%A1%A3/uwsgi%2Bnginx%E4%B8%A4%E7%A7%8D%E5%8D%8F%E8%AE%AE%E4%BB%A3%E7%90%86%E9%85%8D%E7%BD%AE/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    uwsgi+nginx两种协议代理配置
     
   </span>
   
@@ -399,7 +538,7 @@
   
   
   <span class="md-ellipsis">
-    FastAPI 系列
+    Golang
     
   </span>
   
@@ -410,7 +549,7 @@
         <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_3">
             <span class="md-nav__icon md-icon"></span>
-            FastAPI 系列
+            Golang
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
@@ -421,17 +560,234 @@
   
   
     <li class="md-nav__item">
-      <a href="../../FastAPI-Note/" class="md-nav__link">
+      <a href="../../GoLang-Note/GoLang-%E5%85%A5%E9%97%A8/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
-    FastAPI 入门
+    GoLang-入门
     
   </span>
   
 
       </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    Linux环境配置
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            Linux环境配置
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    LinuxEnv-Note
+    
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    LinuxEnv-Note
+    
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="目录">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      目录
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1-nginx" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. Nginx基本介绍
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-nginx" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. 为什么要使用Nginx
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. 什么是正向代理？
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4" class="md-nav__link">
+    <span class="md-ellipsis">
+      4.什么是反向代理？
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5linuxnginx" class="md-nav__link">
+    <span class="md-ellipsis">
+      5.linux编译安装Nginx
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6nginx" class="md-nav__link">
+    <span class="md-ellipsis">
+      6.Nginx常用命令
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7" class="md-nav__link">
+    <span class="md-ellipsis">
+      7.支持配置多路径配置文件
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#8" class="md-nav__link">
+    <span class="md-ellipsis">
+      8. 反向代理多台服务器
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#9-nginx" class="md-nav__link">
+    <span class="md-ellipsis">
+      9. Nginx负载均衡配置
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#10-linuxubuntunginx" class="md-nav__link">
+    <span class="md-ellipsis">
+      10. Linux（ubuntu）编译安装nginx
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#11" class="md-nav__link">
+    <span class="md-ellipsis">
+      11. 同步/异步/阻塞/非阻塞概念
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -776,10 +1132,10 @@ http {
     
     
       
-      <script id="__config" type="application/json">{"base": "../../..", "features": ["navigation.instant", "navigation.tabs", "search.highlight", "content.code.annotate"], "search": "../../../assets/javascripts/workers/search.973d3a69.min.js", "tags": null, "translations": {"clipboard.copied": "\u5df2\u590d\u5236", "clipboard.copy": "\u590d\u5236", "search.result.more.one": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.more.other": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 # \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.none": "\u6ca1\u6709\u627e\u5230\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.one": "\u627e\u5230 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.other": "# \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.placeholder": "\u952e\u5165\u4ee5\u5f00\u59cb\u641c\u7d22", "search.result.term.missing": "\u7f3a\u5c11", "select.version": "\u9009\u62e9\u5f53\u524d\u7248\u672c"}, "version": null}</script>
+      <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.instant", "navigation.tabs", "search.highlight", "content.code.annotate"], "search": "../../assets/javascripts/workers/search.973d3a69.min.js", "tags": null, "translations": {"clipboard.copied": "\u5df2\u590d\u5236", "clipboard.copy": "\u590d\u5236", "search.result.more.one": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.more.other": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 # \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.none": "\u6ca1\u6709\u627e\u5230\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.one": "\u627e\u5230 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.other": "# \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.placeholder": "\u952e\u5165\u4ee5\u5f00\u59cb\u641c\u7d22", "search.result.term.missing": "\u7f3a\u5c11", "select.version": "\u9009\u62e9\u5f53\u524d\u7248\u672c"}, "version": null}</script>
     
     
-      <script src="../../../assets/javascripts/bundle.f55a23d4.min.js"></script>
+      <script src="../../assets/javascripts/bundle.f55a23d4.min.js"></script>
       
     
   </body>
