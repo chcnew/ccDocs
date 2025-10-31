@@ -1,0 +1,226 @@
+/* ==================== 文字大小设置 ==================== */
+
+/* 左侧导航栏文字大小 */
+.md-nav--primary .md-nav__item {
+    font-size: 14px; /* 调整左侧目录文字大小 */
+}
+
+.md-nav--primary .md-nav__link {
+    font-size: 14px;
+}
+
+/* 左侧导航栏标题 */
+.md-nav--primary .md-nav__title {
+    font-size: 15px;
+    font-weight: 600;
+}
+
+/* 主内容区域文字大小 */
+.md-typeset {
+    font-size: 14px; /* 正文文字大小 */
+    line-height: 1.6;
+}
+
+/* 主内容区域标题大小 */
+.md-typeset h1 {
+    font-size: 2em;
+}
+
+.md-typeset h2 {
+    font-size: 1.6em;
+}
+
+.md-typeset h3 {
+    font-size: 1.4em;
+}
+
+.md-typeset h4 {
+    font-size: 1.2em;
+}
+
+.md-typeset h5 {
+    font-size: 1.1em;
+}
+
+.md-typeset h6 {
+    font-size: 1em;
+}
+
+/* 主内容代码块文字大小 */
+.md-typeset code {
+    font-size: 0.85em;
+}
+
+.md-typeset pre code {
+    font-size: 0.85em;
+}
+
+/* 右侧目录（TOC）文字大小 */
+.md-nav--secondary .md-nav__link {
+    font-size: 13px; /* 调整右侧目录文字大小 */
+}
+
+.md-nav--secondary .md-nav__title {
+    font-size: 14px;
+    font-weight: 600;
+}
+
+/* 右侧目录标题 "目录" 或 "Table of contents" */
+.md-sidebar--secondary .md-sidebar__scrollwrap {
+    font-size: 13px;
+}
+
+/* ==================== 移动端适配 ==================== */
+@media screen and (max-width: 76.25em) {
+    /* 平板尺寸 */
+    .md-typeset {
+        font-size: 15px;
+    }
+}
+
+@media screen and (max-width: 60em) {
+    /* 手机尺寸 */
+    .md-typeset {
+        font-size: 14px;
+    }
+
+    .md-nav--primary .md-nav__item {
+        font-size: 15px;
+    }
+}
+
+/* ==================== 打印优化 ==================== */
+@media print {
+    .md-typeset {
+        font-size: 12pt;
+    }
+}
+
+
+/* ==================== 标题折叠功能 ==================== */
+
+/* 为标题添加折叠按钮容器 */
+.md-typeset h2,
+.md-typeset h3,
+.md-typeset h4,
+.md-typeset h5,
+.md-typeset h6 {
+    position: relative;
+    padding-left: 1.8em;
+    cursor: pointer;
+    user-select: none;
+}
+
+/* 折叠按钮样式 */
+.md-typeset h2::before,
+.md-typeset h3::before,
+.md-typeset h4::before,
+.md-typeset h5::before,
+.md-typeset h6::before {
+    content: '▼';
+    position: absolute;
+    left: 0;
+    font-size: 0.7em;
+    color: var(--md-primary-fg-color, rgba(99, 102, 241, 0.8));
+    transition: transform 0.3s ease, color 0.2s ease;
+    display: inline-block;
+    width: 1.5em;
+    text-align: center;
+}
+
+/* 折叠状态的按钮 */
+.md-typeset h2.collapsed::before,
+.md-typeset h3.collapsed::before,
+.md-typeset h4.collapsed::before,
+.md-typeset h5.collapsed::before,
+.md-typeset h6.collapsed::before {
+    transform: rotate(-90deg);
+}
+
+/* 悬停效果 */
+.md-typeset h2:hover::before,
+.md-typeset h3:hover::before,
+.md-typeset h4:hover::before,
+.md-typeset h5:hover::before,
+.md-typeset h6:hover::before {
+    color: var(--md-primary-fg-color);
+    transform: scale(1.2);
+}
+
+.md-typeset h2.collapsed:hover::before,
+.md-typeset h3.collapsed:hover::before,
+.md-typeset h4.collapsed:hover::before,
+.md-typeset h5.collapsed:hover::before,
+.md-typeset h6.collapsed:hover::before {
+    transform: rotate(-90deg) scale(1.2);
+}
+
+/* 折叠内容的动画效果 */
+.md-typeset .collapsible-content {
+    overflow: hidden;
+    transition: max-height 0.4s ease, opacity 0.3s ease, margin 0.3s ease;
+    max-height: 10000px;
+    opacity: 1;
+}
+
+.md-typeset .collapsible-content.collapsed {
+    max-height: 0 !important;
+    opacity: 0;
+    margin: 0 !important;
+}
+
+/* H1 标题不添加折叠功能（可选） */
+.md-typeset h1 {
+    padding-left: 0;
+    cursor: default;
+}
+
+.md-typeset h1::before {
+    display: none;
+}
+
+/* 深色模式适配 */
+[data-md-color-scheme="slate"] {
+    .md-typeset h2::before,
+    .md-typeset h3::before,
+    .md-typeset h4::before,
+    .md-typeset h5::before,
+    .md-typeset h6::before {
+        color: rgba(99, 102, 241, 0.9);
+    }
+}
+
+/* 移动端优化 */
+@media screen and (max-width: 60em) {
+    .md-typeset h2::before,
+    .md-typeset h3::before,
+    .md-typeset h4::before,
+    .md-typeset h5::before,
+    .md-typeset h6::before {
+        font-size: 0.8em;
+    }
+}
+
+/* 打印时移除折叠按钮 */
+@media print {
+    .md-typeset h2::before,
+    .md-typeset h3::before,
+    .md-typeset h4::before,
+    .md-typeset h5::before,
+    .md-typeset h6::before {
+        display: none !important;
+    }
+
+    .md-typeset h2,
+    .md-typeset h3,
+    .md-typeset h4,
+    .md-typeset h5,
+    .md-typeset h6 {
+        padding-left: 0 !important;
+    }
+
+    .md-typeset .collapsible-content.collapsed {
+        max-height: none !important;
+        opacity: 1 !important;
+    }
+}

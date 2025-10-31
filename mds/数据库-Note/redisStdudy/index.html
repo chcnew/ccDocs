@@ -1,0 +1,3159 @@
+
+<!doctype html>
+<html lang="zh" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="个人学习记录的知识笔记">
+      
+      
+        <meta name="author" content="HC">
+      
+      
+        <link rel="canonical" href="https://chcnew.github.io/ccDocs/mds/%E6%95%B0%E6%8D%AE%E5%BA%93-Note/redisStdudy/">
+      
+      
+        <link rel="prev" href="../pymysqlStudy/">
+      
+      
+        <link rel="next" href="../../LinuxEnv-Note/Nginx%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6/">
+      
+      
+      <link rel="icon" href="../../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.22">
+    
+    
+      
+        <title>RedisStdudy - CC学习文档库</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.84d31ad4.min.css">
+      
+        
+        <link rel="stylesheet" href="../../../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../../static/stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#redisstudy" class="md-skip">
+          跳转至
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="页眉">
+    <a href="../../.." title="CC学习文档库" class="md-header__button md-logo" aria-label="CC学习文档库" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="m99.3 256.1 69.4-119.9c-5.6-12.2-8.8-25.8-8.8-40.2 0-53 43-96 96-96s96 43 96 96c0 14.3-3.1 27.9-8.8 40.2l44.4 76.7c-23.1 26-53.7 45.1-88.4 53.8L256 191.9l-68.1 117.6c21.5 6.8 44.3 10.5 68.1 10.5 70.7 0 133.8-32.7 174.9-84 11.1-13.8 31.2-16 45-5s16 31.2 5 45C428.2 341.8 347 384 256.1 384c-35.4 0-69.4-6.4-100.7-18.1l-56.7 97.8c-4.7 8.1-11.7 14.7-20.1 18.9l-55.4 27.7c-5 2.5-10.9 2.2-15.6-.7S0 501.5 0 496v-55.4c0-8.4 2.2-16.7 6.5-24.1l60-103.7c-12.8-11.2-24.6-23.5-35.3-36.8-11.1-13.8-8.8-33.9 5-45s33.9-8.8 45 5c5.7 7.1 11.8 13.8 18.2 20.1zm281.8 151.8c32.5-13 62.4-31 88.9-52.9l35.6 61.5c4.2 7.3 6.5 15.6 6.5 24.1V496c0 5.5-2.9 10.7-7.6 13.6s-10.6 3.2-15.6.7l-55.4-27.7c-8.4-4.2-15.4-10.8-20.1-18.9zM256 128a32 32 0 1 0 0-64 32 32 0 1 0 0 64"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            CC学习文档库
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              RedisStdudy
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="切换至深色模式"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="切换至深色模式" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m17.75 4.09-2.53 1.94.91 3.06-2.63-1.81-2.63 1.81.91-3.06-2.53-1.94L12.44 4l1.06-3 1.06 3zm3.5 6.91-1.64 1.25.59 1.98-1.7-1.17-1.7 1.17.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95zm-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14.4-.4.82-.76 1.27-1.08.75-.53 1.93.36 1.85 1.19-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82-2.81 3.14-2.7 7.96.31 10.98 3.02 3.01 7.84 3.12 10.98.31"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="切换至浅色模式"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="切换至浅色模式" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3m0-7 2.39 3.42C13.65 5.15 12.84 5 12 5s-1.65.15-2.39.42zM3.34 7l4.16-.35A7.2 7.2 0 0 0 5.94 8.5c-.44.74-.69 1.5-.83 2.29zm.02 10 1.76-3.77a7.131 7.131 0 0 0 2.38 4.14zM20.65 7l-1.77 3.79a7.02 7.02 0 0 0-2.38-4.15zm-.01 10-4.14.36c.59-.51 1.12-1.14 1.54-1.86.42-.73.69-1.5.83-2.29zM12 22l-2.41-3.44c.74.27 1.55.44 2.41.44.82 0 1.63-.17 2.37-.44z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="搜索" placeholder="搜索" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="查找">
+        
+        <button type="reset" class="md-search__icon md-icon" title="清空当前内容" aria-label="清空当前内容" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            正在初始化搜索引擎
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="标签" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../.." class="md-tabs__link">
+        
+  
+  
+    
+  
+  首页
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../Python-Note/Python-%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/" class="md-tabs__link">
+          
+  
+  
+  Python
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../GoLang-Note/GoLang-%E5%85%A5%E9%97%A8/" class="md-tabs__link">
+          
+  
+  
+  Golang
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../Vue3-Note/vue3-%E5%85%A5%E9%97%A8/" class="md-tabs__link">
+          
+  
+  
+  Vue3
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../Docker-Note/DockerLearningNote/" class="md-tabs__link">
+          
+  
+  
+  Docker
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../mysql%E4%BC%98%E5%8C%96%E5%AE%9E%E8%B7%B5/" class="md-tabs__link">
+          
+  
+  
+  DataBase
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../LinuxEnv-Note/Nginx%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6/" class="md-tabs__link">
+          
+  
+  
+  LinuxEnvConf
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE-Note/http%E5%8D%8F%E8%AE%AE/" class="md-tabs__link">
+          
+  
+  
+  Others
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="导航栏" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../.." title="CC学习文档库" class="md-nav__button md-logo" aria-label="CC学习文档库" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="m99.3 256.1 69.4-119.9c-5.6-12.2-8.8-25.8-8.8-40.2 0-53 43-96 96-96s96 43 96 96c0 14.3-3.1 27.9-8.8 40.2l44.4 76.7c-23.1 26-53.7 45.1-88.4 53.8L256 191.9l-68.1 117.6c21.5 6.8 44.3 10.5 68.1 10.5 70.7 0 133.8-32.7 174.9-84 11.1-13.8 31.2-16 45-5s16 31.2 5 45C428.2 341.8 347 384 256.1 384c-35.4 0-69.4-6.4-100.7-18.1l-56.7 97.8c-4.7 8.1-11.7 14.7-20.1 18.9l-55.4 27.7c-5 2.5-10.9 2.2-15.6-.7S0 501.5 0 496v-55.4c0-8.4 2.2-16.7 6.5-24.1l60-103.7c-12.8-11.2-24.6-23.5-35.3-36.8-11.1-13.8-8.8-33.9 5-45s33.9-8.8 45 5c5.7 7.1 11.8 13.8 18.2 20.1zm281.8 151.8c32.5-13 62.4-31 88.9-52.9l35.6 61.5c4.2 7.3 6.5 15.6 6.5 24.1V496c0 5.5-2.9 10.7-7.6 13.6s-10.6 3.2-15.6.7l-55.4-27.7c-8.4-4.2-15.4-10.8-20.1-18.9zM256 128a32 32 0 1 0 0-64 32 32 0 1 0 0 64"/></svg>
+
+    </a>
+    CC学习文档库
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    首页
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Python
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            Python
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Python-Note/Python-%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    并发编程
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Python-Note/Python-%E5%BC%82%E6%AD%A5%E7%BC%96%E7%A8%8B/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    异步编程
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Python-Note/DRF-Note/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    DRF框架
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Python-Note/celery-Note/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    celery-Note
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Python-Note/django%E9%A1%B9%E7%9B%AE%E9%83%A8%E7%BD%B2/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    django项目部署
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Python-Note/FastAPI-Note/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    FastAPI-Note
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Golang
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            Golang
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../GoLang-Note/GoLang-%E5%85%A5%E9%97%A8/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    GoLang-Note
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Vue3
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            Vue3
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Vue3-Note/vue3-%E5%85%A5%E9%97%A8/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    vue3-入门
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Vue3-Note/vue3-%E7%BB%84%E5%90%88%E5%BC%8FAPI/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    vue3-组合式API
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Vue3-Note/Vue3%2BTS%2BPnpm-Note/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Vue3+TS+Pnpm-Note
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Docker
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            Docker
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Docker-Note/DockerLearningNote/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Docker-Note
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Docker-Note/DockerVMLocalTest/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Docker本地测试
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Docker-Note/DockerCSERVER/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Docker容器化部署
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    DataBase
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            DataBase
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../mysql%E4%BC%98%E5%8C%96%E5%AE%9E%E8%B7%B5/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    MySQL优化实践
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../MongoDBStudy/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    MongoDB-入门
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../SqlAlchemyStudy/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    SqlAlchemyStudy
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../pymysqlStudy/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    PyMySQLStudy
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    RedisStdudy
+    
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    RedisStdudy
+    
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="目录">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      目录
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#redis" class="md-nav__link">
+    <span class="md-ellipsis">
+      一、Redis是什么？
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#redis_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      二、Redis亮点功能
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#redislinux" class="md-nav__link">
+    <span class="md-ellipsis">
+      三、Redis安装（linux）
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="三、Redis安装（linux）">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      ● 下载安装
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      ● 测试启动服务（使用配置文件）
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      ● 测试客户端连接
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      ● 安装完成之后，软件模块介绍
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      ● 本地客户端连接测试
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_6" class="md-nav__link">
+    <span class="md-ellipsis">
+      ● 源码安装设置开机启动
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="● 源码安装设置开机启动">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#systemd" class="md-nav__link">
+    <span class="md-ellipsis">
+      方式一：配置Systemd
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="方式一：配置Systemd">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1" class="md-nav__link">
+    <span class="md-ellipsis">
+      1、配置文件路径
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2redisservice" class="md-nav__link">
+    <span class="md-ellipsis">
+      2、在系统服务目录里创建redis.service文件
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-execstart" class="md-nav__link">
+    <span class="md-ellipsis">
+      3、写入以下内容 (ExecStart路径为自己安装路径)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4" class="md-nav__link">
+    <span class="md-ellipsis">
+      4、配置描述：
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#5systemctl" class="md-nav__link">
+    <span class="md-ellipsis">
+      5、systemctl相关命令
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#6" class="md-nav__link">
+    <span class="md-ellipsis">
+      6、重启服务器验证是否开机自动启动
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#etcinitd-" class="md-nav__link">
+    <span class="md-ellipsis">
+      方式二：/etc/init.d/）-&gt; 推荐
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#pythonredis" class="md-nav__link">
+    <span class="md-ellipsis">
+      四、Python连接redis
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="四、Python连接redis">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1pythonredis" class="md-nav__link">
+    <span class="md-ellipsis">
+      1.安装python操作redis模块
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2pythonredis" class="md-nav__link">
+    <span class="md-ellipsis">
+      2.通过python操作redis数据
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3redis" class="md-nav__link">
+    <span class="md-ellipsis">
+      3.Redis连接池提升操作效率
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#djangoredis" class="md-nav__link">
+    <span class="md-ellipsis">
+      五、Django依赖模块连接redis
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="五、Django依赖模块连接redis">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1django-redisredis" class="md-nav__link">
+    <span class="md-ellipsis">
+      1.安装django-redis模块（内部依赖redis模块）
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2djangosettingspy" class="md-nav__link">
+    <span class="md-ellipsis">
+      2.在django项目的settings.py中添加相关配置
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3djangoredis" class="md-nav__link">
+    <span class="md-ellipsis">
+      3.在django的视图中操作redis
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#redis_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      六、Redis其他高级用法
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#redis_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      七、Redis基础命令
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="七、Redis基础命令">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      1.逻辑数据库使用
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2redisubuntu" class="md-nav__link">
+    <span class="md-ellipsis">
+      2.Redis服务加入开机启动脚本（ubuntu）
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#rdbaof" class="md-nav__link">
+    <span class="md-ellipsis">
+      八、支持数据持久化方案（RDB/AOF）
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="八、支持数据持久化方案（RDB/AOF）">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#rdb" class="md-nav__link">
+    <span class="md-ellipsis">
+      ● RDB
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="● RDB">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1save" class="md-nav__link">
+    <span class="md-ellipsis">
+      1.save命令
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2bgsave" class="md-nav__link">
+    <span class="md-ellipsis">
+      2.bgsave命令
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. 服务器配置自动触发
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4rdb" class="md-nav__link">
+    <span class="md-ellipsis">
+      4.rdb文件
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#aof" class="md-nav__link">
+    <span class="md-ellipsis">
+      ● AOF
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="● AOF">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      1.三种写入策略
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1.三种写入策略">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#11-always" class="md-nav__link">
+    <span class="md-ellipsis">
+      1.1 always
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#12-everysec" class="md-nav__link">
+    <span class="md-ellipsis">
+      1.2 everysec
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#13-no" class="md-nav__link">
+    <span class="md-ellipsis">
+      1.3 no
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2aof" class="md-nav__link">
+    <span class="md-ellipsis">
+      2.AOF文件重写
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      3.两种重写方式
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4aof" class="md-nav__link">
+    <span class="md-ellipsis">
+      4.AOF文件损坏
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#5aof" class="md-nav__link">
+    <span class="md-ellipsis">
+      5.AOF的优点
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#6aof" class="md-nav__link">
+    <span class="md-ellipsis">
+      6.AOF的缺点
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#rdbaof_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      ● 选择RDB还是AOF呢？
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#rdbaof_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      ● RDB/AOF小结
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#redis_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      九、Redis配置参数
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7" >
+        
+          
+          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    LinuxEnvConf
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7">
+            <span class="md-nav__icon md-icon"></span>
+            LinuxEnvConf
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../LinuxEnv-Note/Nginx%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Nginx配置文件
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_8" >
+        
+          
+          <label class="md-nav__link" for="__nav_8" id="__nav_8_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Others
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_8_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_8">
+            <span class="md-nav__icon md-icon"></span>
+            Others
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE-Note/http%E5%8D%8F%E8%AE%AE/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    http协议
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Python-Note/uwsgi%2Bnginx%E4%B8%A4%E7%A7%8D%E5%8D%8F%E8%AE%AE%E4%BB%A3%E7%90%86%E9%85%8D%E7%BD%AE/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    uwsgi+nginx两种协议代理配置
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="目录">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      目录
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#redis" class="md-nav__link">
+    <span class="md-ellipsis">
+      一、Redis是什么？
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#redis_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      二、Redis亮点功能
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#redislinux" class="md-nav__link">
+    <span class="md-ellipsis">
+      三、Redis安装（linux）
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="三、Redis安装（linux）">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      ● 下载安装
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      ● 测试启动服务（使用配置文件）
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      ● 测试客户端连接
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      ● 安装完成之后，软件模块介绍
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      ● 本地客户端连接测试
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_6" class="md-nav__link">
+    <span class="md-ellipsis">
+      ● 源码安装设置开机启动
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="● 源码安装设置开机启动">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#systemd" class="md-nav__link">
+    <span class="md-ellipsis">
+      方式一：配置Systemd
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="方式一：配置Systemd">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1" class="md-nav__link">
+    <span class="md-ellipsis">
+      1、配置文件路径
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2redisservice" class="md-nav__link">
+    <span class="md-ellipsis">
+      2、在系统服务目录里创建redis.service文件
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-execstart" class="md-nav__link">
+    <span class="md-ellipsis">
+      3、写入以下内容 (ExecStart路径为自己安装路径)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4" class="md-nav__link">
+    <span class="md-ellipsis">
+      4、配置描述：
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#5systemctl" class="md-nav__link">
+    <span class="md-ellipsis">
+      5、systemctl相关命令
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#6" class="md-nav__link">
+    <span class="md-ellipsis">
+      6、重启服务器验证是否开机自动启动
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#etcinitd-" class="md-nav__link">
+    <span class="md-ellipsis">
+      方式二：/etc/init.d/）-&gt; 推荐
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#pythonredis" class="md-nav__link">
+    <span class="md-ellipsis">
+      四、Python连接redis
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="四、Python连接redis">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1pythonredis" class="md-nav__link">
+    <span class="md-ellipsis">
+      1.安装python操作redis模块
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2pythonredis" class="md-nav__link">
+    <span class="md-ellipsis">
+      2.通过python操作redis数据
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3redis" class="md-nav__link">
+    <span class="md-ellipsis">
+      3.Redis连接池提升操作效率
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#djangoredis" class="md-nav__link">
+    <span class="md-ellipsis">
+      五、Django依赖模块连接redis
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="五、Django依赖模块连接redis">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1django-redisredis" class="md-nav__link">
+    <span class="md-ellipsis">
+      1.安装django-redis模块（内部依赖redis模块）
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2djangosettingspy" class="md-nav__link">
+    <span class="md-ellipsis">
+      2.在django项目的settings.py中添加相关配置
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3djangoredis" class="md-nav__link">
+    <span class="md-ellipsis">
+      3.在django的视图中操作redis
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#redis_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      六、Redis其他高级用法
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#redis_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      七、Redis基础命令
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="七、Redis基础命令">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      1.逻辑数据库使用
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2redisubuntu" class="md-nav__link">
+    <span class="md-ellipsis">
+      2.Redis服务加入开机启动脚本（ubuntu）
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#rdbaof" class="md-nav__link">
+    <span class="md-ellipsis">
+      八、支持数据持久化方案（RDB/AOF）
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="八、支持数据持久化方案（RDB/AOF）">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#rdb" class="md-nav__link">
+    <span class="md-ellipsis">
+      ● RDB
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="● RDB">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1save" class="md-nav__link">
+    <span class="md-ellipsis">
+      1.save命令
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2bgsave" class="md-nav__link">
+    <span class="md-ellipsis">
+      2.bgsave命令
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. 服务器配置自动触发
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4rdb" class="md-nav__link">
+    <span class="md-ellipsis">
+      4.rdb文件
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#aof" class="md-nav__link">
+    <span class="md-ellipsis">
+      ● AOF
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="● AOF">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      1.三种写入策略
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1.三种写入策略">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#11-always" class="md-nav__link">
+    <span class="md-ellipsis">
+      1.1 always
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#12-everysec" class="md-nav__link">
+    <span class="md-ellipsis">
+      1.2 everysec
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#13-no" class="md-nav__link">
+    <span class="md-ellipsis">
+      1.3 no
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2aof" class="md-nav__link">
+    <span class="md-ellipsis">
+      2.AOF文件重写
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      3.两种重写方式
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4aof" class="md-nav__link">
+    <span class="md-ellipsis">
+      4.AOF文件损坏
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#5aof" class="md-nav__link">
+    <span class="md-ellipsis">
+      5.AOF的优点
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#6aof" class="md-nav__link">
+    <span class="md-ellipsis">
+      6.AOF的缺点
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#rdbaof_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      ● 选择RDB还是AOF呢？
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#rdbaof_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      ● RDB/AOF小结
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#redis_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      九、Redis配置参数
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="redisstudy">redisStudy<a class="headerlink" href="#redisstudy" title="Permanent link">&para;</a></h1>
+<p><strong>学习链接:</strong> </p>
+<p>http://www.yuan316.com/post/redis/</p>
+<h2 id="redis">一、Redis是什么？<a class="headerlink" href="#redis" title="Permanent link">&para;</a></h2>
+<p>● Redis 是完全开源的、C语言实现的，遵守 BSD 协议，是一个高性能的 非关系型 key-value 数据库；</p>
+<p>● Redis支持多种语言（c、c++、python、java、php）；</p>
+<p>● 单线程单进程；</p>
+<p>● Redis 与其他 key - value 缓存产品有以下三个特点：</p>
+<div class="highlight"><pre><span></span><code><span class="m">1.</span> Redis支持数据的持久化，可以将内存中的数据保存在磁盘中，重启的时候可以再次加载进行使用。
+<span class="m">2.</span> Redis不仅仅支持简单的key-value类型的数据，同时还提供list，set，zset，hash等数据结构的存储。
+<span class="m">3.</span> Redis支持数据的备份，即master-slave模式的数据备份。
+</code></pre></div>
+<h2 id="redis_1">二、Redis亮点功能<a class="headerlink" href="#redis_1" title="Permanent link">&para;</a></h2>
+<p>● 持久化</p>
+<p>支持将内存中的数据保存到磁盘中，保证数据安全，方便进行备份和恢复。</p>
+<p>● 过期键功能</p>
+<p>为键设置一个时间，到期自动删除 &lt;节省内存开销&gt;</p>
+<p>● 事务功能</p>
+<p>弱事务型数据库，只具备简单的事务功能。</p>
+<p>● 主从复制</p>
+<p>如何让Redis保持高可用的状态，官方推荐提供主从方案</p>
+<p>● 哨兵</p>
+<p>搭配基础的主从结构后，哨兵可做到自动故障转移</p>
+<p><span style="color:red">测试命令：</span></p>
+<div class="highlight"><pre><span></span><code>redis-benchmark<span class="w"> </span>-q<span class="w"> </span>-n<span class="w"> </span><span class="m">10000</span><span class="w">  </span>--<span class="w"> </span>-q表示快速输出结果，-n表示10000个请求，还有个参数模拟客户端同时发请求默认50个
+</code></pre></div>
+<p>对比其他数据库区别：</p>
+<ol>
+<li>mysql：关系型数据库，表格，基于磁盘，慢；</li>
+<li>mangoDB：非关系型数据库，键值对文档型数据库，类似JSON文档，数据结构单一；</li>
+<li>Redis诞生是为解决什么问题？ 答： 为解决硬盘IO性能的瓶颈；</li>
+</ol>
+<p>● Redis应用场景</p>
+<div class="highlight"><pre><span></span><code><span class="m">1</span>.<span class="w"> </span>缓存：做为缓存存储介质，此业务场景最为常见<span class="p">;</span>查询优先走redis,没有则走mysql<span class="p">;</span>可有效的降低mysql查询压力；
+<span class="m">2</span>.<span class="w"> </span>并发计数：由于redis是单进程单线程的，可以有效解决并发请求计数场景，例如微博点赞；
+<span class="m">3</span>.<span class="w"> </span>排行榜：各大实时排行榜，例如游戏排名、电商排名；
+<span class="m">4</span>.<span class="w"> </span>生产者消费者模型：充当生产者消费者模型的中间层<span class="p">;</span>生产者可将任务分发给redis,消费者从redis中获取任务。
+</code></pre></div>
+<h2 id="redislinux">三、Redis安装（linux）<a class="headerlink" href="#redislinux" title="Permanent link">&para;</a></h2>
+<h3 id="_1">● 下载安装<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><span class="nb">cd</span><span class="w"> </span>/usr/local/
+wget<span class="w"> </span>http://download.redis.io/releases/redis-7.2.5.tar.gz
+tar<span class="w"> </span>xzf<span class="w"> </span>redis-7.2.5.tar.gz
+<span class="nb">cd</span><span class="w"> </span>redis-7.2.5
+
+<span class="c1"># centos安装命令</span>
+yum<span class="w"> </span>install<span class="w"> </span>gcc<span class="w"> </span>
+yum<span class="w"> </span>-y<span class="w"> </span>install<span class="w"> </span>centos-release-scl
+yum<span class="w"> </span>-y<span class="w"> </span>install<span class="w"> </span>devtoolset-9-gcc<span class="w"> </span>devtoolset-9-gcc-c++<span class="w"> </span>devtoolset-9-binutils<span class="w"> </span>
+scl<span class="w"> </span><span class="nb">enable</span><span class="w"> </span>devtoolset-9<span class="w"> </span>bash
+
+<span class="c1"># 注意：scl命令启用只是临时的，退出xshell或者重启虚拟机就会恢复到原来的gcc版本。</span>
+<span class="c1"># 如果要长期生效的话，执行如下：</span>
+<span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;source /opt/rh/devtoolset-9/enable&quot;</span><span class="w"> </span>&gt;&gt;/etc/profile
+<span class="c1"># 假设报错：... .../deps/lua/src/liblua.</span>
+<span class="c1"># 解决方法：进入源码包目录下的deps目录中执行</span>
+make<span class="w"> </span>lua<span class="w"> </span>hiredis<span class="w"> </span>linenoise
+
+<span class="c1"># ubuntu安装命令</span>
+apt<span class="w"> </span>update
+apt<span class="w"> </span>upgrade
+apt<span class="w"> </span>install<span class="w"> </span>make<span class="w"> </span>gcc<span class="w"> </span>pkg-config
+make<span class="w"> </span><span class="nv">PREFIX</span><span class="o">=</span>/usr/local/redis<span class="w"> </span>install
+<span class="nb">cd</span><span class="w"> </span>/usr/local/
+cp<span class="w"> </span>-r<span class="w"> </span>./redis-7.2.5/src<span class="w"> </span>./redis/
+mkdir<span class="w"> </span>-p<span class="w"> </span>./redis/conf
+cp<span class="w"> </span>./redis-7.2.5/redis.conf<span class="w"> </span>./redis/conf/
+<span class="nb">echo</span><span class="w"> </span>-n<span class="w"> </span><span class="s1">&#39;export PATH=$PATH:/usr/local/redis/src&#39;</span><span class="w"> </span>&gt;&gt;<span class="w"> </span>/etc/profile
+<span class="nb">echo</span><span class="w"> </span>-n<span class="w"> </span><span class="s1">&#39;export PATH=$PATH:/usr/local/redis/bin&#39;</span><span class="w"> </span>&gt;&gt;<span class="w"> </span>/etc/profile
+<span class="nb">source</span><span class="w"> </span>/etc/profile
+
+<span class="c1"># 配置文件修改-远程连接配置</span>
+protected-mode<span class="w"> </span>no<span class="w">  </span><span class="c1"># 关闭保护模式，允许外部访问</span>
+daemonize<span class="w"> </span>yes<span class="w">  </span><span class="c1"># 后台启动</span>
+port<span class="w"> </span><span class="m">6379</span><span class="w">  </span><span class="c1"># 设置使用端口 -- 需要放行</span>
+<span class="nb">bind</span><span class="w"> </span><span class="m">0</span>.0.0.0<span class="w"> </span>-::1<span class="w">  </span><span class="c1"># 注释掉bind 127.0.0.1 改为局域网内可连接 bind 0.0.0.0</span>
+requirepass<span class="w"> </span>cc123456<span class="w">  </span><span class="c1"># requirepass foobared改为requirepass cc123456，cc123456为设置的密码，这个密码尽量设置复杂些。</span>
+</code></pre></div>
+<p><img alt="image-20231015112213147" src="../redisStudy/image-20231015112213147.png" /> </p>
+<p>安装完毕的配置：<a href="https://blog.csdn.net/M_y_y/article/details/106211042">https://blog.csdn.net/M_y_y/article/details/106211042</a></p>
+<h3 id="_2">● 测试启动服务（使用配置文件）<a class="headerlink" href="#_2" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code>redis-server /usr/local/redis/conf/redis.conf
+</code></pre></div>
+<h3 id="_3">● 测试客户端连接<a class="headerlink" href="#_3" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><span class="c1"># 无密码连接</span>
+redis-cli
+</code></pre></div>
+<p><img alt="image-20240526212703198" src="../redisStudy/image-20240526212703198.png" /> </p>
+<h3 id="_4">● 安装完成之后，软件模块介绍<a class="headerlink" href="#_4" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th><span style="color:red">模块名称</span></th>
+<th><span style="color:red">模块功能介绍</span></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>redis-server</td>
+<td>Redis服务器</td>
+</tr>
+<tr>
+<td>redis-cli</td>
+<td>Redis命令行客户端</td>
+</tr>
+<tr>
+<td>redis-benchmark</td>
+<td>Redis性能测试</td>
+</tr>
+<tr>
+<td>redis-check-aof</td>
+<td>AOF文件修复工具</td>
+</tr>
+<tr>
+<td>redis-check-rdb</td>
+<td>RDB文件修复工具</td>
+</tr>
+<tr>
+<td>redis-sentinel</td>
+<td>Sentinel服务器(2.8以后)，Redis集群使用</td>
+</tr>
+</tbody>
+</table>
+<h3 id="_5">● 本地客户端连接测试<a class="headerlink" href="#_5" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><span class="c1"># 默认端口6379，无密码：</span>
+redis-cli
+
+<span class="c1"># 有端口，无密码：</span>
+redis-cli<span class="w"> </span>-h<span class="w"> </span><span class="m">127</span>.0.0.1<span class="w"> </span>-p<span class="w"> </span><span class="m">6379</span>
+
+<span class="c1"># 有端口，有密码：</span>
+redis-cli<span class="w"> </span>-h<span class="w"> </span><span class="m">127</span>.0.0.1<span class="w"> </span>-p<span class="w"> </span><span class="m">6379</span><span class="w"> </span>-a<span class="w"> </span>cc123456
+
+<span class="c1"># 使用有端口有密码的方式才能正常连接</span>
+
+<span class="c1"># 连接成功使用ping命令进行测试，返回PONG则成功</span>
+ping
+</code></pre></div>
+<p>有密码且密码输入错误：</p>
+<p><img alt="image-20240526213112547" src="../redisStudy/image-20240526213112547.png" /> </p>
+<p>正确连接：</p>
+<p><img alt="image-20240526213137039" src="../redisStudy/image-20240526213137039.png" /> </p>
+<h3 id="_6">● 源码安装设置开机启动<a class="headerlink" href="#_6" title="Permanent link">&para;</a></h3>
+<h4 id="systemd">方式一：配置Systemd<a class="headerlink" href="#systemd" title="Permanent link">&para;</a></h4>
+<p>开机自启动redis（其他服务类似） </p>
+<p>CentOS7以上是用Systemd进行系统初始化的，Systemd 是 Linux 系统中最新的初始化系统（init），它主要的设计目标是克服 sysvinit 固有的缺点，提高系统的启动速度。</p>
+<p>Systemd服务文件以.service结尾，比如现在要建立redis为开机启动，如果用yum install命令安装的，yum命令会自动创建redis.service文件，直接用命令systemcel enable redis.service设置开机启动即可。</p>
+<p>下面为源码安装的redis-server设置开机自动启动步骤；</p>
+<h5 id="1">1、配置文件路径<a class="headerlink" href="#1" title="Permanent link">&para;</a></h5>
+<p>我编译安装的目录是：/usr/local/redis/bin ，所以配置⽂件⽬录为：/usr/local/redis/bin/redis.conf</p>
+<h5 id="2redisservice">2、在系统服务目录里创建redis.service文件<a class="headerlink" href="#2redisservice" title="Permanent link">&para;</a></h5>
+<div class="highlight"><pre><span></span><code>vim<span class="w"> </span>/etc/systemd/system/redis.service
+
+<span class="c1"># 或（一般上面为centos的配置）</span>
+
+vim<span class="w"> </span>/lib/systemd/system/redis.service
+</code></pre></div>
+<h5 id="3-execstart">3、写入以下内容 (ExecStart路径为自己安装路径)<a class="headerlink" href="#3-execstart" title="Permanent link">&para;</a></h5>
+<div class="highlight"><pre><span></span><code><span class="k">[Unit]</span>
+<span class="na">Description</span><span class="o">=</span><span class="s">redis-server</span>
+<span class="na">After</span><span class="o">=</span><span class="s">network.target</span>
+
+<span class="k">[Service]</span>
+<span class="na">Type</span><span class="o">=</span><span class="s">forking</span>
+<span class="na">ExecStart</span><span class="o">=</span><span class="s">/usr/local/redis/src/redis-server /usr/local/redis/redis.conf</span>
+<span class="na">PrivateTmp</span><span class="o">=</span><span class="s">true</span>
+
+<span class="k">[Install]</span>
+<span class="na">wantedBy</span><span class="o">=</span><span class="s">multi-user.target</span>
+</code></pre></div>
+<h5 id="4">4、配置描述：<a class="headerlink" href="#4" title="Permanent link">&para;</a></h5>
+<div class="highlight"><pre><span></span><code>Description:描述服务
+After:描述服务类别
+[Service]服务运行参数的设置
+Type=forking是后台运行的形式
+ExecStart为服务的具体运行命令
+ExecReload为重启命令
+ExecStop为停止命令
+PrivateTmp=True表示给服务分配独立的临时空间
+注意：[Service]的启动、重启、停止命令全部要求使用绝对路径
+[Install]运行级别下服务安装的相关设置，可设置为多用户，即系统运行级别为3
+</code></pre></div>
+<h5 id="5systemctl">5、systemctl相关命令<a class="headerlink" href="#5systemctl" title="Permanent link">&para;</a></h5>
+<div class="highlight"><pre><span></span><code><span class="c1"># 加载配置</span>
+systemctl<span class="w"> </span>daemon-reload
+<span class="c1">#  启动</span>
+systemctl<span class="w"> </span>start<span class="w"> </span>redis<span class="w"> </span>
+<span class="c1">#  开机启动（未生效）</span>
+systemctl<span class="w"> </span><span class="nb">enable</span><span class="w"> </span>redis
+<span class="c1"># 启动redis服务</span>
+systemctl<span class="w"> </span>start<span class="w"> </span>redis.service
+<span class="c1"># 设置开机自启动</span>
+systemctl<span class="w"> </span><span class="nb">enable</span><span class="w"> </span>redis.service
+<span class="c1"># 停止开机自启动</span>
+systemctl<span class="w"> </span>disable<span class="w"> </span>redis.service
+<span class="c1"># 查看服务当前状态</span>
+systemctl<span class="w"> </span>status<span class="w"> </span>redis.service
+<span class="c1"># 重新启动服务</span>
+systemctl<span class="w"> </span>restart<span class="w"> </span>redis.service
+<span class="c1"># 查看所有已启动的服务</span>
+systemctl<span class="w"> </span>list-units<span class="w"> </span>--type<span class="o">=</span>service
+</code></pre></div>
+<h5 id="6">6、重启服务器验证是否开机自动启动<a class="headerlink" href="#6" title="Permanent link">&para;</a></h5>
+<div class="highlight"><pre><span></span><code>shutdown<span class="w"> </span>-r<span class="w"> </span>now<span class="w"> </span>
+<span class="c1"># 或</span>
+reboot
+</code></pre></div>
+<h4 id="etcinitd-">方式二：/etc/init.d/）-&gt; 推荐<a class="headerlink" href="#etcinitd-" title="Permanent link">&para;</a></h4>
+<div class="highlight"><pre><span></span><code><span class="c1">#  在/etc目录下新建redis目录</span>
+mkdir<span class="w"> </span>/etc/redis
+
+<span class="c1">#  复制配置文件</span>
+
+<span class="c1">#  将redis.conf文件复制到/etc/redis目录</span>
+cp<span class="w"> </span>/usr/local/redis/redis.conf<span class="w"> </span>/etc/redis/
+
+<span class="c1">#  复制启动脚本</span>
+cp<span class="w"> </span>/usr/local/redis/utils/redis_init_script<span class="w"> </span>/etc/init.d/redis
+cat<span class="w"> </span>/etc/init.d/redis
+
+<span class="c1">#  通过查看启动脚本，确定各个路径是否正确</span>
+<span class="nv">REDISPORT</span><span class="o">=</span><span class="m">6379</span>
+<span class="nv">EXEC</span><span class="o">=</span>/usr/local/bin/redis-server
+<span class="nv">CLIEXEC</span><span class="o">=</span>/usr/local/bin/redis-cli
+<span class="c1">#  改为：</span>
+<span class="nv">REDISPORT</span><span class="o">=</span><span class="m">6399</span>
+<span class="nv">EXEC</span><span class="o">=</span>/usr/local/redis/src/redis-server
+<span class="nv">CLIEXEC</span><span class="o">=</span>/usr/local/soft/redis/bin/redis-cli
+
+
+<span class="c1"># 执行自启命令</span>
+<span class="nb">cd</span><span class="w"> </span>/etc/init.d/
+chkconfig<span class="w"> </span>redis<span class="w"> </span>on
+
+<span class="c1"># 如果运行结果提示：service redisd does not support chkconfig，</span>
+<span class="c1"># 解决方法： 使用vim编辑redisd文件，在第一行加入如下两行注释，保存退出，再次执行自启命令即可</span>
+<span class="c1"># chkconfig: 2345 90 10</span>
+<span class="c1"># description: Redis is a persistent key-value database</span>
+<span class="c1"># 注释的意思是，redis服务必须在运行级2，3，4，5下被启动或关闭，启动的优先级是90，关闭的优先级是10。</span>
+
+
+<span class="c1"># 启动Redis命令</span>
+service<span class="w"> </span>redis<span class="w"> </span>start
+
+
+<span class="c1"># 关闭redis命令</span>
+service<span class="w"> </span>redis<span class="w"> </span>stop
+</code></pre></div>
+<h2 id="pythonredis">四、Python连接redis<a class="headerlink" href="#pythonredis" title="Permanent link">&para;</a></h2>
+<h3 id="1pythonredis">1.安装python操作redis模块<a class="headerlink" href="#1pythonredis" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code>pip3<span class="w"> </span>install<span class="w"> </span>redis
+</code></pre></div>
+<h3 id="2pythonredis">2.通过python操作redis数据<a class="headerlink" href="#2pythonredis" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><span class="ch">#!/usr/bin/env python</span>
+<span class="c1"># -*- coding:utf-8 -*-</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">redis</span>
+
+<span class="c1"># 直接连接redis</span>
+<span class="n">conn</span> <span class="o">=</span> <span class="n">redis</span><span class="o">.</span><span class="n">Redis</span><span class="p">(</span><span class="n">host</span><span class="o">=</span><span class="s1">&#39;10.211.55.28&#39;</span><span class="p">,</span> <span class="n">port</span><span class="o">=</span><span class="mi">6379</span><span class="p">,</span> <span class="n">password</span><span class="o">=</span><span class="s1">&#39;foobared&#39;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s1">&#39;utf-8&#39;</span><span class="p">)</span>
+
+<span class="c1"># 设置键值：15131255089=&quot;9999&quot; 且超时时间为10秒（值写入到redis时会自动转字符串）</span>
+<span class="n">conn</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="s1">&#39;15131255089&#39;</span><span class="p">,</span> <span class="mi">9999</span><span class="p">,</span> <span class="n">ex</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+
+<span class="c1"># 根据键获取值：如果存在获取值（获取到的是字节类型）；不存在则返回None</span>
+<span class="n">value</span> <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;15131255089&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+</code></pre></div>
+<h3 id="3redis">3.Redis连接池提升操作效率<a class="headerlink" href="#3redis" title="Permanent link">&para;</a></h3>
+<p>上面python操作redis的示例是以直接创建连接的方式实现，每次操作redis如果都重新连接一次效率会比较低，建议使用redis连接池来替换，例如：</p>
+<div class="highlight"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">redis</span>
+
+<span class="c1"># 创建redis连接池（默认连接池最大连接数）</span>
+<span class="n">pool</span> <span class="o">=</span> <span class="n">redis</span><span class="o">.</span><span class="n">ConnectionPool</span><span class="p">(</span><span class="n">host</span><span class="o">=</span><span class="s1">&#39;10.211.55.28&#39;</span><span class="p">,</span> <span class="n">port</span><span class="o">=</span><span class="mi">6379</span><span class="p">,</span> <span class="n">password</span><span class="o">=</span><span class="s1">&#39;foobared&#39;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s1">&#39;utf-8&#39;</span><span class="p">,</span> <span class="n">max_connections</span><span class="o">=</span><span class="mi">1000</span><span class="p">)</span>
+
+<span class="c1"># 去连接池中获取一个连接</span>
+<span class="n">conn</span> <span class="o">=</span> <span class="n">redis</span><span class="o">.</span><span class="n">Redis</span><span class="p">(</span><span class="n">connection_pool</span><span class="o">=</span><span class="n">pool</span><span class="p">)</span>
+
+<span class="c1"># 设置键值：15131255089=&quot;9999&quot; 且超时时间为10秒（值写入到redis时会自动转字符串）</span>
+<span class="n">conn</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="s1">&#39;name&#39;</span><span class="p">,</span> <span class="s2">&quot;诸葛亮&quot;</span><span class="p">,</span> <span class="n">ex</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+
+<span class="c1"># 根据键获取值：如果存在获取值（获取到的是字节类型）；不存在则返回None</span>
+<span class="n">value</span> <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;name&#39;</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+</code></pre></div>
+<p>按理说搞定上一步python代码操作redis之后，在django中应用只需要把上面的代码写到django就可以。例如：django的视图函数中操作redis:</p>
+<div class="highlight"><pre><span></span><code>import<span class="w"> </span>redis
+from<span class="w"> </span>django.shortcuts<span class="w"> </span>import<span class="w"> </span>HttpResponse
+
+<span class="c1"># 创建redis连接池</span>
+<span class="nv">POOL</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>redis.ConnectionPool<span class="o">(</span><span class="nv">host</span><span class="o">=</span><span class="s1">&#39;10.211.55.28&#39;</span>,<span class="w"> </span><span class="nv">port</span><span class="o">=</span><span class="m">6379</span>,<span class="w"> </span><span class="nv">password</span><span class="o">=</span><span class="s1">&#39;foobared&#39;</span>,<span class="w"> </span><span class="nv">encoding</span><span class="o">=</span><span class="s1">&#39;utf-8&#39;</span>,<span class="w"> </span><span class="nv">max_connections</span><span class="o">=</span><span class="m">1000</span><span class="o">)</span>
+
+def<span class="w"> </span>index<span class="o">(</span>request<span class="o">)</span>:
+
+<span class="w">    </span><span class="c1"># 去连接池中获取一个连接</span>
+<span class="w">    </span><span class="nv">conn</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>redis.Redis<span class="o">(</span><span class="nv">connection_pool</span><span class="o">=</span>POOL<span class="o">)</span>
+
+<span class="w">    </span>conn.set<span class="o">(</span><span class="s1">&#39;name&#39;</span>,<span class="w"> </span><span class="s2">&quot;诸葛亮&quot;</span>,<span class="w"> </span><span class="nv">ex</span><span class="o">=</span><span class="m">10</span><span class="o">)</span>
+<span class="w">    </span><span class="nv">value</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>conn.get<span class="o">(</span><span class="s1">&#39;name&#39;</span><span class="o">)</span>
+<span class="w">    </span>print<span class="o">(</span>value<span class="o">)</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span>HttpResponse<span class="o">(</span><span class="s2">&quot;ok&quot;</span><span class="o">)</span>
+</code></pre></div>
+<h2 id="djangoredis">五、Django依赖模块连接redis<a class="headerlink" href="#djangoredis" title="Permanent link">&para;</a></h2>
+<p>上述可以实现在django中操作redis。</p>
+<p>但是，这种形式有点非主流，因为在django中一般不这么干，而是用另一种更加简便的的方式。</p>
+<h3 id="1django-redisredis">1.安装django-redis模块（内部依赖redis模块）<a class="headerlink" href="#1django-redisredis" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code>pip3<span class="w"> </span>install<span class="w"> </span>django-redis
+</code></pre></div>
+<h3 id="2djangosettingspy">2.在django项目的settings.py中添加相关配置<a class="headerlink" href="#2djangosettingspy" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><span class="o">...</span> <span class="o">...</span>
+
+<span class="n">CACHES</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;default&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;BACKEND&quot;</span><span class="p">:</span> <span class="s2">&quot;django_redis.cache.RedisCache&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;LOCATION&quot;</span><span class="p">:</span> <span class="s2">&quot;redis://10.211.55.28:6379&quot;</span><span class="p">,</span> <span class="c1"># 安装redis的主机的 IP 和 端口</span>
+        <span class="s2">&quot;OPTIONS&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s2">&quot;CLIENT_CLASS&quot;</span><span class="p">:</span> <span class="s2">&quot;django_redis.client.DefaultClient&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;CONNECTION_POOL_KWARGS&quot;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s2">&quot;max_connections&quot;</span><span class="p">:</span> <span class="mi">1000</span><span class="p">,</span>
+                <span class="s2">&quot;encoding&quot;</span><span class="p">:</span> <span class="s1">&#39;utf-8&#39;</span>
+            <span class="p">},</span>
+            <span class="s2">&quot;PASSWORD&quot;</span><span class="p">:</span> <span class="s2">&quot;foobared&quot;</span> <span class="c1"># redis密码</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="o">...</span> <span class="o">...</span>
+</code></pre></div>
+<h3 id="3djangoredis">3.在django的视图中操作redis<a class="headerlink" href="#3djangoredis" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">django.shortcuts</span><span class="w"> </span><span class="kn">import</span> <span class="n">HttpResponse</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">django_redis</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_redis_connection</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">index</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
+    <span class="c1"># 去连接池中获取一个连接</span>
+    <span class="n">conn</span> <span class="o">=</span> <span class="n">get_redis_connection</span><span class="p">(</span><span class="s2">&quot;default&quot;</span><span class="p">)</span>
+    <span class="n">conn</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="s1">&#39;nickname&#39;</span><span class="p">,</span> <span class="s2">&quot;诸葛亮&quot;</span><span class="p">,</span> <span class="n">ex</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+    <span class="n">value</span> <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;nickname&#39;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">HttpResponse</span><span class="p">(</span><span class="s2">&quot;OK&quot;</span><span class="p">)</span>
+</code></pre></div>
+<h2 id="redis_2">六、Redis其他高级用法<a class="headerlink" href="#redis_2" title="Permanent link">&para;</a></h2>
+<p>● http://www.yuan316.com/post/redis/</p>
+<p>● https://www.cnblogs.com/wupeiqi/articles/5132791.html</p>
+<p>● http://www.redis.cn/</p>
+<h2 id="redis_3">七、Redis基础命令<a class="headerlink" href="#redis_3" title="Permanent link">&para;</a></h2>
+<h3 id="1_1">1.逻辑数据库使用<a class="headerlink" href="#1_1" title="Permanent link">&para;</a></h3>
+<p>默认情况，redis内置16个逻辑库（0-15），选择哪个数据库：</p>
+<div class="highlight"><pre><span></span><code><span class="m">127</span>.0.0.1:6379&gt;<span class="w"> </span><span class="k">select</span><span class="w"> </span><span class="m">0</span>
+OK
+<span class="m">127</span>.0.0.1:6379&gt;<span class="w"> </span><span class="nb">set</span><span class="w"> </span>city<span class="w"> </span>dongguan
+OK
+<span class="m">127</span>.0.0.1:6379&gt;<span class="w"> </span>get<span class="w"> </span>city
+<span class="s2">&quot;dongguan&quot;</span>
+<span class="m">127</span>.0.0.1:6379&gt;
+</code></pre></div>
+<h3 id="2redisubuntu">2.Redis服务加入开机启动脚本（ubuntu）<a class="headerlink" href="#2redisubuntu" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><span class="c1"># 复制文件</span>
+<span class="k">if</span><span class="w"> </span>!<span class="w"> </span><span class="o">[</span><span class="w"> </span>-f<span class="w"> </span><span class="s2">&quot;/etc/systemd/system/rc-local.service&quot;</span><span class="w"> </span><span class="o">]</span><span class="p">;</span><span class="k">then</span>
+<span class="w">    </span>cat<span class="w"> </span>/lib/systemd/system/rc-local.service
+<span class="w">    </span>cp<span class="w"> </span>/lib/systemd/system/rc-local.service<span class="w"> </span>/etc/systemd/system/rc-local.service
+<span class="k">fi</span>
+
+vim<span class="w"> </span>/etc/systemd/system/rc-local.service
+
+cat<span class="w"> </span><span class="s">&lt;&lt; EOF &gt;&gt; /etc/systemd/system/rc-local.service</span>
+
+<span class="s">[Install]</span>
+<span class="s">WantedBy=multi-user.target</span>
+<span class="s">EOF</span>
+
+systemctl<span class="w"> </span>daemon-reload
+
+<span class="c1"># 写入要运行的脚本路径</span>
+cat<span class="w"> </span><span class="s">&lt;&lt; EOF &gt;&gt; /etc/rc.local</span>
+<span class="s">#!/bin/bash</span>
+<span class="s">sh /root/RedisLen/env_start.sh</span>
+<span class="s">EOF</span>
+<span class="c1"># 写入要运行的脚本内容</span>
+cat<span class="w"> </span><span class="s">&lt;&lt; EOF &gt; /root/RedisLen/env_start.sh</span>
+<span class="s">#!/bin/bash</span>
+<span class="s">pgrep -f redis | xargs kill -9 &gt;/dev/nul 2&gt;&amp;1</span>
+<span class="s">/usr/local/redis/bin/redis-server /usr/local/redis/conf/redis.conf</span>
+<span class="s">EOF</span>
+
+chmod<span class="w"> </span><span class="m">755</span><span class="w"> </span>/etc/rc.local
+chmod<span class="w"> </span><span class="m">755</span><span class="w"> </span>/root/RedisLen/env_start.sh
+
+systemctl<span class="w"> </span>start<span class="w"> </span>rc-local.service
+<span class="c1"># 假设报错</span>
+<span class="c1"># Job for rc-local.service failed because the control process exited with error code.</span>
+<span class="c1"># See &quot;systemctl status rc-local.service&quot; and &quot;journalctl -xeu rc-local.service&quot; for details.</span>
+<span class="c1"># 解决参考文档：https://blog.csdn.net/djstavav/article/details/88166805</span>
+
+systemctl<span class="w"> </span>status<span class="w"> </span>rc-local.service
+systemctl<span class="w"> </span><span class="nb">enable</span><span class="w"> </span>rc-local.service
+</code></pre></div>
+<h2 id="rdbaof">八、支持数据持久化方案（RDB/AOF）<a class="headerlink" href="#rdbaof" title="Permanent link">&para;</a></h2>
+<p><img alt="image-20240602105621289" src="../redisStudy/image-20240602105621289.png" /> </p>
+<h3 id="rdb">● RDB<a class="headerlink" href="#rdb" title="Permanent link">&para;</a></h3>
+<p>RDB是一种快照存储持久化方式，具体就是将Redis某一时刻的内存数据保存到硬盘的文件当中，默认保存的文件名为dump.rdb，而在Redis服务器启动时，会重新加载dump.rdb文件的数据到内存当中恢复数据。</p>
+<p><strong>开启RDB持久化方式：</strong>开启RDB持久化方式很简单，客户端可以<strong>通过向Redis服务器发送save或bgsave命令让服务器生成rdb文件</strong>，或者<strong>通过服务器配置文件指定触发RDB条件</strong>。</p>
+<h4 id="1save">1.save命令<a class="headerlink" href="#1save" title="Permanent link">&para;</a></h4>
+<div class="highlight"><pre><span></span><code><span class="c1"># 同步数据到磁盘上</span>
+&gt;<span class="w"> </span>save
+</code></pre></div>
+<p><strong>当客户端向服务器发送save命令请求进行持久化时，服务器会阻塞save命令之后的其他客户端的请求，直到数据同步完成。</strong></p>
+<p>如果数据量太大，同步数据会执行很久，而这期间Redis服务器也无法接收其他请求，所以，最好不要在生产环境使用save命令。</p>
+<h4 id="2bgsave">2.bgsave命令<a class="headerlink" href="#2bgsave" title="Permanent link">&para;</a></h4>
+<div class="highlight"><pre><span></span><code>与save命令不同，bgsave命令是一个异步操作。
+# 异步保存数据集到磁盘
+&gt; bgsave
+</code></pre></div>
+<p>当客户端发服务发出bgsave命令时，Redis服务器主进程会forks一个子进程来数据同步问题，在将数据保存到rdb文件之后，子进程会退出。</p>
+<p>所以，与save命令相比，Redis服务器在处理bgsave采用子线程进行IO写入，而主进程仍然可以接收其他请求，但forks子进程是同步的，所以forks子进程时，一样不能接收其他请求，这意味着，如果forks一个子进程花费的时间太久(一般是很快的)，bgsave命令仍然有阻塞其他客户的请求的情况发生。</p>
+<h4 id="3">3. 服务器配置自动触发<a class="headerlink" href="#3" title="Permanent link">&para;</a></h4>
+<p>除了通过客户端发送命令外，还有一种方式，就是在Redis配置文件中的save指定到达触发RDB持久化的条件，比如【多少秒内至少达到多少写操作】就开启RDB数据同步。</p>
+<p>配置文件redis.conf指定如下的选项：</p>
+<div class="highlight"><pre><span></span><code># 启动服务器加载配置文件 
+vim /usr/local/redis/conf/redis.conf
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="c1"># 900s内至少达到一条写命令</span>
+<span class="na">save 900 1</span>
+<span class="c1"># 300s内至少达至10条写命令</span>
+<span class="na">save 300 10</span>
+<span class="c1"># 60s内至少达到10000条写命令</span>
+<span class="na">save 60 10000</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code># 启动服务器加载配置文件 
+redis-server /usr/local/redis/conf/redis.conf
+</code></pre></div>
+<p>这种通过服务器配置文件触发RDB的方式，与bgsave命令类似，达到触发条件时，会forks一个子进程进行数据同步，不过最好不要通过这方式来触发RDB持久化，因为设置触发的时间太短，则容易频繁写入rdb文件，影响服务器性能，时间设置太长则会造成数据丢失。</p>
+<h4 id="4rdb">4.rdb文件<a class="headerlink" href="#4rdb" title="Permanent link">&para;</a></h4>
+<p>前面介绍了三种让服务器生成rdb文件的方式，无论是由主进程生成还是子进程来生成，其过程如下：</p>
+<ul>
+<li>生成临时rdb文件，并写入数据。</li>
+<li>完成数据写入，用临时文代替代正式rdb文件。</li>
+<li>删除原来的db文件。</li>
+</ul>
+<p>RDB默认生成的文件名为dump.rdb，当然，我可以通过配置文件进行更加详细配置，比如在单机下启动多个redis服务器进程时，可以通过端口号配置不同的rdb名称，如下所示：</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># 是否压缩rdb文件</span>
+rdbcompression<span class="w"> </span>yes
+
+<span class="c1"># rdb文件的名称</span>
+dbfilename<span class="w"> </span>redis-6379.rdb
+
+<span class="c1"># rdb文件保存目录</span>
+dir<span class="w"> </span>~/redis/
+</code></pre></div>
+<p><strong>RDB的几个优点</strong></p>
+<ul>
+<li>与AOF方式相比，通过rdb文件恢复数据比较快。</li>
+<li>rdb文件非常紧凑，适合于数据备份。</li>
+<li>通过RDB进行数据备，由于使用子进程生成，所以对Redis服务器性能影响较小。</li>
+</ul>
+<p><strong>RDB的几个缺点</strong></p>
+<ul>
+<li>如果服务器宕机的话，采用RDB的方式会造成某个时段内数据的丢失，比如我们设置10分钟同步一次或5分钟达到1000次写入就同步一次，那么如果还没达到触发条件服务器就死机了，那么这个时间段的数据会丢失。</li>
+<li>使用save命令会造成服务器阻塞，直接数据同步完成才能接收后续请求。</li>
+<li>使用bgsave命令在forks子进程时，如果数据量太大，forks的过程也会发生阻塞，另外，forks子进程会耗费内存。</li>
+</ul>
+<h3 id="aof">● AOF<a class="headerlink" href="#aof" title="Permanent link">&para;</a></h3>
+<p>与RDB存储某个时刻的快照不同，AOF持久化方式会记录客户端对服务器的每一次写操作命令，并将这些写操作以Redis协议追加保存到以后缀为aof文件末尾，在Redis服务器重启时，会加载并运行aof文件的命令，以达到恢复数据的目的。</p>
+<p><strong>开启AOF持久化方式</strong></p>
+<p>Redis默认不开启AOF持久化方式，我们可以在配置文件中开启并进行更加详细的配置，如下面的redis.conf文件：</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># 开启aof机制</span>
+appendonly<span class="w"> </span>yes
+
+<span class="c1"># aof文件名</span>
+appendfilename<span class="w"> </span><span class="s2">&quot;appendonly.aof&quot;</span>
+
+<span class="c1"># 写入策略,always表示每个写操作都保存到aof文件中,也可以是everysec或no</span>
+appendfsync<span class="w"> </span>always
+
+<span class="c1"># 默认不重写aof文件</span>
+no-appendfsync-on-rewrite<span class="w"> </span>no
+
+<span class="c1"># 保存目录</span>
+dir<span class="w"> </span>~/redis/
+</code></pre></div>
+<h4 id="1_2">1.三种写入策略<a class="headerlink" href="#1_2" title="Permanent link">&para;</a></h4>
+<p>在上面的配置文件中，我们可以通过appendfsync选项指定写入策略,有三个选项</p>
+<div class="highlight"><pre><span></span><code>appendfsync<span class="w"> </span>always
+<span class="c1"># appendfsync everysec</span>
+<span class="c1"># appendfsync no</span>
+</code></pre></div>
+<h5 id="11-always">1.1 always<a class="headerlink" href="#11-always" title="Permanent link">&para;</a></h5>
+<p>客户端的每一个写操作都保存到aof文件当，这种策略很安全，但是每个写请注都有IO操作，所以也很慢。</p>
+<h5 id="12-everysec">1.2 everysec<a class="headerlink" href="#12-everysec" title="Permanent link">&para;</a></h5>
+<p>appendfsync的默认写入策略，每秒写入一次aof文件，因此，最多可能会丢失1s的数据。</p>
+<h5 id="13-no">1.3 no<a class="headerlink" href="#13-no" title="Permanent link">&para;</a></h5>
+<p>Redis服务器不负责写入aof，而是交由操作系统来处理什么时候写入aof文件。更快，但也是最不安全的选择，不推荐使用。</p>
+<h4 id="2aof">2.AOF文件重写<a class="headerlink" href="#2aof" title="Permanent link">&para;</a></h4>
+<p>AOF将客户端的每一个写操作都追加到aof文件末尾，比如对一个key多次执行incr命令，这时候，aof保存每一次命令到aof文件中，aof文件会变得非常大。</p>
+<div class="highlight"><pre><span></span><code><span class="n">incr</span><span class="w"> </span><span class="kt">num</span><span class="w"> </span><span class="m">1</span>
+<span class="n">incr</span><span class="w"> </span><span class="kt">num</span><span class="w"> </span><span class="m">2</span>
+<span class="n">incr</span><span class="w"> </span><span class="kt">num</span><span class="w"> </span><span class="m">3</span>
+<span class="n">incr</span><span class="w"> </span><span class="kt">num</span><span class="w"> </span><span class="m">4</span>
+<span class="n">incr</span><span class="w"> </span><span class="kt">num</span><span class="w"> </span><span class="m">5</span>
+<span class="n">incr</span><span class="w"> </span><span class="kt">num</span><span class="w"> </span><span class="m">6</span>
+<span class="p">...</span>
+<span class="n">incr</span><span class="w"> </span><span class="kt">num</span><span class="w"> </span><span class="m">100000</span>
+</code></pre></div>
+<p>aof文件太大，加载aof文件恢复数据时，就会非常慢，为了解决这个问题，Redis支持aof文件重写，通过重写aof，可以生成一个恢复当前数据的最少命令集，比如上面的例子中那么多条命令，可以重写为：</p>
+<div class="highlight"><pre><span></span><code><span class="k">set</span><span class="w"> </span><span class="n">num</span><span class="w"> </span><span class="mi">100000</span>
+</code></pre></div>
+<p>aof文件是一个二进制文件，并不是像上面的例子一样，直接保存每个命令，而使用Redis自己的格式，上面只是方便演示。</p>
+<h4 id="3_1">3.两种重写方式<a class="headerlink" href="#3_1" title="Permanent link">&para;</a></h4>
+<p>通过在redis.conf配置文件中的选项no-appendfsync-on-rewrite可以设置是否开启重写，这种方式会在每次fsync时都重写，影响服务器性以，因此默认值为no，不推荐使用。</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># 默认不重写aof文件</span>
+<span class="k">no</span><span class="o">-</span><span class="n">appendfsync</span><span class="o">-</span><span class="n">on</span><span class="o">-</span><span class="n">rewrite</span><span class="w"> </span><span class="k">no</span>
+</code></pre></div>
+<p>客户端向服务器发送bgrewriteaof命令，也可以让服务器进行AOF重写。</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># 让服务器异步重写追加aof文件命令</span>
+&gt;<span class="w"> </span>bgrewriteaof
+</code></pre></div>
+<p>AOF重写方式也是异步操作，即如果要写入aof文件，则Redis主进程会forks一个子进程来处理。</p>
+<p>重写aof文件的好处</p>
+<ul>
+<li>压缩aof文件，减少磁盘占用量。</li>
+<li>将aof的命令压缩为最小命令集，加快了数据恢复的速度。</li>
+</ul>
+<h4 id="4aof">4.AOF文件损坏<a class="headerlink" href="#4aof" title="Permanent link">&para;</a></h4>
+<p>在写入aof日志文件时，如果Redis服务器宕机，则aof日志文件文件会出格式错误，在重启Redis服务器时，Redis服务器会拒绝载入这个aof文件，可以通过以下步骤修复aof并恢复数据。</p>
+<p>1、备份现在aof文件，以防万一。</p>
+<p>2、使用redis-check-aof命令修复aof文件，该命令格式如下：</p>
+<div class="highlight"><pre><span></span><code><span class="x"># 修复aof日志文件</span>
+<span class="x">$ redis-check-aof -fix file.aof</span>
+</code></pre></div>
+<p>3、重启Redis服务器，加载已经修复的aof文件，恢复数据。</p>
+<h4 id="5aof">5.AOF的优点<a class="headerlink" href="#5aof" title="Permanent link">&para;</a></h4>
+<ul>
+<li>AOF只是追加日志文件，因此对服务器性能影响较小，速度比RDB要快，消耗的内存较少。</li>
+</ul>
+<h4 id="6aof">6.AOF的缺点<a class="headerlink" href="#6aof" title="Permanent link">&para;</a></h4>
+<ul>
+<li>AOF方式生成的日志文件太大，即使通过AFO重写，文件体积仍然很大。</li>
+<li>恢复数据的速度比RDB慢</li>
+</ul>
+<h3 id="rdbaof_1">● 选择RDB还是AOF呢？<a class="headerlink" href="#rdbaof_1" title="Permanent link">&para;</a></h3>
+<p>通过上面的介绍，我们了解了RDB与AOF各自的优点与缺点，到底要如何选择呢？</p>
+<p>通过下面的表示，我们可以从几个方面对比一下RDB与AOF：</p>
+<p>​       在应用时，要根本自己的实际需求，选择RDB或者AOF，其实，如果想要数据足够安全，<strong>可以两种方式都开启，但两种持久化方式同时进行IO操作，会严重影响服务器性能</strong>，因此有时候不得不做出选择。</p>
+<p><strong>当RDB与AOF两种方式都开启时，Redis会优先使用AOF日志来恢复数据，因为AOF保存的文件比RDB文件更完整。</strong></p>
+<h3 id="rdbaof_2">● RDB/AOF小结<a class="headerlink" href="#rdbaof_2" title="Permanent link">&para;</a></h3>
+<p>Redis的持久化机制的知识，其实，如果你只是单纯把Redis作为缓存服务器，那么可以完全不用考虑持久化；</p>
+<p>但是，在如今的大多数服务器架构中，Redis只是扮演一个缓存服务器的角色，还可以作为数据库，保存我们的业务数据，此时，我们则需要好好了解有关Redis持久化策略的区别与选择。</p>
+<h2 id="redis_4">九、Redis配置参数<a class="headerlink" href="#redis_4" title="Permanent link">&para;</a></h2>
+<p>参考链接：https://blog.csdn.net/admans/article/details/101981770</p>
+<table>
+<thead>
+<tr>
+<th>序号</th>
+<th>配置项</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>daemonize no</td>
+<td>Redis  默认不是以守护进程的方式运行，可以通过该配置项修改，使用 yes 启用守护进程（Windows 不支持守护线程的配置为 no ）</td>
+</tr>
+<tr>
+<td>2</td>
+<td>pidfile  /var/run/redis.pid</td>
+<td>当 Redis  以守护进程方式运行时，Redis 默认会把 pid 写入 /var/run/redis.pid 文件，可以通过 pidfile 指定</td>
+</tr>
+<tr>
+<td>3</td>
+<td>port 6379</td>
+<td>指定 Redis 监听端口，默认端口为  6379，作者在自己的一篇博文中解释了为什么选用 6379 作为默认端口，因为 6379 在手机按键上 MERZ 对应的号码，而 MERZ 取自意大利歌女  Alessia Merz 的名字</td>
+</tr>
+<tr>
+<td>4</td>
+<td>bind 127.0.0.1</td>
+<td>绑定的主机地址</td>
+</tr>
+<tr>
+<td>5</td>
+<td>timeout 300</td>
+<td>当客户端闲置多长时间后关闭连接，如果指定为  0，表示关闭该功能</td>
+</tr>
+<tr>
+<td>6</td>
+<td>loglevel notice</td>
+<td>指定日志记录级别，Redis  总共支持四个级别：debug、verbose、notice、warning，默认为 notice</td>
+</tr>
+<tr>
+<td>7</td>
+<td>logfile stdout</td>
+<td>日志记录方式，默认为标准输出，如果配置  Redis 为守护进程方式运行，而这里又配置为日志记录方式为标准输出，则日志将会发送给 /dev/null</td>
+</tr>
+<tr>
+<td>8</td>
+<td>databases 16</td>
+<td>设置数据库的数量，默认数据库为0，可以使用SELECT  命令在连接上指定数据库id</td>
+</tr>
+<tr>
+<td>9</td>
+<td>save <seconds>  <changes></td>
+<td>指定在多长时间内，有多少次更新操作，就将数据同步到数据文件，可以多个条件配合</td>
+</tr>
+<tr>
+<td>Redis  默认配置文件中提供了三个条件：</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>save 900 1</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>save 300 10</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>save 60 10000</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>分别表示 900 秒（15  分钟）内有 1 个更改，300 秒（5 分钟）内有 10 个更改以及 60 秒内有 10000 个更改。</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>10</td>
+<td>rdbcompression yes</td>
+<td>指定存储至本地数据库时是否压缩数据，默认为  yes，Redis 采用 LZF 压缩，如果为了节省 CPU 时间，可以关闭该选项，但会导致数据库文件变的巨大</td>
+</tr>
+<tr>
+<td>11</td>
+<td>dbfilename dump.rdb</td>
+<td>指定本地数据库文件名，默认值为  dump.rdb</td>
+</tr>
+<tr>
+<td>12</td>
+<td>dir ./</td>
+<td>指定本地数据库存放目录</td>
+</tr>
+<tr>
+<td>13</td>
+<td>slaveof  <masterip> <masterport></td>
+<td>设置当本机为 slav 服务时，设置  master 服务的 IP 地址及端口，在 Redis 启动时，它会自动从 master 进行数据同步</td>
+</tr>
+<tr>
+<td>14</td>
+<td>masterauth  <master-password></td>
+<td>当 master  服务设置了密码保护时，slav 服务连接 master 的密码</td>
+</tr>
+<tr>
+<td>15</td>
+<td>requirepass foobared</td>
+<td>设置 Redis  连接密码，如果配置了连接密码，客户端在连接 Redis 时需要通过 AUTH <password> 命令提供密码，默认关闭</td>
+</tr>
+<tr>
+<td>16</td>
+<td>maxclients 128</td>
+<td>设置同一时间最大客户端连接数，默认无限制，Redis  可以同时打开的客户端连接数为 Redis 进程可以打开的最大文件描述符数，如果设置 maxclients  0，表示不作限制。当客户端连接数到达限制时，Redis 会关闭新的连接并向客户端返回 max number of clients reached 错误信息</td>
+</tr>
+<tr>
+<td>17</td>
+<td>maxmemory  <bytes></td>
+<td>指定 Redis 最大内存限制，Redis  在启动时会把数据加载到内存中，达到最大内存后，Redis 会先尝试清除已到期或即将到期的 Key，当此方法处理  后，仍然到达最大内存设置，将无法再进行写入操作，但仍然可以进行读取操作。Redis 新的 vm 机制，会把 Key 存放内存，Value 会存放在  swap 区</td>
+</tr>
+<tr>
+<td>18</td>
+<td>appendonly no</td>
+<td>指定是否在每次更新操作后进行日志记录，Redis  在默认情况下是异步的把数据写入磁盘，如果不开启，可能会在断电时导致一段时间内的数据丢失。因为 redis 本身同步数据文件是按上面 save  条件来同步的，所以有的数据会在一段时间内只存在于内存中。默认为 no</td>
+</tr>
+<tr>
+<td>19</td>
+<td>appendfilename  appendonly.aof</td>
+<td>指定更新日志文件名，默认为  appendonly.aof</td>
+</tr>
+<tr>
+<td>20</td>
+<td>appendfsync everysec</td>
+<td>指定更新日志条件，共有 3 个可选值：</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>no：表示等操作系统进行数据缓存同步到磁盘（快）</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>always：表示每次更新操作后手动调用  fsync() 将数据写到磁盘（慢，安全）</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>everysec：表示每秒同步一次（折中，默认值）</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>21</td>
+<td>vm-enabled no</td>
+<td>指定是否启用虚拟内存机制，默认值为  no，简单的介绍一下，VM 机制将数据分页存放，由 Redis 将访问量较少的页即冷数据 swap  到磁盘上，访问多的页面由磁盘自动换出到内存中（在后面的文章我会仔细分析 Redis 的 VM 机制）</td>
+</tr>
+<tr>
+<td>22</td>
+<td>vm-swap-file  /tmp/redis.swap</td>
+<td>虚拟内存文件路径，默认值为  /tmp/redis.swap，不可多个 Redis 实例共享</td>
+</tr>
+<tr>
+<td>23</td>
+<td>vm-max-memory 0</td>
+<td>将所有大于 vm-max-memory  的数据存入虚拟内存，无论 vm-max-memory 设置多小，所有索引数据都是内存存储的(Redis 的索引数据 就是 keys)，也就是说，当  vm-max-memory 设置为 0 的时候，其实是所有 value 都存在于磁盘。默认值为 0</td>
+</tr>
+<tr>
+<td>24</td>
+<td>vm-page-size 32</td>
+<td>Redis swap 文件分成了很多的  page，一个对象可以保存在多个 page 上面，但一个 page 上不能被多个对象共享，vm-page-size 是要根据存储的  数据大小来设定的，作者建议如果存储很多小对象，page 大小最好设置为 32 或者 64bytes；如果存储很大大对象，则可以使用更大的  page，如果不确定，就使用默认值</td>
+</tr>
+<tr>
+<td>25</td>
+<td>vm-pages 134217728</td>
+<td>设置 swap 文件中的 page  数量，由于页表（一种表示页面空闲或使用的 bitmap）是在放在内存中的，，在磁盘上每 8 个 pages 将消耗 1byte 的内存。</td>
+</tr>
+<tr>
+<td>26</td>
+<td>vm-max-threads 4</td>
+<td>设置访问swap文件的线程数,最好不要超过机器的核数,如果设置为0,那么所有对swap文件的操作都是串行的，可能会造成比较长时间的延迟。默认值为4</td>
+</tr>
+<tr>
+<td>27</td>
+<td>glueoutputbuf yes</td>
+<td>设置在向客户端应答时，是否把较小的包合并为一个包发送，默认为开启</td>
+</tr>
+<tr>
+<td>28</td>
+<td>hash-max-zipmap-entries  64</td>
+<td>指定在超过一定的数量或者最大的元素超过某一临界值时，采用一种特殊的哈希算法</td>
+</tr>
+<tr>
+<td>hash-max-zipmap-value  512</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>29</td>
+<td>activerehashing yes</td>
+<td>指定是否激活重置哈希，默认为开启（后面在介绍  Redis 的哈希算法时具体介绍）</td>
+</tr>
+<tr>
+<td>30</td>
+<td>include  /path/to/local.conf</td>
+<td>指定包含其它的配置文件，可以在同一主机上多个Redis实例之间使用同一份配置文件，而同时各个实例又拥有各自独立的配置</td>
+</tr>
+</tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  回到页面顶部
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+      <div class="md-progress" data-md-component="progress" role="progressbar"></div>
+    
+    
+    
+      
+      <script id="__config" type="application/json">{"base": "../../..", "features": ["navigation.instant", "navigation.instant.progress", "navigation.tabs", "navigation.top", "search.suggest", "search.highlight", "content.code.copy"], "search": "../../../assets/javascripts/workers/search.973d3a69.min.js", "tags": null, "translations": {"clipboard.copied": "\u5df2\u590d\u5236", "clipboard.copy": "\u590d\u5236", "search.result.more.one": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.more.other": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 # \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.none": "\u6ca1\u6709\u627e\u5230\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.one": "\u627e\u5230 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.other": "# \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.placeholder": "\u952e\u5165\u4ee5\u5f00\u59cb\u641c\u7d22", "search.result.term.missing": "\u7f3a\u5c11", "select.version": "\u9009\u62e9\u5f53\u524d\u7248\u672c"}, "version": null}</script>
+    
+    
+      <script src="../../../assets/javascripts/bundle.f55a23d4.min.js"></script>
+      
+        <script src="../../../static/javascripts/collapsible.js"></script>
+      
+    
+  </body>
+</html>
