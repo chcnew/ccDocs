@@ -318,7 +318,7 @@
     
     
       <li class="md-tabs__item">
-        <a href="../../%E6%95%B0%E6%8D%AE%E5%BA%93-Note/mysql%E4%BC%98%E5%8C%96%E5%AE%9E%E8%B7%B5/" class="md-tabs__link">
+        <a href="../../数据库-Note/mysql优化实践.md" class="md-tabs__link">
           
   
   
@@ -697,6 +697,48 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#7-fastapi" class="md-nav__link">
+    <span class="md-ellipsis">
+      7 FastAPI为什么快
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="7 FastAPI为什么快">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#71" class="md-nav__link">
+    <span class="md-ellipsis">
+      7.1 支持异步的框架
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#72" class="md-nav__link">
+    <span class="md-ellipsis">
+      7.2 事件循环是什么
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#73" class="md-nav__link">
+    <span class="md-ellipsis">
+      7.3 程序并发维度
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#uv" class="md-nav__link">
     <span class="md-ellipsis">
       一、uv创建项目
@@ -719,6 +761,24 @@
   <a href="#2-pyprojecttoml" class="md-nav__link">
     <span class="md-ellipsis">
       2 查看项目声明的依赖（pyproject.toml ）
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-fastapi" class="md-nav__link">
+    <span class="md-ellipsis">
+      3 FastAPI简单接口示例
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4" class="md-nav__link">
+    <span class="md-ellipsis">
+      4 接口自动化测试用例
     </span>
   </a>
   
@@ -1428,7 +1488,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../%E6%95%B0%E6%8D%AE%E5%BA%93-Note/mysql%E4%BC%98%E5%8C%96%E5%AE%9E%E8%B7%B5/" class="md-nav__link">
+      <a href="../../数据库-Note/mysql优化实践.md" class="md-nav__link">
         
   
   
@@ -1497,7 +1557,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../%E6%95%B0%E6%8D%AE%E5%BA%93-Note/pymysqlStudy/" class="md-nav__link">
+      <a href="../../数据库-Note/pymysqlStudy.md" class="md-nav__link">
         
   
   
@@ -1520,7 +1580,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../%E6%95%B0%E6%8D%AE%E5%BA%93-Note/redisStdudy/" class="md-nav__link">
+      <a href="../../数据库-Note/redisStdudy.md" class="md-nav__link">
         
   
   
@@ -1789,6 +1849,48 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#7-fastapi" class="md-nav__link">
+    <span class="md-ellipsis">
+      7 FastAPI为什么快
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="7 FastAPI为什么快">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#71" class="md-nav__link">
+    <span class="md-ellipsis">
+      7.1 支持异步的框架
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#72" class="md-nav__link">
+    <span class="md-ellipsis">
+      7.2 事件循环是什么
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#73" class="md-nav__link">
+    <span class="md-ellipsis">
+      7.3 程序并发维度
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#uv" class="md-nav__link">
     <span class="md-ellipsis">
       一、uv创建项目
@@ -1811,6 +1913,24 @@
   <a href="#2-pyprojecttoml" class="md-nav__link">
     <span class="md-ellipsis">
       2 查看项目声明的依赖（pyproject.toml ）
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-fastapi" class="md-nav__link">
+    <span class="md-ellipsis">
+      3 FastAPI简单接口示例
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4" class="md-nav__link">
+    <span class="md-ellipsis">
+      4 接口自动化测试用例
     </span>
   </a>
   
@@ -2262,6 +2382,40 @@
 <p>对于数据库、API、文件的调用，大量结合async和await的异步编程</p>
 </li>
 </ul>
+<h3 id="7-fastapi">7 FastAPI为什么快<a class="headerlink" href="#7-fastapi" title="Permanent link">&para;</a></h3>
+<h4 id="71">7.1 支持异步的框架<a class="headerlink" href="#71" title="Permanent link">&para;</a></h4>
+<ul>
+<li>FastAP构建在 <strong>Starlette</strong> 之上，<strong>Starlette</strong> 本身就是一个 优秀的、高性能 ASGI 异步框架。</li>
+<li>同一个线程中，当一个任务执行到需要 <strong>等待 I/O（例如网络请求、文件读写、数据库查询）</strong> 时，它不会阻塞当前线程，而是<strong>把控制权交还给事件循环</strong>，从而让该线程去执行其他任务。</li>
+</ul>
+<h4 id="72">7.2 事件循环是什么<a class="headerlink" href="#72" title="Permanent link">&para;</a></h4>
+<ul>
+<li>
+<p><strong>事件循环：是一个协调协程执行的调度中心，靠操作系统通知驱动，而不是暴力轮询。</strong></p>
+</li>
+<li>
+<p>事件循环不会一直去“轮询”所有任务（易错点）；</p>
+</li>
+<li>把所有等待中的 I/O 操作注册到操作系统的 <strong>I/O多路复用机制</strong>；</li>
+<li>当有任务的 I/O 完成时，<strong>操作系统通知事件循环</strong>；</li>
+<li>事件循环再调度相应协程继续执行。</li>
+</ul>
+<h4 id="73">7.3 程序并发维度<a class="headerlink" href="#73" title="Permanent link">&para;</a></h4>
+<ul>
+<li><strong>多机器并行</strong>：</li>
+<li>在多个机器上运行同样的程序，同时处理任务；</li>
+<li>例如大数据技术 Hadoop/Hive/Spark</li>
+<li><strong>多进程并行</strong>：</li>
+<li>在单个机器上运行单个程序，程序中启用多个进程同时处理任务</li>
+<li>针对CPU密集型任务，选用多进程处理更合适，例如数学计算和科学计算、图像和视频处理、解压缩文件等；</li>
+<li><strong>多线程并发</strong>：</li>
+<li>一个进程可以启动多个进程同时处理任务，但是注意python中由于GIL的存在，并不会真正的并行执行；
+     但由于I/O操作时，会释放GIL，所以对I/O密集型操作的程序依然可以采用多线程；</li>
+<li>I/O密集型任务，例如文件操作、网络请求、数据库操作等</li>
+<li><strong>多协程并发</strong>：</li>
+<li>协程是一种编程抽象，但不是硬件或操作系统层面的原生实体；但是事件循环是真实存在的设计</li>
+<li>协程在用户空间实现，不涉及内核；上下文切换开销极小，针对I/O密集型任务考虑首选，能很好的处理高并发任务</li>
+</ul>
 <h2 id="uv">一、uv创建项目<a class="headerlink" href="#uv" title="Permanent link">&para;</a></h2>
 <div class="highlight"><pre><span></span><code><span class="c1"># 创建项目</span>
 uv<span class="w"> </span>init<span class="w"> </span>FastAPI-uv-study
@@ -2326,6 +2480,84 @@ uv<span class="w"> </span>remove<span class="w"> </span>&lt;包名&gt;
 </tr>
 </tbody>
 </table>
+<h3 id="3-fastapi">3 FastAPI简单接口示例<a class="headerlink" href="#3-fastapi" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><span class="c1"># _*_ coding: utf-8 _*_</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">简单示例</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">List</span><span class="p">,</span> <span class="n">Dict</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">uvicorn</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">fastapi</span><span class="w"> </span><span class="kn">import</span> <span class="n">FastAPI</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pydantic</span><span class="w"> </span><span class="kn">import</span> <span class="n">BaseModel</span>
+
+
+<span class="k">class</span><span class="w"> </span><span class="nc">User</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
+    <span class="nb">id</span><span class="p">:</span> <span class="nb">int</span>
+    <span class="n">name</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">age</span><span class="p">:</span> <span class="nb">int</span>
+    <span class="n">gender</span><span class="p">:</span> <span class="nb">str</span>
+
+
+<span class="c1"># 创建5条示例数据</span>
+<span class="n">MOCK_DATA</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Dict</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="p">{</span><span class="s1">&#39;id&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s2">&quot;张三&quot;</span><span class="p">,</span> <span class="s1">&#39;age&#39;</span><span class="p">:</span> <span class="mi">20</span><span class="p">,</span> <span class="s1">&#39;gender&#39;</span><span class="p">:</span> <span class="s2">&quot;男&quot;</span><span class="p">},</span>
+    <span class="p">{</span><span class="s1">&#39;id&#39;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s2">&quot;李四&quot;</span><span class="p">,</span> <span class="s1">&#39;age&#39;</span><span class="p">:</span> <span class="mi">22</span><span class="p">,</span> <span class="s1">&#39;gender&#39;</span><span class="p">:</span> <span class="s2">&quot;男&quot;</span><span class="p">},</span>
+    <span class="p">{</span><span class="s1">&#39;id&#39;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span> <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s2">&quot;王五&quot;</span><span class="p">,</span> <span class="s1">&#39;age&#39;</span><span class="p">:</span> <span class="mi">25</span><span class="p">,</span> <span class="s1">&#39;gender&#39;</span><span class="p">:</span> <span class="s2">&quot;男&quot;</span><span class="p">},</span>
+    <span class="p">{</span><span class="s1">&#39;id&#39;</span><span class="p">:</span> <span class="mi">4</span><span class="p">,</span> <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s2">&quot;赵六&quot;</span><span class="p">,</span> <span class="s1">&#39;age&#39;</span><span class="p">:</span> <span class="mi">28</span><span class="p">,</span> <span class="s1">&#39;gender&#39;</span><span class="p">:</span> <span class="s2">&quot;男&quot;</span><span class="p">},</span>
+    <span class="p">{</span><span class="s1">&#39;id&#39;</span><span class="p">:</span> <span class="mi">5</span><span class="p">,</span> <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s2">&quot;小红&quot;</span><span class="p">,</span> <span class="s1">&#39;age&#39;</span><span class="p">:</span> <span class="mi">23</span><span class="p">,</span> <span class="s1">&#39;gender&#39;</span><span class="p">:</span> <span class="s2">&quot;女&quot;</span><span class="p">},</span>
+<span class="p">]</span>
+
+<span class="n">app</span> <span class="o">=</span> <span class="n">FastAPI</span><span class="p">()</span>
+
+
+<span class="nd">@app</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;/user/</span><span class="si">{id}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">response_model</span><span class="o">=</span><span class="n">User</span><span class="p">)</span>  <span class="c1"># 定义路由和返回类型</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_user</span><span class="p">(</span><span class="nb">id</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">user</span> <span class="ow">in</span> <span class="n">MOCK_DATA</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">user</span><span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="nb">id</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">user</span>
+    <span class="k">return</span> <span class="p">{}</span>
+
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+    <span class="n">host</span> <span class="o">=</span> <span class="s2">&quot;0.0.0.0&quot;</span>
+    <span class="n">port</span> <span class="o">=</span> <span class="mi">8000</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;文档地址：http://127.0.0.1:</span><span class="si">{</span><span class="n">port</span><span class="si">}</span><span class="s2">/docs&quot;</span><span class="p">)</span>
+    <span class="n">uvicorn</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">app</span><span class="p">,</span> <span class="n">host</span><span class="o">=</span><span class="s2">&quot;0.0.0.0&quot;</span><span class="p">,</span> <span class="n">port</span><span class="o">=</span><span class="mi">8000</span><span class="p">)</span>
+</code></pre></div>
+<ul>
+<li><strong>uvicorn</strong> 命令行启动</li>
+</ul>
+<div class="highlight"><pre><span></span><code>uvicorn<span class="w"> </span>main:app<span class="w"> </span>--reload<span class="w"> </span>--port<span class="w"> </span><span class="m">8000</span>
+</code></pre></div>
+<ul>
+<li>数据返回结构定义（<strong>Pydantic</strong>）</li>
+</ul>
+<p>response_model参数用于定义接口返回字段与类型，在自动接口文档里面，可以查看（Schema）</p>
+<div class="highlight"><pre><span></span><code><span class="nd">@app</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;/user/</span><span class="si">{id}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">response_model</span><span class="o">=</span><span class="n">User</span><span class="p">)</span>  <span class="c1"># 定义路由和返回类型</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_user</span><span class="p">(</span><span class="nb">id</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
+    <span class="o">...</span> <span class="o">...</span>
+</code></pre></div>
+<p><img alt="image-20251102222230277" src="image-20251102222230277.png" />  </p>
+<h3 id="4">4 接口自动化测试用例<a class="headerlink" href="#4" title="Permanent link">&para;</a></h3>
+<p>需要安装pytest这个包搭配使用，写pytest相关测试用例；使用该测试客户端，不会调用网络接口，直接走对应的函数逻辑</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># _*_ coding: utf-8 _*_</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">fastapi.testclient</span><span class="w"> </span><span class="kn">import</span> <span class="n">TestClient</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">main</span><span class="w"> </span><span class="kn">import</span> <span class="n">app</span>
+
+<span class="n">client</span> <span class="o">=</span> <span class="n">TestClient</span><span class="p">(</span><span class="n">app</span><span class="p">)</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">test_get_versions</span><span class="p">():</span>
+    <span class="n">resp</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;/api/v1/version/?platform=xxx&quot;</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="n">resp</span><span class="o">.</span><span class="n">status_code</span> <span class="o">==</span> <span class="mi">200</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">resp</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>
+</code></pre></div>
+<p><strong>创建client对象</strong>，类型是Testclient，它是基于httpx；httpx是基于requests库的，可以直接使用requsts的语法，发送get/post/put/delete接口给API服务器。</p>
+<p><strong>httpx</strong>：原生支持异步编程；你可以使用 asyncio 结合 httpx 实现异步 HTTP 请求，这在处理大量并发请求时效率更高。</p>
+<p><strong>requests</strong>：仅支持同步请求。可以通过多线程或多进程实现并发，不如异步方式高效。每个测试程序，需要名字以 test_开头的函数(这是标准的 pytest 约定)每个test 开头的函数，就是一个测试函数，可以用于测试一个API接口。</p>
 <h2 id="fastapi-">二、FastAPI-项目结构<a class="headerlink" href="#fastapi-" title="Permanent link">&para;</a></h2>
 <div class="highlight"><pre><span></span><code>FastAPI-uv-study/
 ├──<span class="w"> </span>main.py<span class="w">                    </span><span class="c1"># 应用入口</span>
