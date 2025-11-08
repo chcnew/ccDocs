@@ -12,17 +12,21 @@
         <meta name="author" content="HC">
       
       
-        <link rel="canonical" href="https://chcnew.github.io/ccDocs/mds/%E6%95%B0%E6%8D%AE%E5%BA%93-Note/RedisStdudy/">
+        <link rel="canonical" href="https://chcnew.github.io/ccDocs/mds/%E6%95%B0%E6%8D%AE%E5%BA%93-Note/redisStdudy/">
       
       
+        <link rel="prev" href="../pymysqlStudy/">
+      
+      
+        <link rel="next" href="../../LinuxEnv-Note/Nginx%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6/">
       
       
       <link rel="icon" href="../../../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.22">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.23">
     
     
       
-        <title>RedisStudy - CC学习文档库</title>
+        <title>RedisStdudy - CC学习文档库</title>
       
     
     
@@ -110,7 +114,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              RedisStudy
+              RedisStdudy
             
           </span>
         </div>
@@ -308,11 +312,13 @@
   
   
   
+    
+  
   
     
     
-      <li class="md-tabs__item">
-        <a href="../../数据库-Note/mysql优化实践.md" class="md-tabs__link">
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../mysql%E4%BC%98%E5%8C%96%E5%AE%9E%E8%B7%B5/" class="md-tabs__link">
           
   
   
@@ -914,24 +920,29 @@
       
   
   
+    
   
   
+  
     
     
     
     
-      
-      
-    
-    
-    <li class="md-nav__item md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" >
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" checked>
         
           
-          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="0">
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="">
             
   
   
@@ -944,7 +955,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_6">
             <span class="md-nav__icon md-icon"></span>
             DataBase
@@ -958,7 +969,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../数据库-Note/mysql优化实践.md" class="md-nav__link">
+      <a href="../mysql%E4%BC%98%E5%8C%96%E5%AE%9E%E8%B7%B5/" class="md-nav__link">
         
   
   
@@ -1027,7 +1038,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../数据库-Note/pymysqlStudy.md" class="md-nav__link">
+      <a href="../pymysqlStudy/" class="md-nav__link">
         
   
   
@@ -1047,10 +1058,32 @@
                 
   
   
+    
   
   
-    <li class="md-nav__item">
-      <a href="../../数据库-Note/redisStdudy.md" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    RedisStdudy
+    
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         
   
   
@@ -1061,6 +1094,518 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="目录">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      目录
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#redis" class="md-nav__link">
+    <span class="md-ellipsis">
+      一、Redis是什么？
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#redis_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      二、Redis亮点功能
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#redislinux" class="md-nav__link">
+    <span class="md-ellipsis">
+      三、Redis安装（linux）
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="三、Redis安装（linux）">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      ● 下载安装
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      ● 测试启动服务（使用配置文件）
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      ● 测试客户端连接
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      ● 安装完成之后，软件模块介绍
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      ● 本地客户端连接测试
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_6" class="md-nav__link">
+    <span class="md-ellipsis">
+      ● 源码安装设置开机启动
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="● 源码安装设置开机启动">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#systemd" class="md-nav__link">
+    <span class="md-ellipsis">
+      方式一：配置Systemd
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="方式一：配置Systemd">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1" class="md-nav__link">
+    <span class="md-ellipsis">
+      1、配置文件路径
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2redisservice" class="md-nav__link">
+    <span class="md-ellipsis">
+      2、在系统服务目录里创建redis.service文件
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-execstart" class="md-nav__link">
+    <span class="md-ellipsis">
+      3、写入以下内容 (ExecStart路径为自己安装路径)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4" class="md-nav__link">
+    <span class="md-ellipsis">
+      4、配置描述：
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#5systemctl" class="md-nav__link">
+    <span class="md-ellipsis">
+      5、systemctl相关命令
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#6" class="md-nav__link">
+    <span class="md-ellipsis">
+      6、重启服务器验证是否开机自动启动
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#etcinitd-" class="md-nav__link">
+    <span class="md-ellipsis">
+      方式二：/etc/init.d/）-&gt; 推荐
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#pythonredis" class="md-nav__link">
+    <span class="md-ellipsis">
+      四、Python连接redis
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="四、Python连接redis">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1pythonredis" class="md-nav__link">
+    <span class="md-ellipsis">
+      1.安装python操作redis模块
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2pythonredis" class="md-nav__link">
+    <span class="md-ellipsis">
+      2.通过python操作redis数据
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3redis" class="md-nav__link">
+    <span class="md-ellipsis">
+      3.Redis连接池提升操作效率
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#djangoredis" class="md-nav__link">
+    <span class="md-ellipsis">
+      五、Django依赖模块连接redis
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="五、Django依赖模块连接redis">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1django-redisredis" class="md-nav__link">
+    <span class="md-ellipsis">
+      1.安装django-redis模块（内部依赖redis模块）
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2djangosettingspy" class="md-nav__link">
+    <span class="md-ellipsis">
+      2.在django项目的settings.py中添加相关配置
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3djangoredis" class="md-nav__link">
+    <span class="md-ellipsis">
+      3.在django的视图中操作redis
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#redis_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      六、Redis其他高级用法
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#redis_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      七、Redis基础命令
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="七、Redis基础命令">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      1.逻辑数据库使用
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2redisubuntu" class="md-nav__link">
+    <span class="md-ellipsis">
+      2.Redis服务加入开机启动脚本（ubuntu）
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#rdbaof" class="md-nav__link">
+    <span class="md-ellipsis">
+      八、支持数据持久化方案（RDB/AOF）
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="八、支持数据持久化方案（RDB/AOF）">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#rdb" class="md-nav__link">
+    <span class="md-ellipsis">
+      ● RDB
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="● RDB">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1save" class="md-nav__link">
+    <span class="md-ellipsis">
+      1.save命令
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2bgsave" class="md-nav__link">
+    <span class="md-ellipsis">
+      2.bgsave命令
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. 服务器配置自动触发
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4rdb" class="md-nav__link">
+    <span class="md-ellipsis">
+      4.rdb文件
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#aof" class="md-nav__link">
+    <span class="md-ellipsis">
+      ● AOF
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="● AOF">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      1.三种写入策略
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1.三种写入策略">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#11-always" class="md-nav__link">
+    <span class="md-ellipsis">
+      1.1 always
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#12-everysec" class="md-nav__link">
+    <span class="md-ellipsis">
+      1.2 everysec
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#13-no" class="md-nav__link">
+    <span class="md-ellipsis">
+      1.3 no
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2aof" class="md-nav__link">
+    <span class="md-ellipsis">
+      2.AOF文件重写
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      3.两种重写方式
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4aof" class="md-nav__link">
+    <span class="md-ellipsis">
+      4.AOF文件损坏
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#5aof" class="md-nav__link">
+    <span class="md-ellipsis">
+      5.AOF的优点
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#6aof" class="md-nav__link">
+    <span class="md-ellipsis">
+      6.AOF的缺点
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#rdbaof_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      ● 选择RDB还是AOF呢？
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#rdbaof_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      ● RDB/AOF小结
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#redis_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      九、Redis配置参数
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -1127,6 +1672,29 @@
   
   <span class="md-ellipsis">
     Nginx配置文件
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../LinuxEnv-Note/WSL-Note/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    WSL-Note
     
   </span>
   
@@ -1772,7 +2340,7 @@
 
 
 
-<h1 id="redisstudy">RedisStudy<a class="headerlink" href="#redisstudy" title="Permanent link">&para;</a></h1>
+<h1 id="redisstudy">redisStudy<a class="headerlink" href="#redisstudy" title="Permanent link">&para;</a></h1>
 <p><strong>学习链接:</strong> </p>
 <p>http://www.yuan316.com/post/redis/</p>
 <h2 id="redis">一、Redis是什么？<a class="headerlink" href="#redis" title="Permanent link">&para;</a></h2>

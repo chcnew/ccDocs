@@ -12,13 +12,17 @@
         <meta name="author" content="HC">
       
       
-        <link rel="canonical" href="https://chcnew.github.io/ccDocs/mds/%E6%95%B0%E6%8D%AE%E5%BA%93-Note/MySQL%E4%BC%98%E5%8C%96%E5%AE%9E%E8%B7%B5/">
+        <link rel="canonical" href="https://chcnew.github.io/ccDocs/mds/%E6%95%B0%E6%8D%AE%E5%BA%93-Note/mysql%E4%BC%98%E5%8C%96%E5%AE%9E%E8%B7%B5/">
       
       
+        <link rel="prev" href="../../Docker-Note/DockerCSERVER/">
+      
+      
+        <link rel="next" href="../MongoDBStudy/">
       
       
       <link rel="icon" href="../../../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.22">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.23">
     
     
       
@@ -308,11 +312,13 @@
   
   
   
+    
+  
   
     
     
-      <li class="md-tabs__item">
-        <a href="../../数据库-Note/mysql优化实践.md" class="md-tabs__link">
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="./" class="md-tabs__link">
           
   
   
@@ -914,24 +920,29 @@
       
   
   
+    
   
   
+  
     
     
     
     
-      
-      
-    
-    
-    <li class="md-nav__item md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" >
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" checked>
         
           
-          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="0">
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="">
             
   
   
@@ -944,7 +955,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_6">
             <span class="md-nav__icon md-icon"></span>
             DataBase
@@ -955,10 +966,32 @@
                 
   
   
+    
   
   
-    <li class="md-nav__item">
-      <a href="../../数据库-Note/mysql优化实践.md" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    MySQL优化实践
+    
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         
   
   
@@ -969,6 +1002,170 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="目录">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      目录
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#mysql57" class="md-nav__link">
+    <span class="md-ellipsis">
+      一、mysql5.7下载
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      二、安装及配置
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#mysql_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      三、mysql登录
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="三、mysql登录">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-utf-8" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. 创建默认字符集utf-8的数据库
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2" class="md-nav__link">
+    <span class="md-ellipsis">
+      2.查看数据库列表
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3" class="md-nav__link">
+    <span class="md-ellipsis">
+      3.常用命令语句
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#mysql_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      四、mysql优化实践
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="四、mysql优化实践">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1" class="md-nav__link">
+    <span class="md-ellipsis">
+      1.目的
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. 数据库访问漏斗法则
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      3.数据库查询常用优化手段
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3.数据库查询常用优化手段">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#31" class="md-nav__link">
+    <span class="md-ellipsis">
+      3.1 使用合适的字段、字段长度和类型
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#32-sql" class="md-nav__link">
+    <span class="md-ellipsis">
+      3.2 SQL执行计划关键指标优化
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#33" class="md-nav__link">
+    <span class="md-ellipsis">
+      3.3 索引设计优化
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#34-mysq" class="md-nav__link">
+    <span class="md-ellipsis">
+      3.4 mysq优化器会自动选择最优索引（会出错么？）
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -1027,7 +1224,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../数据库-Note/pymysqlStudy.md" class="md-nav__link">
+      <a href="../pymysqlStudy/" class="md-nav__link">
         
   
   
@@ -1050,7 +1247,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../数据库-Note/redisStdudy.md" class="md-nav__link">
+      <a href="../redisStdudy/" class="md-nav__link">
         
   
   
@@ -1127,6 +1324,29 @@
   
   <span class="md-ellipsis">
     Nginx配置文件
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../LinuxEnv-Note/WSL-Note/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    WSL-Note
     
   </span>
   
@@ -1327,11 +1547,11 @@
         <li class="md-nav__item">
   <a href="#mysql_2" class="md-nav__link">
     <span class="md-ellipsis">
-      四、MySQL优化实践
+      四、mysql优化实践
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="四、MySQL优化实践">
+    <nav class="md-nav" aria-label="四、mysql优化实践">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
@@ -1424,7 +1644,7 @@
 
 
 
-<h1 id="mysql">MySQL优化实践<a class="headerlink" href="#mysql" title="Permanent link">&para;</a></h1>
+<h1 id="mysql">mysql优化实践<a class="headerlink" href="#mysql" title="Permanent link">&para;</a></h1>
 <h2 id="mysql57">一、mysql5.7下载<a class="headerlink" href="#mysql57" title="Permanent link">&para;</a></h2>
 <p>https://cdn.mysql.com/archives/mysql-5.7/mysql-5.7.38-winx64.zip</p>
 <h2 id="_1">二、安装及配置<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h2>
@@ -1491,7 +1711,7 @@ default-storage-engine<span class="o">=</span>INNODB
 <div class="highlight"><pre><span></span><code>use test
 desc test
 </code></pre></div>
-<h2 id="mysql_2">四、MySQL优化实践<a class="headerlink" href="#mysql_2" title="Permanent link">&para;</a></h2>
+<h2 id="mysql_2">四、mysql优化实践<a class="headerlink" href="#mysql_2" title="Permanent link">&para;</a></h2>
 <h3 id="1">1.目的<a class="headerlink" href="#1" title="Permanent link">&para;</a></h3>
 <p>为了查询性能的提升，更快速返回查询的数据信息。</p>
 <h3 id="2_1">2. 数据库访问漏斗法则<a class="headerlink" href="#2_1" title="Permanent link">&para;</a></h3>
