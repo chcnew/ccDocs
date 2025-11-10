@@ -3128,7 +3128,7 @@ Port 443
 User git
 PreferredAuthentications publickey
 IdentityFile ~/.ssh/id_ed25519
-ProxyCommand ncat.exe --proxy-type socks5 --proxy 127.0.0.1:10808 %h %p
+ProxyCommand ncat.exe --proxy-type socks5 -v --proxy 127.0.0.1:10808 %h %p
 </code></pre></div>
 <p>其中：10808 是 v2rayN 监听的 SOCKS5 端口号</p>
 <p><img alt="image-20250614120628444" src="../GitLearningNote.assets/image-20250614120628444.png" /> </p>
