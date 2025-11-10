@@ -12,22 +12,28 @@
         <meta name="author" content="HC">
       
       
+        <link rel="canonical" href="https://chcnew.github.io/ccDocs/mds/Python-Note/uv-Note/">
       
       
+        <link rel="prev" href="../../..">
       
-      <link rel="icon" href="/ccDocs/assets/images/favicon.png">
+      
+        <link rel="next" href="../Python-%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/">
+      
+      
+      <link rel="icon" href="../../../assets/images/favicon.png">
       <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.23">
     
     
       
-        <title>CC学习文档库</title>
+        <title>虚拟环境 - CC学习文档库</title>
       
     
     
-      <link rel="stylesheet" href="/ccDocs/assets/stylesheets/main.84d31ad4.min.css">
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.84d31ad4.min.css">
       
         
-        <link rel="stylesheet" href="/ccDocs/assets/stylesheets/palette.06af60db.min.css">
+        <link rel="stylesheet" href="../../../assets/stylesheets/palette.06af60db.min.css">
       
       
 
@@ -46,9 +52,9 @@
       
     
     
-      <link rel="stylesheet" href="/ccDocs/static/stylesheets/extra.css">
+      <link rel="stylesheet" href="../../../static/stylesheets/extra.css">
     
-    <script>__md_scope=new URL("/ccDocs/",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    <script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
 
@@ -73,6 +79,11 @@
     <label class="md-overlay" for="__drawer"></label>
     <div data-md-component="skip">
       
+        
+        <a href="#uv-python" class="md-skip">
+          跳转至
+        </a>
+      
     </div>
     <div data-md-component="announce">
       
@@ -83,7 +94,7 @@
 
 <header class="md-header" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="页眉">
-    <a href="/ccDocs/." title="CC学习文档库" class="md-header__button md-logo" aria-label="CC学习文档库" data-md-component="logo">
+    <a href="../../.." title="CC学习文档库" class="md-header__button md-logo" aria-label="CC学习文档库" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="m99.3 256.1 69.4-119.9c-5.6-12.2-8.8-25.8-8.8-40.2 0-53 43-96 96-96s96 43 96 96c0 14.3-3.1 27.9-8.8 40.2l44.4 76.7c-23.1 26-53.7 45.1-88.4 53.8L256 191.9l-68.1 117.6c21.5 6.8 44.3 10.5 68.1 10.5 70.7 0 133.8-32.7 174.9-84 11.1-13.8 31.2-16 45-5s16 31.2 5 45C428.2 341.8 347 384 256.1 384c-35.4 0-69.4-6.4-100.7-18.1l-56.7 97.8c-4.7 8.1-11.7 14.7-20.1 18.9l-55.4 27.7c-5 2.5-10.9 2.2-15.6-.7S0 501.5 0 496v-55.4c0-8.4 2.2-16.7 6.5-24.1l60-103.7c-12.8-11.2-24.6-23.5-35.3-36.8-11.1-13.8-8.8-33.9 5-45s33.9-8.8 45 5c5.7 7.1 11.8 13.8 18.2 20.1zm281.8 151.8c32.5-13 62.4-31 88.9-52.9l35.6 61.5c4.2 7.3 6.5 15.6 6.5 24.1V496c0 5.5-2.9 10.7-7.6 13.6s-10.6 3.2-15.6.7l-55.4-27.7c-8.4-4.2-15.4-10.8-20.1-18.9zM256 128a32 32 0 1 0 0-64 32 32 0 1 0 0 64"/></svg>
@@ -103,7 +114,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              
+              虚拟环境
             
           </span>
         </div>
@@ -204,7 +215,7 @@
   
   
     <li class="md-tabs__item">
-      <a href="/ccDocs/." class="md-tabs__link">
+      <a href="../../.." class="md-tabs__link">
         
   
   
@@ -221,11 +232,13 @@
   
   
   
+    
+  
   
     
     
-      <li class="md-tabs__item">
-        <a href="/ccDocs/mds/Python-Note/uv-Note/" class="md-tabs__link">
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="./" class="md-tabs__link">
           
   
   
@@ -245,7 +258,7 @@
     
     
       <li class="md-tabs__item">
-        <a href="/ccDocs/mds/GoLang-Note/GoLang-%E5%85%A5%E9%97%A8/" class="md-tabs__link">
+        <a href="../../GoLang-Note/GoLang-%E5%85%A5%E9%97%A8/" class="md-tabs__link">
           
   
   
@@ -265,7 +278,7 @@
     
     
       <li class="md-tabs__item">
-        <a href="/ccDocs/mds/Vue3-Note/vue3-%E5%85%A5%E9%97%A8/" class="md-tabs__link">
+        <a href="../../Vue3-Note/vue3-%E5%85%A5%E9%97%A8/" class="md-tabs__link">
           
   
   
@@ -285,7 +298,7 @@
     
     
       <li class="md-tabs__item">
-        <a href="/ccDocs/mds/Git-Note/GitLearningNote/" class="md-tabs__link">
+        <a href="../../Git-Note/GitLearningNote/" class="md-tabs__link">
           
   
   
@@ -305,7 +318,7 @@
     
     
       <li class="md-tabs__item">
-        <a href="/ccDocs/mds/Docker-Note/DockerLearningNote/" class="md-tabs__link">
+        <a href="../../Docker-Note/DockerLearningNote/" class="md-tabs__link">
           
   
   
@@ -325,7 +338,7 @@
     
     
       <li class="md-tabs__item">
-        <a href="/ccDocs/mds/%E6%95%B0%E6%8D%AE%E5%BA%93-Note/mysql%E4%BC%98%E5%8C%96%E5%AE%9E%E8%B7%B5/" class="md-tabs__link">
+        <a href="../../%E6%95%B0%E6%8D%AE%E5%BA%93-Note/mysql%E4%BC%98%E5%8C%96%E5%AE%9E%E8%B7%B5/" class="md-tabs__link">
           
   
   
@@ -345,7 +358,7 @@
     
     
       <li class="md-tabs__item">
-        <a href="/ccDocs/mds/LinuxEnv-Note/Nginx%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6/" class="md-tabs__link">
+        <a href="../../LinuxEnv-Note/Nginx%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6/" class="md-tabs__link">
           
   
   
@@ -365,7 +378,7 @@
     
     
       <li class="md-tabs__item">
-        <a href="/ccDocs/mds/%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE-Note/http%E5%8D%8F%E8%AE%AE/" class="md-tabs__link">
+        <a href="../../%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE-Note/http%E5%8D%8F%E8%AE%AE/" class="md-tabs__link">
           
   
   
@@ -399,7 +412,7 @@
 
 <nav class="md-nav md-nav--primary md-nav--lifted" aria-label="导航栏" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href="/ccDocs/." title="CC学习文档库" class="md-nav__button md-logo" aria-label="CC学习文档库" data-md-component="logo">
+    <a href="../../.." title="CC学习文档库" class="md-nav__button md-logo" aria-label="CC学习文档库" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="m99.3 256.1 69.4-119.9c-5.6-12.2-8.8-25.8-8.8-40.2 0-53 43-96 96-96s96 43 96 96c0 14.3-3.1 27.9-8.8 40.2l44.4 76.7c-23.1 26-53.7 45.1-88.4 53.8L256 191.9l-68.1 117.6c21.5 6.8 44.3 10.5 68.1 10.5 70.7 0 133.8-32.7 174.9-84 11.1-13.8 31.2-16 45-5s16 31.2 5 45C428.2 341.8 347 384 256.1 384c-35.4 0-69.4-6.4-100.7-18.1l-56.7 97.8c-4.7 8.1-11.7 14.7-20.1 18.9l-55.4 27.7c-5 2.5-10.9 2.2-15.6-.7S0 501.5 0 496v-55.4c0-8.4 2.2-16.7 6.5-24.1l60-103.7c-12.8-11.2-24.6-23.5-35.3-36.8-11.1-13.8-8.8-33.9 5-45s33.9-8.8 45 5c5.7 7.1 11.8 13.8 18.2 20.1zm281.8 151.8c32.5-13 62.4-31 88.9-52.9l35.6 61.5c4.2 7.3 6.5 15.6 6.5 24.1V496c0 5.5-2.9 10.7-7.6 13.6s-10.6 3.2-15.6.7l-55.4-27.7c-8.4-4.2-15.4-10.8-20.1-18.9zM256 128a32 32 0 1 0 0-64 32 32 0 1 0 0 64"/></svg>
@@ -417,7 +430,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/ccDocs/." class="md-nav__link">
+      <a href="../../.." class="md-nav__link">
         
   
   
@@ -436,24 +449,29 @@
       
   
   
+    
   
   
+  
     
     
     
     
-      
-      
-    
-    
-    <li class="md-nav__item md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
         
           
-          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="">
             
   
   
@@ -466,7 +484,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_2">
             <span class="md-nav__icon md-icon"></span>
             Python
@@ -477,10 +495,32 @@
                 
   
   
+    
   
   
-    <li class="md-nav__item">
-      <a href="/ccDocs/mds/Python-Note/uv-Note/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    虚拟环境
+    
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         
   
   
@@ -491,6 +531,77 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="目录">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      目录
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      一、基础命令
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="一、基础命令">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1" class="md-nav__link">
+    <span class="md-ellipsis">
+      1 创建项目
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2" class="md-nav__link">
+    <span class="md-ellipsis">
+      2 创建虚拟环境
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3" class="md-nav__link">
+    <span class="md-ellipsis">
+      3 虚拟环境管理命令
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#uv" class="md-nav__link">
+    <span class="md-ellipsis">
+      二、uv 项目结构（推荐）
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -503,7 +614,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/ccDocs/mds/Python-Note/Python-%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/" class="md-nav__link">
+      <a href="../Python-%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/" class="md-nav__link">
         
   
   
@@ -526,7 +637,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/ccDocs/mds/Python-Note/Python-%E5%BC%82%E6%AD%A5%E7%BC%96%E7%A8%8B/" class="md-nav__link">
+      <a href="../Python-%E5%BC%82%E6%AD%A5%E7%BC%96%E7%A8%8B/" class="md-nav__link">
         
   
   
@@ -549,7 +660,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/ccDocs/mds/Python-Note/DRF-Note/" class="md-nav__link">
+      <a href="../DRF-Note/" class="md-nav__link">
         
   
   
@@ -572,7 +683,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/ccDocs/mds/Python-Note/celery-Note/" class="md-nav__link">
+      <a href="../celery-Note/" class="md-nav__link">
         
   
   
@@ -595,7 +706,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/ccDocs/mds/Python-Note/django%E9%A1%B9%E7%9B%AE%E9%83%A8%E7%BD%B2/" class="md-nav__link">
+      <a href="../django%E9%A1%B9%E7%9B%AE%E9%83%A8%E7%BD%B2/" class="md-nav__link">
         
   
   
@@ -618,7 +729,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/ccDocs/mds/Python-Note/FastAPI-Note/" class="md-nav__link">
+      <a href="../FastAPI-Note/" class="md-nav__link">
         
   
   
@@ -689,7 +800,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/ccDocs/mds/GoLang-Note/GoLang-%E5%85%A5%E9%97%A8/" class="md-nav__link">
+      <a href="../../GoLang-Note/GoLang-%E5%85%A5%E9%97%A8/" class="md-nav__link">
         
   
   
@@ -760,7 +871,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/ccDocs/mds/Vue3-Note/vue3-%E5%85%A5%E9%97%A8/" class="md-nav__link">
+      <a href="../../Vue3-Note/vue3-%E5%85%A5%E9%97%A8/" class="md-nav__link">
         
   
   
@@ -783,7 +894,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/ccDocs/mds/Vue3-Note/vue3-%E7%BB%84%E5%90%88%E5%BC%8FAPI/" class="md-nav__link">
+      <a href="../../Vue3-Note/vue3-%E7%BB%84%E5%90%88%E5%BC%8FAPI/" class="md-nav__link">
         
   
   
@@ -806,7 +917,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/ccDocs/mds/Vue3-Note/Vue3%2BTS%2BPnpm-Note/" class="md-nav__link">
+      <a href="../../Vue3-Note/Vue3%2BTS%2BPnpm-Note/" class="md-nav__link">
         
   
   
@@ -877,7 +988,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/ccDocs/mds/Git-Note/GitLearningNote/" class="md-nav__link">
+      <a href="../../Git-Note/GitLearningNote/" class="md-nav__link">
         
   
   
@@ -948,7 +1059,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/ccDocs/mds/Docker-Note/DockerLearningNote/" class="md-nav__link">
+      <a href="../../Docker-Note/DockerLearningNote/" class="md-nav__link">
         
   
   
@@ -971,7 +1082,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/ccDocs/mds/Docker-Note/DockerVMLocalTest/" class="md-nav__link">
+      <a href="../../Docker-Note/DockerVMLocalTest/" class="md-nav__link">
         
   
   
@@ -994,7 +1105,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/ccDocs/mds/Docker-Note/DockerCSERVER/" class="md-nav__link">
+      <a href="../../Docker-Note/DockerCSERVER/" class="md-nav__link">
         
   
   
@@ -1065,7 +1176,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/ccDocs/mds/%E6%95%B0%E6%8D%AE%E5%BA%93-Note/mysql%E4%BC%98%E5%8C%96%E5%AE%9E%E8%B7%B5/" class="md-nav__link">
+      <a href="../../%E6%95%B0%E6%8D%AE%E5%BA%93-Note/mysql%E4%BC%98%E5%8C%96%E5%AE%9E%E8%B7%B5/" class="md-nav__link">
         
   
   
@@ -1088,7 +1199,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/ccDocs/mds/%E6%95%B0%E6%8D%AE%E5%BA%93-Note/MongoDBStudy/" class="md-nav__link">
+      <a href="../../%E6%95%B0%E6%8D%AE%E5%BA%93-Note/MongoDBStudy/" class="md-nav__link">
         
   
   
@@ -1111,7 +1222,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/ccDocs/mds/%E6%95%B0%E6%8D%AE%E5%BA%93-Note/SqlAlchemyStudy/" class="md-nav__link">
+      <a href="../../%E6%95%B0%E6%8D%AE%E5%BA%93-Note/SqlAlchemyStudy/" class="md-nav__link">
         
   
   
@@ -1134,7 +1245,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/ccDocs/mds/%E6%95%B0%E6%8D%AE%E5%BA%93-Note/pymysqlStudy/" class="md-nav__link">
+      <a href="../../%E6%95%B0%E6%8D%AE%E5%BA%93-Note/pymysqlStudy/" class="md-nav__link">
         
   
   
@@ -1157,7 +1268,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/ccDocs/mds/%E6%95%B0%E6%8D%AE%E5%BA%93-Note/redisStdudy/" class="md-nav__link">
+      <a href="../../%E6%95%B0%E6%8D%AE%E5%BA%93-Note/redisStdudy/" class="md-nav__link">
         
   
   
@@ -1228,7 +1339,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/ccDocs/mds/LinuxEnv-Note/Nginx%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6/" class="md-nav__link">
+      <a href="../../LinuxEnv-Note/Nginx%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6/" class="md-nav__link">
         
   
   
@@ -1251,7 +1362,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/ccDocs/mds/LinuxEnv-Note/WSL-Note/" class="md-nav__link">
+      <a href="../../LinuxEnv-Note/WSL-Note/" class="md-nav__link">
         
   
   
@@ -1322,7 +1433,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/ccDocs/mds/%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE-Note/http%E5%8D%8F%E8%AE%AE/" class="md-nav__link">
+      <a href="../../%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE-Note/http%E5%8D%8F%E8%AE%AE/" class="md-nav__link">
         
   
   
@@ -1345,7 +1456,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/ccDocs/mds/Python-Note/uwsgi%2Bnginx%E4%B8%A4%E7%A7%8D%E5%8D%8F%E8%AE%AE%E4%BB%A3%E7%90%86%E9%85%8D%E7%BD%AE/" class="md-nav__link">
+      <a href="../uwsgi%2Bnginx%E4%B8%A4%E7%A7%8D%E5%8D%8F%E8%AE%AE%E4%BB%A3%E7%90%86%E9%85%8D%E7%BD%AE/" class="md-nav__link">
         
   
   
@@ -1385,6 +1496,67 @@
   
   
   
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      目录
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      一、基础命令
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="一、基础命令">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1" class="md-nav__link">
+    <span class="md-ellipsis">
+      1 创建项目
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2" class="md-nav__link">
+    <span class="md-ellipsis">
+      2 创建虚拟环境
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3" class="md-nav__link">
+    <span class="md-ellipsis">
+      3 虚拟环境管理命令
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#uv" class="md-nav__link">
+    <span class="md-ellipsis">
+      二、uv 项目结构（推荐）
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
   
 </nav>
                   </div>
@@ -1396,8 +1568,105 @@
             <div class="md-content" data-md-component="content">
               <article class="md-content__inner md-typeset">
                 
-  <h1>404 - Not found</h1>
+                  
 
+
+
+<h1 id="uv-python">uv - Python环境包管理器<a class="headerlink" href="#uv-python" title="Permanent link">&para;</a></h1>
+<h2 id="_1">一、基础命令<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h2>
+<h3 id="1">1 创建项目<a class="headerlink" href="#1" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><span class="c1"># 查看当前uv支持的python且系统中已安装的位置</span>
+uv<span class="w"> </span>python<span class="w"> </span>list
+
+<span class="c1"># 创建一个项目</span>
+uv<span class="w"> </span>init<span class="w"> </span>-p<span class="w"> </span><span class="m">3</span>.14<span class="w"> </span>&lt;项目名&gt;
+<span class="w">    </span>或
+mkdir<span class="w"> </span>&lt;项目名&gt;<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="nb">cd</span><span class="w"> </span>&lt;项目名&gt;<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>uv<span class="w"> </span>init
+</code></pre></div>
+<ul>
+<li>创建的目录结构如下：.python-version 内容为默认为指定的python版本</li>
+</ul>
+<div class="highlight"><pre><span></span><code>.gitignore
+.python-version
+main.py
+pyproject.toml
+README.md
+</code></pre></div>
+<h3 id="2">2 创建虚拟环境<a class="headerlink" href="#2" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code>uv<span class="w"> </span>venv<span class="w"> </span>&lt;环境名称&gt;
+<span class="c1"># 例如：uv venv .venv</span>
+</code></pre></div>
+<h3 id="3">3 虚拟环境管理命令<a class="headerlink" href="#3" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>操作</th>
+<th>命令</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>初始化项目</td>
+<td><code>uv init</code></td>
+</tr>
+<tr>
+<td>安装包</td>
+<td><code>uv pip install 包名</code></td>
+</tr>
+<tr>
+<td>移除包</td>
+<td><code>uv pip uninstall 包名</code></td>
+</tr>
+<tr>
+<td>查看虚拟环境路径</td>
+<td><code>uv venv path</code></td>
+</tr>
+<tr>
+<td>激活虚拟环境</td>
+<td><code>uv venv shell</code></td>
+</tr>
+<tr>
+<td>冻结依赖</td>
+<td><code>uv lock</code></td>
+</tr>
+<tr>
+<td>清理环境</td>
+<td><code>uv clean</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="uv">二、<code>uv</code> 项目结构（推荐）<a class="headerlink" href="#uv" title="Permanent link">&para;</a></h2>
+<p>遵循这样子目录结构，项目在移植到生产环境安装依赖可以直接：<code>uv pip install .</code></p>
+<div class="highlight"><pre><span></span><code><span class="nv">project</span><span class="o">/</span>
+<span class="err">│</span>
+<span class="err">├──</span><span class="w"> </span><span class="nv">src</span><span class="o">/</span><span class="w">                      </span><span class="err">#</span><span class="w"> </span>源代码目录
+<span class="err">│</span><span class="w">   </span><span class="err">└──</span><span class="w"> </span><span class="nv">demo</span><span class="o">/</span><span class="w">                 </span><span class="err">#</span><span class="w"> </span>项目代码
+<span class="err">│</span><span class="w">       </span><span class="err">└──</span><span class="w"> </span><span class="nv">__init__.py</span>
+<span class="err">│</span><span class="w">       </span><span class="err">└──</span><span class="w"> </span><span class="nv">main.py</span>
+<span class="err">│</span><span class="w">       </span><span class="err">└──</span><span class="w"> </span><span class="nv">utils.py</span>
+<span class="err">│</span>
+<span class="err">├──</span><span class="w"> </span><span class="nv">testcases</span><span class="o">/</span><span class="w">                </span><span class="err">#</span><span class="w"> </span>测试用例目录
+<span class="err">│</span><span class="w">   </span><span class="err">└──</span><span class="w"> </span><span class="nv">test_main.py</span>
+<span class="err">│</span><span class="w">   </span><span class="err">└──</span><span class="w"> </span><span class="nv">test_utils.py</span>
+<span class="err">│</span>
+<span class="err">├──</span><span class="w"> </span><span class="nv">pyproject.toml</span><span class="w">            </span><span class="err">#</span><span class="w"> </span>项目配置文件
+<span class="err">├──</span><span class="w"> </span><span class="nv">README.md</span><span class="w">                 </span><span class="err">#</span><span class="w"> </span>项目说明文件
+<span class="err">├──</span><span class="w"> </span><span class="nv">.gitignore</span><span class="w">                </span><span class="err">#</span><span class="w"> </span>Git<span class="w"> </span>忽略文件
+<span class="err">└──</span><span class="w"> </span><span class="nv">requirements.txt</span><span class="w">          </span><span class="err">#</span><span class="w"> </span>如果你还使用<span class="w"> </span>pip<span class="err">，</span>可以记录依赖
+</code></pre></div>
+
+
+
+
+
+
+
+
+
+
+
+
+                
               </article>
             </div>
           
@@ -1441,12 +1710,12 @@
     
     
       
-      <script id="__config" type="application/json">{"base": "/ccDocs/", "features": ["navigation.instant", "navigation.instant.progress", "navigation.tabs", "navigation.top", "search.suggest", "search.highlight", "content.code.copy"], "search": "/ccDocs/assets/javascripts/workers/search.973d3a69.min.js", "tags": null, "translations": {"clipboard.copied": "\u5df2\u590d\u5236", "clipboard.copy": "\u590d\u5236", "search.result.more.one": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.more.other": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 # \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.none": "\u6ca1\u6709\u627e\u5230\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.one": "\u627e\u5230 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.other": "# \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.placeholder": "\u952e\u5165\u4ee5\u5f00\u59cb\u641c\u7d22", "search.result.term.missing": "\u7f3a\u5c11", "select.version": "\u9009\u62e9\u5f53\u524d\u7248\u672c"}, "version": null}</script>
+      <script id="__config" type="application/json">{"base": "../../..", "features": ["navigation.instant", "navigation.instant.progress", "navigation.tabs", "navigation.top", "search.suggest", "search.highlight", "content.code.copy"], "search": "../../../assets/javascripts/workers/search.973d3a69.min.js", "tags": null, "translations": {"clipboard.copied": "\u5df2\u590d\u5236", "clipboard.copy": "\u590d\u5236", "search.result.more.one": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.more.other": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 # \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.none": "\u6ca1\u6709\u627e\u5230\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.one": "\u627e\u5230 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.other": "# \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.placeholder": "\u952e\u5165\u4ee5\u5f00\u59cb\u641c\u7d22", "search.result.term.missing": "\u7f3a\u5c11", "select.version": "\u9009\u62e9\u5f53\u524d\u7248\u672c"}, "version": null}</script>
     
     
-      <script src="/ccDocs/assets/javascripts/bundle.f55a23d4.min.js"></script>
+      <script src="../../../assets/javascripts/bundle.f55a23d4.min.js"></script>
       
-        <script src="/ccDocs/static/javascripts/collapsible.js"></script>
+        <script src="../../../static/javascripts/collapsible.js"></script>
       
     
   </body>
