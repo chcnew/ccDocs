@@ -584,6 +584,48 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#4-uv" class="md-nav__link">
+    <span class="md-ellipsis">
+      4 uv源配置
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4 uv源配置">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#41" class="md-nav__link">
+    <span class="md-ellipsis">
+      4.1 用户级别配置文件
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#42" class="md-nav__link">
+    <span class="md-ellipsis">
+      4.2 项目级别配置文件
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#43" class="md-nav__link">
+    <span class="md-ellipsis">
+      4.3 通过命令行临时指定
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -1542,6 +1584,48 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#4-uv" class="md-nav__link">
+    <span class="md-ellipsis">
+      4 uv源配置
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4 uv源配置">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#41" class="md-nav__link">
+    <span class="md-ellipsis">
+      4.1 用户级别配置文件
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#42" class="md-nav__link">
+    <span class="md-ellipsis">
+      4.2 项目级别配置文件
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#43" class="md-nav__link">
+    <span class="md-ellipsis">
+      4.3 通过命令行临时指定
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -1635,6 +1719,34 @@ README.md
 </tr>
 </tbody>
 </table>
+<h3 id="4-uv">4 uv源配置<a class="headerlink" href="#4-uv" title="Permanent link">&para;</a></h3>
+<p>UV 支持在项目级别、用户级别和系统级别使用配置文件。</p>
+<h4 id="41">4.1 用户级别配置文件<a class="headerlink" href="#41" title="Permanent link">&para;</a></h4>
+<p>文件路径：%APPDATA%\uv\uv.toml</p>
+<div class="highlight"><pre><span></span><code><span class="k">[[index]]</span>
+<span class="n">url</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;https://pypi.tuna.tsinghua.edu.cn/simple&quot;</span>
+<span class="n">default</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">true</span>
+</code></pre></div>
+<h4 id="42">4.2 项目级别配置文件<a class="headerlink" href="#42" title="Permanent link">&para;</a></h4>
+<p>文件路径：项目目录下的 pyproject.toml 或 uv.toml。</p>
+<ul>
+<li>pyproject.toml</li>
+</ul>
+<div class="highlight"><pre><span></span><code><span class="k">[[tool.uv.index]]</span>
+<span class="n">url</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;https://pypi.tuna.tsinghua.edu.cn/simple&quot;</span>
+<span class="n">default</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">true</span>
+</code></pre></div>
+<ul>
+<li>uv.toml </li>
+</ul>
+<div class="highlight"><pre><span></span><code><span class="k">[[index]]</span>
+<span class="n">url</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;https://pypi.tuna.tsinghua.edu.cn/simple&quot;</span>
+<span class="n">default</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">true</span>
+</code></pre></div>
+<h4 id="43">4.3 通过命令行临时指定<a class="headerlink" href="#43" title="Permanent link">&para;</a></h4>
+<p>在命令行中运行 UV 命令时，可以直接指定镜像源：</p>
+<div class="highlight"><pre><span></span><code>uv<span class="w"> </span>add<span class="w"> </span>--default-index<span class="w"> </span>https://pypi.tuna.tsinghua.edu.cn/simple<span class="w"> </span>&lt;包名&gt;
+</code></pre></div>
 <h2 id="uv">二、<code>uv</code> 项目结构（推荐）<a class="headerlink" href="#uv" title="Permanent link">&para;</a></h2>
 <p>遵循这样子目录结构，项目在移植到生产环境安装依赖可以直接：<code>uv pip install .</code></p>
 <div class="highlight"><pre><span></span><code><span class="nv">project</span><span class="o">/</span>
