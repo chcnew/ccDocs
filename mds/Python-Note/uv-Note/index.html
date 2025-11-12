@@ -626,6 +626,15 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#5" class="md-nav__link">
+    <span class="md-ellipsis">
+      5 安装/升级包
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -1626,6 +1635,15 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#5" class="md-nav__link">
+    <span class="md-ellipsis">
+      5 安装/升级包
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -1746,6 +1764,23 @@ README.md
 <h4 id="43">4.3 通过命令行临时指定<a class="headerlink" href="#43" title="Permanent link">&para;</a></h4>
 <p>在命令行中运行 UV 命令时，可以直接指定镜像源：</p>
 <div class="highlight"><pre><span></span><code>uv<span class="w"> </span>add<span class="w"> </span>--default-index<span class="w"> </span>https://pypi.tuna.tsinghua.edu.cn/simple<span class="w"> </span>&lt;包名&gt;
+</code></pre></div>
+<h3 id="5">5 安装/升级包<a class="headerlink" href="#5" title="Permanent link">&para;</a></h3>
+<ul>
+<li>安装至指定版本</li>
+</ul>
+<div class="highlight"><pre><span></span><code>uv<span class="w"> </span>add<span class="w"> </span><span class="s2">&quot;httpx==0.28.1&quot;</span>
+</code></pre></div>
+<ul>
+<li>安装依赖包</li>
+</ul>
+<div class="highlight"><pre><span></span><code>uv<span class="w"> </span>sync
+uv<span class="w"> </span>sync<span class="w"> </span>--dev
+</code></pre></div>
+<ul>
+<li>升级项目全部包</li>
+</ul>
+<div class="highlight"><pre><span></span><code>uv<span class="w"> </span>sync<span class="w"> </span>--upgrade
 </code></pre></div>
 <h2 id="uv">二、<code>uv</code> 项目结构（推荐）<a class="headerlink" href="#uv" title="Permanent link">&para;</a></h2>
 <p>遵循这样子目录结构，项目在移植到生产环境安装依赖可以直接：<code>uv pip install .</code></p>
