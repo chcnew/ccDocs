@@ -12,7 +12,7 @@
         <meta name="author" content="HC">
       
       
-        <link rel="canonical" href="https://chcnew.github.io/ccDocs/mds/%E6%95%B0%E6%8D%AE%E5%BA%93-Note/redisStdudy/">
+        <link rel="canonical" href="https://chcnew.github.io/ccDocs/mds/%E6%95%B0%E6%8D%AE%E5%BA%93-Note/redisStudy/">
       
       
         <link rel="prev" href="../pymysqlStudy/">
@@ -26,7 +26,7 @@
     
     
       
-        <title>RedisStdudy - CC学习文档库</title>
+        <title>RedisStudy - CC学习文档库</title>
       
     
     
@@ -114,7 +114,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              RedisStdudy
+              RedisStudy
             
           </span>
         </div>
@@ -1189,7 +1189,7 @@
   
   
   <span class="md-ellipsis">
-    RedisStdudy
+    RedisStudy
     
   </span>
   
@@ -1202,7 +1202,7 @@
   
   
   <span class="md-ellipsis">
-    RedisStdudy
+    RedisStudy
     
   </span>
   
@@ -2532,7 +2532,7 @@ port<span class="w"> </span><span class="m">6379</span><span class="w">  </span>
 <span class="nb">bind</span><span class="w"> </span><span class="m">0</span>.0.0.0<span class="w"> </span>-::1<span class="w">  </span><span class="c1"># 注释掉bind 127.0.0.1 改为局域网内可连接 bind 0.0.0.0</span>
 requirepass<span class="w"> </span>cc123456<span class="w">  </span><span class="c1"># requirepass foobared改为requirepass cc123456，cc123456为设置的密码，这个密码尽量设置复杂些。</span>
 </code></pre></div>
-<p><img alt="image-20231015112213147" src="../redisStudy/image-20231015112213147.png" /> </p>
+<p><img alt="image-20231015112213147" src="image-20231015112213147.png" /> </p>
 <p>安装完毕的配置：<a href="https://blog.csdn.net/M_y_y/article/details/106211042">https://blog.csdn.net/M_y_y/article/details/106211042</a></p>
 <h3 id="_2">● 测试启动服务（使用配置文件）<a class="headerlink" href="#_2" title="Permanent link">&para;</a></h3>
 <div class="highlight"><pre><span></span><code>redis-server /usr/local/redis/conf/redis.conf
@@ -2541,7 +2541,7 @@ requirepass<span class="w"> </span>cc123456<span class="w">  </span><span class=
 <div class="highlight"><pre><span></span><code><span class="c1"># 无密码连接</span>
 redis-cli
 </code></pre></div>
-<p><img alt="image-20240526212703198" src="../redisStudy/image-20240526212703198.png" /> </p>
+<p><img alt="image-20240526212703198" src="image-20240526212703198.png" /> </p>
 <h3 id="_4">● 安装完成之后，软件模块介绍<a class="headerlink" href="#_4" title="Permanent link">&para;</a></h3>
 <table>
 <thead>
@@ -2593,9 +2593,9 @@ redis-cli<span class="w"> </span>-h<span class="w"> </span><span class="m">127</
 ping
 </code></pre></div>
 <p>有密码且密码输入错误：</p>
-<p><img alt="image-20240526213112547" src="../redisStudy/image-20240526213112547.png" /> </p>
+<p><img alt="image-20240526213112547" src="image-20240526213112547.png" /> </p>
 <p>正确连接：</p>
-<p><img alt="image-20240526213137039" src="../redisStudy/image-20240526213137039.png" /> </p>
+<p><img alt="image-20240526213137039" src="image-20240526213137039.png" /> </p>
 <h3 id="_6">● 源码安装设置开机启动<a class="headerlink" href="#_6" title="Permanent link">&para;</a></h3>
 <h4 id="systemd">方式一：配置Systemd<a class="headerlink" href="#systemd" title="Permanent link">&para;</a></h4>
 <p>开机自启动redis（其他服务类似） </p>
@@ -2851,7 +2851,7 @@ systemctl<span class="w"> </span>status<span class="w"> </span>rc-local.service
 systemctl<span class="w"> </span><span class="nb">enable</span><span class="w"> </span>rc-local.service
 </code></pre></div>
 <h2 id="rdbaof">八、支持数据持久化方案（RDB/AOF）<a class="headerlink" href="#rdbaof" title="Permanent link">&para;</a></h2>
-<p><img alt="image-20240602105621289" src="../redisStudy/image-20240602105621289.png" /> </p>
+<p><img alt="image-20240602105621289" src="image-20240602105621289.png" /> </p>
 <h3 id="rdb">● RDB<a class="headerlink" href="#rdb" title="Permanent link">&para;</a></h3>
 <p>RDB是一种快照存储持久化方式，具体就是将Redis某一时刻的内存数据保存到硬盘的文件当中，默认保存的文件名为dump.rdb，而在Redis服务器启动时，会重新加载dump.rdb文件的数据到内存当中恢复数据。</p>
 <p><strong>开启RDB持久化方式：</strong>开启RDB持久化方式很简单，客户端可以<strong>通过向Redis服务器发送save或bgsave命令让服务器生成rdb文件</strong>，或者<strong>通过服务器配置文件指定触发RDB条件</strong>。</p>
